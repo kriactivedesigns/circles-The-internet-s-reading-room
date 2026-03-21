@@ -220,12 +220,14 @@ NO FOLLOWER COUNTS: Never add "Followers", "Following", or "Likes" to any UI moc
 
 📚 7. REFERENCES & SOURCE TRUTH
 
-This skill has been meticulously compiled from the foundational CausalSyntax documentation:
+This skill has been meticulously compiled from the foundational CausalSyntax documentation. All html mockups and design system reference can be physically read from the `.agents/skills/circles-ui-ux/references/` subdirectory!
 
 Circles_PRD_v4.0.docx (Author: Arun Mohanan) - Primary source for UX philosophy, naming conventions, zero-vanity metrics, and the Reading Room/Handshake/Table/Bloom interaction model.
 
 design_system.html - Primary source for color hex codes, font families (Montserrat/Raleway), and typography scales.
 
-screen_mockup_v2.html - Primary source for glassmorphic properties, ambient orb rendering, logo ripple keyframes, and specific border-radii values.
+screen_mockup_v2.html - Located at `references/screen_mockup_v2.html`. Primary source for glassmorphic properties, ambient orb rendering, logo ripple keyframes, and specific border-radii values.
+
+design_system.html - Located at `references/design_system.html`. Primary source for design system guides, color hex codes, font families (Montserrat/Raleway), and typography scales.
 
 [End of Skill Definition]

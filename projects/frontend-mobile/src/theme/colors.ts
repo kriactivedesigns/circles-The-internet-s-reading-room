@@ -1,4 +1,30 @@
-export const darkColors = {
+export interface Colors {
+  primary: {
+    base: string;
+    opacity20: string;
+    opacity10: string;
+  };
+  background: {
+    base: string;
+    surface: string;
+    glass: string;
+  };
+  border: {
+    glass: string;
+  };
+  text: {
+    primary: string;
+    secondary: string;
+    muted: string;
+  };
+  status: {
+    success: string;
+    warn: string;
+    error: string;
+  };
+}
+
+export const darkColors: Colors = {
   primary: {
     base: '#5C94E9',
     opacity20: 'rgba(92, 148, 233, 0.20)',
@@ -22,9 +48,9 @@ export const darkColors = {
     warn: '#F59E0B',
     error: '#EF4444',
   },
-} as const;
+};
 
-export const lightColors = {
+export const lightColors: Colors = {
   primary: {
     base: '#5C94E9',
     opacity20: 'rgba(92, 148, 233, 0.20)',
@@ -48,6 +74,4 @@ export const lightColors = {
     warn: '#F59E0B',
     error: '#EF4444',
   },
-} as const;
-
-export type Colors = typeof darkColors;
+};
