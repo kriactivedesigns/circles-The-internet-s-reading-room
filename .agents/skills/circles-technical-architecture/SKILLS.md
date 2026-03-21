@@ -177,3 +177,22 @@ The system transitions across **6 sequential phases**:
 *   **No Audio/Video by Default:** All WebRTC handshakes default strictly to audio. Video requires explicit opt-in escalation inside the Live Circle boundary.
 *   **Persona Isolation:** Handshakes, Lobbies, and Reading Lists operate solely via `personaId`. Application APIs must never accidentally leak `userId` across the boundary.
 *   **RLS Policies:** Supabase Row-Level Security explicitly restricts access so a User can only fetch `CirclePersona` and related tokens tied strictly to their authenticated `auth.uid()`.
+
+---
+
+## 6. Project Directory Structure
+
+```text
+project/
+├── backend/                  # NestJS API, Supabase integrations, Redis presence handlers
+│   ├── src/
+│   ├── prisma/               # Database definitions and migrations
+│   └── test/
+└── frontend-mobile/          # React Native (Expo) app for iOS & Android
+    ├── src/
+    │   ├── components/       # Custom-built UI components (No 3rd party UI libraries)
+    │   ├── stores/           # Zustand state management slices
+    │   └── screens/          # Feed Orbit, Lobby, Live Circle views
+    ├── app.json
+    └── package.json
+```
