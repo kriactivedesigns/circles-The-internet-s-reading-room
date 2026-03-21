@@ -183,7 +183,7 @@ The system transitions across **6 sequential phases**:
 ## 6. Project Directory Structure
 
 ```text
-project/
+projects/
 ├── backend/                  # NestJS API, Supabase integrations, Redis presence handlers
 │   ├── src/
 │   ├── prisma/               # Database definitions and migrations

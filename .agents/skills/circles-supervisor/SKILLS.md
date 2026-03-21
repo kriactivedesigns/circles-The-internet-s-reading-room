@@ -40,3 +40,8 @@ When building the backend services (NestJS / Prisma):
 1. **Granular Creation:** Build module by module, controller by controller, and file by file.
 2. **Review Per File:** Create one file (e.g., a specific module or service), explain its role, and get it reviewed by the user.
 3. **Move On:** Do not write the subsequent resolver, controller, or test file until the previous foundational file is expressly approved.
+
+## 3. Terminal & Execution Constraints
+
+1. **Never Execute Commands Autonomously:** You are strictly prohibited from using the `run_command` tool to execute build commands, scaffolders, or package installations (e.g., `npx create-expo-app`). Instead, you must present the exact command to the user in a markdown block, ask them to execute it, and wait for them to confirm the result.
+2. **Strict Directory Adherence:** Always respect the monorepo structure defined in the Architecture skill document. Project-specific scaffolds or package commands must always target the correct sub-directory (e.g., `projects/frontend-mobile` or `projects/backend`). Never generate project files loosely in the root folder if they belong in the designated sub-projects folder.
