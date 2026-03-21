@@ -31,7 +31,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
   line: {
     flex: 1,
     height: 1,
-    backgroundColor: colors.border.glass,
+    backgroundColor: colors.border.glassLight,
   },
   label: {
     fontSize: 8.5,

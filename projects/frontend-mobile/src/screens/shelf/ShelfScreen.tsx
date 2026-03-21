@@ -15,8 +15,8 @@ const CollectionCard: React.FC<{ title: string, count: number, color: string }> 
          <View style={{ width: 12, height: 16, backgroundColor: color, borderRadius: 2 }} />
       </View>
       <View>
-        <Text style={[styles.collectionTitle, { color: isDark ? '#fff' : '#05070A' }]}>{title}</Text>
-        <Text style={styles.collectionCount}>{count} items</Text>
+        <Text style={[styles.collectionTitle, { color: colors.text.primary }]}>{title}</Text>
+        <Text style={[styles.collectionCount, { color: colors.text.muted }]}>{count} items</Text>
       </View>
     </TouchableOpacity>
   );
@@ -27,18 +27,6 @@ export const ShelfScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* ── Header ── */}
-      <View style={[styles.header, { backgroundColor: isDark ? 'rgba(5,7,10,0.8)' : 'rgba(242,244,247,0.8)' }]}>
-        <Text style={[styles.wordmark, { color: isDark ? '#fff' : '#05070A' }]}>circles</Text>
-        <TouchableOpacity style={[styles.personaChip, { borderColor: colors.border.glass }]}>
-          <View style={styles.pcDot} />
-          <View style={[styles.pcAvatar, { backgroundColor: colors.primary.base + '20' }]}>
-            <Text style={[styles.pcAvatarText, { color: colors.primary.base }]}>A</Text>
-          </View>
-          <Text style={[styles.pcAlias, { color: isDark ? '#fff' : '#05070A' }]}>Alex_UX</Text>
-        </TouchableOpacity>
-      </View>
-
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.titleSection}>
           <Text style={[styles.pageTitle, { color: isDark ? '#fff' : '#05070A' }]}>Your Shelf</Text>
@@ -57,9 +45,9 @@ export const ShelfScreen: React.FC = () => {
         {/* ── Category Filters ── */}
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScroll}>
            <TouchableOpacity style={[styles.filterBtn, { backgroundColor: colors.primary.base }]}><Text style={styles.filterBtnTextActive}>All Items</Text></TouchableOpacity>
-           <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}><Text style={styles.filterBtnText}>Books</Text></TouchableOpacity>
-           <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}><Text style={styles.filterBtnText}>Articles</Text></TouchableOpacity>
-           <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}><Text style={styles.filterBtnText}>Saved Stages</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}><Text style={styles.filterBtnText}>Books</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}><Text style={styles.filterBtnText}>Articles</Text></TouchableOpacity>
+            <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}><Text style={styles.filterBtnText}>Saved Stages</Text></TouchableOpacity>
         </ScrollView>
 
         <View style={styles.shelfGrid}>
@@ -94,36 +82,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  header: {
-    height: 68,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    zIndex: 40,
-    borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.07)',
-  },
-  wordmark: {
-    fontFamily: typography.families.ui,
-    fontSize: 13,
-    fontWeight: '700',
-    letterSpacing: 2.5,
-  },
-  personaChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 999,
-    borderWidth: 0.5,
-    backgroundColor: 'rgba(12,14,20,0.9)',
-  },
-  pcDot: { width: 5, height: 5, borderRadius: 3, backgroundColor: '#5C94E9', marginRight: 6 },
-  pcAvatar: { width: 22, height: 22, borderRadius: 11, justifyContent: 'center', alignItems: 'center' },
-  pcAvatarText: { fontSize: 10, fontWeight: '700' },
-  pcAlias: { marginLeft: 8, fontSize: 8.5, fontWeight: '600' },
-
   scrollContent: {
     paddingBottom: 120,
   },
@@ -137,14 +95,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   progressContainer: {
-    backgroundColor: 'rgba(255,255,255,0.03)',
     borderRadius: 16,
     padding: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255,255,255,0.06)',
   },
-  progressLabel: { fontSize: 11, color: 'rgba(255,255,255,0.5)', fontWeight: '600' },
-  progressValue: { fontSize: 11, color: 'rgba(255,255,255,0.3)', fontWeight: '600' },
+  progressLabel: { fontSize: 11, fontWeight: '600' },
+  progressValue: { fontSize: 11, fontWeight: '600' },
   progressBarBase: { height: 4, borderRadius: 2, overflow: 'hidden' },
   progressBarFill: { width: '15%', height: '100%' },
 
@@ -162,8 +118,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     backgroundColor: 'transparent',
   },
-  filterBtnText: { color: 'rgba(255,255,255,0.5)', fontSize: 10, fontWeight: '600' },
-  filterBtnTextActive: { color: '#fff', fontSize: 10, fontWeight: '700' },
+  filterBtnText: { fontSize: 10, fontWeight: '600' },
+  filterBtnTextActive: { fontSize: 10, fontWeight: '700' },
 
   shelfGrid: {
     paddingHorizontal: 20,
@@ -208,7 +164,6 @@ const styles = StyleSheet.create({
   },
   collectionCount: {
     fontSize: 9,
-    color: 'rgba(255,255,255,0.35)',
     marginTop: 2,
   },
 });

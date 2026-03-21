@@ -66,7 +66,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     height: 70,
     backgroundColor: colors.background.glass,
     borderWidth: 1,
-    borderColor: colors.border.glass,
+    borderColor: colors.border.glassLight,
     borderRadius: 16,
     color: colors.text.primary,
     fontFamily: typography.families.ui,

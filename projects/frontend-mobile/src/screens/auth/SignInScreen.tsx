@@ -110,7 +110,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     paddingHorizontal: 28,
     backgroundColor: colors.background.glass,
     borderWidth: 1,
-    borderColor: colors.border.glass,
+    borderColor: colors.border.glassLight,
   },
   headerArea: {
     alignItems: 'center',

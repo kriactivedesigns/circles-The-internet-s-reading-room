@@ -10,8 +10,7 @@ export interface Colors {
     glass: string;
   };
   border: {
-    glassDark: string;
-    glassLight: string;
+    glass: string;
   };
   text: {
     primary: string;
@@ -37,13 +36,12 @@ export const darkColors: Colors = {
     glass: 'rgba(26, 29, 36, 0.6)',
   },
   border: {
-    glassDark: 'rgba(255, 255, 255, 0.10)',
-    glassLight: 'rgba(255, 255, 255, 0.60)',
+    glass: 'rgba(255, 255, 255, 0.12)',
   },
   text: {
     primary: '#FFFFFF',
     secondary: 'rgba(255, 255, 255, 0.75)',
-    muted: 'rgba(255, 255, 255, 0.45)',
+    muted: 'rgba(255, 255, 255, 0.50)',
   },
   status: {
     success: '#10B981',
@@ -64,8 +62,7 @@ export const lightColors: Colors = {
     glass: 'rgba(255, 255, 255, 0.7)',
   },
   border: {
-    glassDark: 'rgba(0, 0, 0, 0.07)',
-    glassLight: 'rgba(255, 255, 255, 0.60)',
+    glass: 'rgba(0, 0, 0, 0.08)',
   },
   text: {
     primary: '#05070A', // Inverted mapping for dark text against light surfaces

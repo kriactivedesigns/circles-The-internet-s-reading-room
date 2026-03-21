@@ -69,7 +69,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     borderRadius: 24,
     padding: 18,
     borderWidth: 1,
-    borderColor: colors.border.glass,
+    borderColor: colors.border.glassLight,
   },
   label: {
     fontFamily: typography.families.ui,

@@ -4,9 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme/ThemeContext';
 import { Colors } from '../../theme/colors';
 import { typography } from '../../theme/typography';
-import { BottomNav } from '../../components/molecules/BottomNav';
 import { FeedCard } from '../../components/molecules/FeedCard';
-import { Logo } from '../../components/atoms/Logo';
 
 export const FeedWallScreen: React.FC<{ route: any }> = ({ route }) => {
   const { colors, isDark } = useTheme();
@@ -22,21 +20,6 @@ export const FeedWallScreen: React.FC<{ route: any }> = ({ route }) => {
     <View style={styles.base}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background.base} />
       
-      {/* Top Nav */}
-      <View style={styles.topNav}>
-        <View style={styles.wordmark}>
-          <Logo variant="nav" />
-          <Text style={styles.wordmarkText}>circles</Text>
-        </View>
-        <View style={styles.personaChip}>
-          <View style={styles.personaAvatar}>
-            <Text style={styles.personaInitial}>A</Text>
-          </View>
-          <Text style={styles.personaAlias}>Alex_UX</Text>
-          <View style={styles.pulseDot} />
-        </View>
-      </View>
-
       <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
         <Animated.ScrollView
           style={styles.scrollView}
@@ -108,66 +91,6 @@ const getStyles = (colors: Colors) => StyleSheet.create({
   safeArea: {
     flex: 1,
     backgroundColor: 'transparent',
-  },
-  topNav: {
-    height: 90,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 40, // Account for status bar
-    backgroundColor: 'transparent',
-    zIndex: 10,
-  },
-  wordmark: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-    // Ensure the container itself doesn't have extra bottom padding
-    paddingBottom: 2, 
-  },
-  wordmarkText: {
-    fontFamily: typography.families.ui,
-    fontSize: 18,
-    fontWeight: '600',
-    color: colors.text.primary,
-    includeFontPadding: false, // Prevents unintended vertical offsets in Android
-    textAlignVertical: 'center',
-  },
-  personaChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    padding: 4,
-    borderRadius: 20,
-    paddingRight: 12,
-    gap: 8,
-  },
-  personaAvatar: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    backgroundColor: '#1a3060',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  personaInitial: {
-    fontFamily: typography.families.ui,
-    fontSize: 11,
-    fontWeight: '700',
-    color: colors.primary.base,
-  },
-  personaAlias: {
-    fontFamily: typography.families.ui,
-    fontSize: 11,
-    fontWeight: '600',
-    color: colors.text.primary,
-  },
-  pulseDot: {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    backgroundColor: '#EF4444',
   },
   scrollView: {
     flex: 1,

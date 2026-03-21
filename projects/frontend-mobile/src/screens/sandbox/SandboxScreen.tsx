@@ -4,6 +4,7 @@ import Svg, { Circle, G, Defs, RadialGradient, Stop, Path } from 'react-native-s
 import { useTheme } from '../../theme/ThemeContext';
 import { typography } from '../../theme/typography';
 import { useNavigation } from '@react-navigation/native';
+import { Header } from '../../components/molecules/Header';
 import { radii } from '../../theme/radii';
 
 const { width, height } = Dimensions.get('window');
@@ -14,7 +15,7 @@ const FloatingPersona: React.FC<{
   note?: string;
   delay?: number;
 }> = ({ initial, color, note, delay = 0 }) => {
-  const { isDark } = useTheme();
+  const { colors, isDark } = useTheme();
   const driftX = useRef(new Animated.Value(0)).current;
   const driftY = useRef(new Animated.Value(0)).current;
   const scale = useRef(new Animated.Value(1)).current;
@@ -42,15 +43,15 @@ const FloatingPersona: React.FC<{
       { transform: [{ translateX: driftX }, { translateY: driftY }, { scale }] }
     ]}>
       {note && (
-        <View style={[styles.noteBubble, { backgroundColor: isDark ? 'rgba(26,29,36,0.85)' : 'rgba(255,255,255,0.95)' }]}>
-           <Text style={[styles.noteText, { color: isDark ? 'rgba(255,255,255,0.8)' : '#333' }]}>"{note}"</Text>
+        <View style={[styles.noteBubble, { backgroundColor: colors.background.glass, borderColor: colors.border.glass }]}>
+           <Text style={[styles.noteText, { color: colors.text.secondary }]}>"{note}"</Text>
            <TouchableOpacity style={styles.handshakeSmall}>
               <Text style={styles.handshakeEmoji}>🤝</Text>
            </TouchableOpacity>
         </View>
       )}
       <View style={[styles.avatarGlow, { backgroundColor: color + '10' }]} />
-      <View style={[styles.avatar, { borderColor: color, backgroundColor: isDark ? '#0c0c14' : '#fff' }]}>
+      <View style={[styles.avatar, { borderColor: color, backgroundColor: colors.background.base }]}>
         <Text style={[styles.avatarText, { color }]}>{initial}</Text>
       </View>
     </Animated.View>
@@ -77,36 +78,14 @@ export const SandboxScreen: React.FC = () => {
          </Svg>
       </View>
 
-      {/* ── Header ── */}
-      <View style={styles.header}>
-        <TouchableOpacity 
-          onPress={() => navigation.goBack()}
-          style={[styles.backBtn, { borderColor: 'rgba(255,255,255,0.12)' }]}
-        >
-          <Svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.5">
-            <Path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
-          </Svg>
-        </TouchableOpacity>
-        
-        <View style={styles.headerCenter}>
-          <Text style={styles.lobbyName}>SaaS Scaling & UI</Text>
-          <View style={styles.countChip}>
-            <View style={styles.countDot} />
-            <Text style={styles.countText}>5 inside</Text>
-          </View>
-        </View>
-        
-        <View style={{ width: 40 }} />
-      </View>
-
-      {/* ── Spatial Canvas ── */}
+      {/* Render Circles Based on type */}
       <View style={styles.canvas}>
         <Svg style={StyleSheet.absoluteFill}>
           {/* Main Circle Rings */}
           <G opacity={isJoined ? 0.4 : 0.15}>
-            <Circle cx={width/2} cy={height*0.42} r="140" stroke="#fff" strokeWidth="1" strokeDasharray="4 4" fill="none" />
-            <Circle cx={width/2} cy={height*0.42} r="110" stroke="#fff" strokeWidth="1" strokeDasharray="4 4" fill="none" />
-            <Circle cx={width/2} cy={height*0.42} r="3" fill="#fff" />
+            <Circle cx={width/2} cy={height*0.42} r="140" stroke={colors.text.primary} strokeWidth="1" strokeDasharray="4 4" fill="none" />
+            <Circle cx={width/2} cy={height*0.42} r="110" stroke={colors.text.primary} strokeWidth="1" strokeDasharray="4 4" fill="none" />
+            <Circle cx={width/2} cy={height*0.42} r="3" fill={colors.text.primary} />
           </G>
         </Svg>
 
@@ -136,20 +115,20 @@ export const SandboxScreen: React.FC = () => {
       {/* ── Bottom Controls ── */}
       <KeyboardAvoidingView behavior={Platform.OS === 'ios' ? 'padding' : 'height'} style={styles.bottomArea}>
         {!isJoined ? (
-          <View style={[styles.noteBar, { backgroundColor: 'rgba(26,29,36,0.92)', borderColor: 'rgba(255,255,255,0.12)' }]}>
+          <View style={[styles.noteBar, { backgroundColor: colors.background.surface, borderColor: colors.border.glass }]}>
             <View style={[styles.miniAvatar, { borderColor: colors.primary.base }]}>
               <Text style={[styles.miniAvatarText, { color: colors.primary.base }]}>A</Text>
             </View>
             <TextInput 
-              style={styles.noteInput} 
+              style={[styles.noteInput, { color: colors.text.primary }]} 
               placeholder="Drop an open note..." 
-              placeholderTextColor="rgba(255,255,255,0.3)"
+              placeholderTextColor={colors.text.muted}
             />
             <TouchableOpacity 
               onPress={() => setIsJoined(true)}
               style={[styles.sendBtn, { backgroundColor: colors.primary.base }]}
             >
-               <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3">
+               <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={isDark ? colors.background.base : '#fff'} strokeWidth="3">
                  <Path d="M12 19V5M12 5L5 12M12 5L19 12" strokeLinecap="round" strokeLinejoin="round" />
                </Svg>
             </TouchableOpacity>
@@ -177,45 +156,13 @@ export const SandboxScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#05070A' },
-  header: {
-    paddingTop: 54,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    zIndex: 100,
-  },
-  backBtn: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    borderWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.05)',
-  },
-  headerCenter: { alignItems: 'center' },
-  lobbyName: { fontFamily: typography.families.ui, fontSize: 13, fontWeight: '700', color: '#fff', letterSpacing: 1 },
-  countChip: { 
-    flexDirection: 'row', 
-    alignItems: 'center', 
-    backgroundColor: 'rgba(255,255,255,0.08)',
-    paddingHorizontal: 8,
-    paddingVertical: 3,
-    borderRadius: 999,
-    marginTop: 4
-  },
-  countDot: { width: 4, height: 4, borderRadius: 2, backgroundColor: '#34d399', marginRight: 5 },
-  countText: { fontFamily: typography.families.ui, fontSize: 8.5, fontWeight: '600', color: 'rgba(255,255,255,0.5)' },
-
+  container: { flex: 1 },
   canvas: { flex: 1 },
   personaContainer: { alignItems: 'center', zIndex: 10 },
   noteBubble: {
     padding: 12,
     borderRadius: 20,
     borderWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.15)',
     width: 160,
     marginBottom: 10,
     flexDirection: 'row',
@@ -241,13 +188,13 @@ const styles = StyleSheet.create({
   noteBar: { flexDirection: 'row', alignItems: 'center', padding: 8, borderRadius: 999, borderWidth: 1 },
   miniAvatar: { width: 34, height: 34, borderRadius: 17, borderWidth: 1, justifyContent: 'center', alignItems: 'center' },
   miniAvatarText: { fontSize: 11, fontWeight: '700' },
-  noteInput: { flex: 1, marginLeft: 12, fontSize: 12, fontFamily: typography.families.ui, color: '#fff' },
+  noteInput: { flex: 1, marginLeft: 12, fontSize: 12, fontFamily: typography.families.ui },
   sendBtn: { width: 34, height: 34, borderRadius: 17, justifyContent: 'center', alignItems: 'center' },
 
   sessionControls: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 10 },
   controlBtn: { alignItems: 'center', width: 60 },
   controlIcon: { fontSize: 20, marginBottom: 4 },
-  controlLabel: { fontFamily: typography.families.ui, fontSize: 9, color: 'rgba(255,255,255,0.5)', fontWeight: '600' },
+  controlLabel: { fontFamily: typography.families.ui, fontSize: 9, fontWeight: '600' },
   bloomBtn: { paddingHorizontal: 40, paddingVertical: 14, borderRadius: radii.pill },
   bloomText: { fontFamily: typography.families.ui, fontSize: 13, fontWeight: '700', color: '#fff' },
 });

@@ -13,23 +13,28 @@ interface ButtonProps extends TouchableOpacityProps {
   leftIcon?: React.ReactNode;
 }
 
-export const Button: React.FC<ButtonProps> = ({ 
-  label, 
-  variant = 'brand', 
-  style, 
-  textStyle, 
+import { GlowEffect } from './GlowEffect';
+
+export const Button: React.FC<ButtonProps> = ({
+  label,
+  variant = 'brand',
+  style,
+  textStyle,
   leftIcon,
-  ...props 
+  ...props
 }) => {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const styles = getStyles(colors);
 
+  const showGlow = variant === 'outline' || variant === 'glass';
+
   return (
-    <TouchableOpacity 
-      style={[styles.base, styles[variant], style]} 
+    <TouchableOpacity
+      style={[styles.base, styles[variant], style]}
       activeOpacity={0.88}
       {...props}
     >
+      {showGlow && <GlowEffect style={{ left: '15%', right: '15%' }} />}
       <View style={styles.innerWrapper}>
         {leftIcon}
         <Text style={[styles.textBase, styles[`${variant}Text` as keyof typeof styles], textStyle]}>
@@ -66,10 +71,10 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     elevation: 8,
   },
   brandText: { color: colors.text.primary, fontWeight: '600' },
-  
+
   white: { backgroundColor: colors.text.primary },
   whiteText: { color: colors.background.base, fontWeight: '600' },
-  
+
   outline: {
     backgroundColor: 'transparent',
     borderWidth: 1,

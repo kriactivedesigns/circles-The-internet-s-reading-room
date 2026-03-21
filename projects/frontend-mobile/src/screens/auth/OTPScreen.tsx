@@ -81,7 +81,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     paddingVertical: 36,
     paddingHorizontal: 28,
     borderWidth: 1,
-    borderColor: colors.border.glass,
+    borderColor: colors.border.glassLight,
   },
   backButton: {
     flexDirection: 'row',

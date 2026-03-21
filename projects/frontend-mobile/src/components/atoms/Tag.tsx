@@ -10,16 +10,19 @@ interface TagProps {
   onPress?: () => void;
 }
 
+import { GlowEffect } from './GlowEffect';
+
 export const Tag: React.FC<TagProps> = ({ label, selected = false, onPress }) => {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const styles = getStyles(colors, selected);
 
   return (
-    <TouchableOpacity 
-      style={styles.container} 
-      onPress={onPress} 
+    <TouchableOpacity
+      style={styles.container}
+      onPress={onPress}
       activeOpacity={0.7}
     >
+      <GlowEffect style={{ left: '20%', right: '20%' }} />
       <Text style={styles.text}>{label}</Text>
     </TouchableOpacity>
   );

@@ -16,13 +16,12 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 import { View } from 'react-native';
 import { AmbientBackground } from '../components/atoms/AmbientBackground';
-import { ThemeToggle } from '../components/atoms/ThemeToggle';
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const systemColorScheme = useColorScheme();
 
   // Initialize to 'system' by default so it respects the hardware OS setting!
-  const [mode, setMode] = useState<ThemeMode>('dark');
+  const [mode, setMode] = useState<ThemeMode>('system');
 
   // Derive the active styling boolean by evaluating system preference vs explicit user override
   const isDark = mode === 'system' ? systemColorScheme === 'dark' : mode === 'dark';
@@ -42,7 +41,6 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
       <View style={{ flex: 1, backgroundColor: colors.background.base }}>
         <AmbientBackground />
         {children}
-        <ThemeToggle />
       </View>
     </ThemeContext.Provider>
   );

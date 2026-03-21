@@ -121,7 +121,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     backgroundColor: colors.background.glass,
-    borderColor: colors.border.glass,
+    borderColor: colors.border.glassLight,
     borderWidth: 0.5,
     borderRadius: 9999,
     paddingVertical: 7,

@@ -4,8 +4,8 @@ import Svg, { Path, Circle } from 'react-native-svg';
 import { useTheme } from '../../theme/ThemeContext';
 import { typography } from '../../theme/typography';
 import { useNavigation } from '@react-navigation/native';
-import { Logo } from '../../components/atoms/Logo';
 import { radii } from '../../theme/radii';
+import { GlowEffect } from '../../components/atoms/GlowEffect';
 
 const { width } = Dimensions.get('window');
 
@@ -13,7 +13,7 @@ const Tag: React.FC<{ type: 'active' | 'quiet' | 'root' }> = ({ type }) => {
   const { colors } = useTheme();
   const styles = getTagStyles(colors, type);
   const label = type === 'active' ? 'Active' : type === 'quiet' ? 'Quiet' : 'Planted Root';
-  
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{label}</Text>
@@ -21,10 +21,10 @@ const Tag: React.FC<{ type: 'active' | 'quiet' | 'root' }> = ({ type }) => {
   );
 };
 
-const LobbyCard: React.FC<{ 
-  title: string; 
-  avatars: string[]; 
-  extras?: number; 
+const LobbyCard: React.FC<{
+  title: string;
+  avatars: string[];
+  extras?: number;
   type: 'active' | 'quiet';
   onPress: () => void;
   footerLabel?: string;
@@ -33,50 +33,51 @@ const LobbyCard: React.FC<{
   const isQuiet = type === 'quiet';
 
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       onPress={onPress}
-      activeOpacity={0.8} 
+      activeOpacity={0.8}
       style={[
-        styles.lobbyCard, 
-        { 
-          backgroundColor: colors.background.glass, 
-          borderColor: colors.border.glassDark,
+        styles.lobbyCard,
+        {
+          backgroundColor: colors.background.glass,
+          borderColor: colors.border.glass,
           opacity: isQuiet ? 0.65 : 1
         }
       ]}
     >
+      <GlowEffect />
       <View style={styles.cardHeader}>
         <View style={styles.avatarStack}>
           {avatars.map((initial, i) => (
-            <View 
-              key={i} 
+            <View
+              key={i}
               style={[
-                styles.stackAvatar, 
-                { 
-                  backgroundColor: i % 2 === 0 ? '#1a1a3a' : '#1a3a2a',
+                styles.stackAvatar,
+                {
+                  backgroundColor: i % 2 === 0 ? colors.primary.opacity20 : colors.background.surface,
                   borderColor: colors.background.base,
                   zIndex: 10 - i,
                   marginLeft: i === 0 ? 0 : -8
                 }
               ]}
             >
-              <Text style={[styles.avatarText, { color: i % 2 === 0 ? '#8899ee' : '#55cc88' }]}>{initial}</Text>
+              <Text style={[styles.avatarText, { color: i % 2 === 0 ? colors.primary.base : colors.text.secondary }]}>{initial}</Text>
             </View>
           ))}
           {extras && (
-            <View style={[styles.stackAvatar, { backgroundColor: 'rgba(92,148,233,0.15)', borderColor: colors.background.base, marginLeft: -8 }]}>
+            <View style={[styles.stackAvatar, { backgroundColor: colors.primary.opacity10, borderColor: colors.background.base, marginLeft: -8 }]}>
               <Text style={[styles.avatarText, { color: colors.primary.base, fontSize: 9 }]}>+{extras}</Text>
             </View>
           )}
         </View>
         <Tag type={type} />
       </View>
-      
-      <Text style={[styles.lobbyTitle, { color: '#fff' }]}>{title}</Text>
-      
+
+      <Text style={[styles.lobbyTitle, { color: colors.text.primary }]}>{title}</Text>
+
       {footerLabel && (
-        <View style={[styles.cardFooterChip, { backgroundColor: isDark ? 'rgba(12,14,20,0.90)' : 'rgba(255,255,255,0.8)' }]}>
-          <Text style={styles.footerText}>{footerLabel}</Text>
+        <View style={[styles.cardFooterChip, { backgroundColor: colors.background.glass, borderColor: colors.border.glass }]}>
+          <Text style={[styles.footerText, { color: colors.text.secondary }]}>{footerLabel}</Text>
         </View>
       )}
     </TouchableOpacity>
@@ -86,22 +87,23 @@ const LobbyCard: React.FC<{
 const RootCard: React.FC<{ title: string; lastActive: string; onPress: () => void }> = ({ title, lastActive, onPress }) => {
   const { colors } = useTheme();
   return (
-    <TouchableOpacity 
+    <TouchableOpacity
       onPress={onPress}
-      activeOpacity={0.8} 
-      style={[styles.lobbyCard, { backgroundColor: colors.background.glass, borderColor: colors.border.glassDark, opacity: 0.6 }]}
+      activeOpacity={0.8}
+      style={[styles.lobbyCard, { backgroundColor: colors.background.glass, borderColor: colors.border.glass, opacity: 0.6 }]}
     >
+      <GlowEffect />
       <View style={styles.cardHeader}>
-        <View style={[styles.rootIcon, { backgroundColor: 'rgba(16,185,129,0.12)', borderColor: 'rgba(16,185,129,0.25)' }]}>
-           <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" strokeWidth="2">
-             <Path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101" />
-             <Path d="M14.172 13.828a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
-           </Svg>
+        <View style={[styles.rootIcon, { backgroundColor: colors.status.success + '12', borderColor: colors.status.success + '25' }]}>
+          <Svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={colors.status.success} strokeWidth="2">
+            <Path d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101" />
+            <Path d="M14.172 13.828a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+          </Svg>
         </View>
         <Tag type="root" />
       </View>
-      <Text style={[styles.lobbyTitle, { color: '#fff', marginBottom: 4 }]}>{title}</Text>
-      <Text style={styles.lastActiveText}>{lastActive}</Text>
+      <Text style={[styles.lobbyTitle, { color: colors.text.primary, marginBottom: 4 }]}>{title}</Text>
+      <Text style={[styles.lastActiveText, { color: colors.text.muted }]}>{lastActive}</Text>
     </TouchableOpacity>
   );
 };
@@ -112,32 +114,16 @@ export const OrbitScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      {/* ── Header ── */}
-      <View style={[styles.header, { backgroundColor: isDark ? 'rgba(5,7,10,0.8)' : 'rgba(242,244,247,0.8)' }]}>
-        <View style={styles.wordmarkRow}>
-          <Logo variant="nav" />
-          <Text style={[styles.wordmark, { color: '#fff' }]}>circles</Text>
-        </View>
-        
-        <TouchableOpacity style={[styles.personaChip, { borderColor: colors.border.glassLight }]}>
-          <View style={styles.pcDot} />
-          <View style={[styles.pcAvatar, { backgroundColor: '#1a3060' }]}>
-            <Text style={[styles.pcAvatarText, { color: colors.primary.base }]}>A</Text>
-          </View>
-          <Text style={[styles.pcAlias, { color: '#fff' }]}>Alex_UX</Text>
-        </TouchableOpacity>
-      </View>
-
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.onboardingHeader}>
-           <Text style={[styles.screenTitle, { color: '#fff' }]}>Your Orbit</Text>
-           <Text style={styles.onlineCount}>
-             <Text style={{ color: colors.primary.base, fontWeight: '700' }}>124</Text> matching personas online
-           </Text>
+          <Text style={[styles.screenTitle, { color: colors.text.primary }]}>Your Orbit</Text>
+          <Text style={[styles.onlineCount, { color: colors.text.muted }]}>
+            <Text style={{ color: colors.primary.base, fontWeight: '700' }}>124</Text> matching personas online
+          </Text>
         </View>
 
         <View style={styles.lobbyGrid}>
-          <LobbyCard 
+          <LobbyCard
             type="active"
             title="SaaS Scaling & UI Architecture"
             avatars={['A', 'B', 'C']}
@@ -146,14 +132,14 @@ export const OrbitScreen: React.FC = () => {
             onPress={() => navigation.navigate('Sandbox')}
           />
 
-          <LobbyCard 
+          <LobbyCard
             type="quiet"
             title="Indie Publishing & Long-form Writing"
             avatars={['D', 'E']}
-            onPress={() => {}}
+            onPress={() => { }}
           />
 
-          <RootCard 
+          <RootCard
             title="Indie Hackers Kerala"
             lastActive="Last active 2 days ago"
             onPress={() => navigation.navigate('Sandbox')}
@@ -187,39 +173,6 @@ const getTagStyles = (colors: any, type: string) => StyleSheet.create({
 
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  header: {
-    paddingTop: 44,
-    height: 100,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    zIndex: 40,
-    borderBottomWidth: 0.5,
-    borderColor: 'rgba(255,255,255,0.07)',
-  },
-  wordmarkRow: { flexDirection: 'row', alignItems: 'center', gap: 8 },
-  wordmark: {
-    fontFamily: typography.families.ui,
-    fontSize: 13,
-    fontWeight: '700',
-    letterSpacing: 2.5,
-  },
-  personaChip: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingLeft: 6,
-    paddingRight: 10,
-    paddingVertical: 4,
-    borderRadius: 9999,
-    borderWidth: 0.5,
-    backgroundColor: 'rgba(12,14,20,0.9)',
-  },
-  pcDot: { width: 5, height: 5, borderRadius: 2.5, backgroundColor: '#5C94E9', marginRight: 6 },
-  pcAvatar: { width: 22, height: 22, borderRadius: 11, justifyContent: 'center', alignItems: 'center' },
-  pcAvatarText: { fontSize: 8.5, fontWeight: '700' },
-  pcAlias: { marginLeft: 6, fontSize: 8.5, fontWeight: '500' },
-
   scrollContent: { paddingHorizontal: 16, paddingTop: 24 },
   onboardingHeader: { marginBottom: 20 },
   screenTitle: { fontFamily: typography.families.ui, fontSize: 20, fontWeight: '700', marginBottom: 4 },
@@ -235,9 +188,9 @@ const styles = StyleSheet.create({
   avatarStack: { flexDirection: 'row', alignItems: 'center' },
   stackAvatar: { width: 32, height: 32, borderRadius: 16, borderWidth: 2, justifyContent: 'center', alignItems: 'center' },
   avatarText: { fontFamily: typography.families.ui, fontSize: 11, fontWeight: '700' },
-  
+
   lobbyTitle: { fontFamily: typography.families.ui, fontSize: 15, fontWeight: '600', lineHeight: 20 },
-  cardFooterChip: { 
+  cardFooterChip: {
     alignSelf: 'flex-start',
     marginTop: 10,
     paddingHorizontal: 10,
@@ -247,14 +200,14 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.12)',
   },
   footerText: { fontFamily: typography.families.ui, fontSize: 8.5, color: 'rgba(255,255,255,0.55)' },
-  
-  rootIcon: { 
-    width: 32, 
-    height: 32, 
-    borderRadius: 16, 
-    borderWidth: 1, 
-    justifyContent: 'center', 
-    alignItems: 'center' 
+
+  rootIcon: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    borderWidth: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   lastActiveText: { fontFamily: typography.families.ui, fontSize: 9, color: 'rgba(255,255,255,0.35)' },
 });

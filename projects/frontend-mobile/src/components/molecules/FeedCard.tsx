@@ -6,6 +6,7 @@ import { Colors } from '../../theme/colors';
 import { typography } from '../../theme/typography';
 import { Tag } from '../atoms/Tag';
 import { Button } from '../atoms/Button';
+import { GlowEffect } from '../atoms/GlowEffect';
 
 interface FeedCardProps {
   type: 'article' | 'book' | 'stage';
@@ -19,26 +20,27 @@ interface FeedCardProps {
 }
 
 export const FeedCard: React.FC<FeedCardProps> = ({ type, title, subtitle, description, tag, author, time, initial }) => {
-  const { colors } = useTheme();
+  const { colors, isDark } = useTheme();
   const styles = getStyles(colors);
 
   if (type === 'article') {
     return (
       <View style={styles.card}>
-        <View style={styles.imagePlaceholder}>
-          <View style={[styles.avatarFixed, { backgroundColor: '#1a2a3a' }]}>
-            <Text style={[styles.avatarText, { color: '#8899ee' }]}>?</Text>
+        <GlowEffect />
+        <View style={[styles.imagePlaceholder, { backgroundColor: colors.background.base }]}>
+          <View style={[styles.avatarFixed, { backgroundColor: colors.primary.opacity20 }]}>
+            <Text style={[styles.avatarText, { color: colors.primary.base }]}>?</Text>
           </View>
           <View style={styles.overlay}>
-             <Tag label={tag || "Deep Read"} selected />
+            <Tag label={tag || "Deep Read"} selected />
           </View>
           <View style={styles.bottomOverlay}>
-             <View style={styles.authorRow}>
-                <View style={[styles.miniAvatar, { backgroundColor: '#1a3a5c' }]}>
-                   <Text style={[styles.miniAvatarText, { color: '#7db3f0' }]}>{initial || 'K'}</Text>
-                </View>
-                <Text style={styles.authorName}>{author || 'Kevin Rose · UX Weekly'}</Text>
-             </View>
+            <View style={styles.authorRow}>
+              <View style={[styles.miniAvatar, { backgroundColor: colors.primary.opacity20, borderColor: colors.primary.base + '40' }]}>
+                <Text style={[styles.miniAvatarText, { color: colors.primary.base }]}>{initial || 'K'}</Text>
+              </View>
+              <Text style={styles.authorName}>{author || 'Kevin Rose · UX Weekly'}</Text>
+            </View>
           </View>
         </View>
         <View style={styles.content}>
@@ -57,9 +59,10 @@ export const FeedCard: React.FC<FeedCardProps> = ({ type, title, subtitle, descr
   if (type === 'book') {
     return (
       <View style={[styles.card, styles.bookCard]}>
-        <View style={styles.bookCover}>
-          <View style={[styles.avatarFixed, { backgroundColor: '#1a2a3a' }]}>
-             <Text style={[styles.avatarText, { color: '#8899ee' }]}>?</Text>
+        <GlowEffect />
+        <View style={[styles.bookCover, { backgroundColor: colors.primary.opacity10 }]}>
+          <View style={[styles.avatarFixed, { backgroundColor: colors.primary.opacity20 }]}>
+            <Text style={[styles.avatarText, { color: colors.primary.base }]}>?</Text>
           </View>
         </View>
         <View style={styles.bookContent}>
@@ -83,28 +86,29 @@ export const FeedCard: React.FC<FeedCardProps> = ({ type, title, subtitle, descr
 
   // Stage Card
   return (
-    <View style={[styles.card, { borderColor: 'rgba(92,148,233,0.18)', padding: 18 }]}>
+    <View style={[styles.card, { padding: 18 }]}>
+      <GlowEffect />
       <View style={styles.stageHeader}>
-        <View style={styles.livePulse} />
+        <View style={[styles.livePulse, { backgroundColor: colors.primary.base }]} />
         <Text style={styles.stageBadge}>Upcoming Stage</Text>
-        <View style={styles.freeBadge}>
-           <Text style={styles.freeText}>Free</Text>
+        <View style={[styles.freeBadge, { backgroundColor: colors.background.glass }]}>
+          <Text style={styles.freeText}>Free</Text>
         </View>
       </View>
       <Text style={[styles.title, { marginBottom: 5 }]}>{title}</Text>
       <Text style={[styles.description, { marginBottom: 12 }]}>{description}</Text>
-      <View style={styles.hostPill}>
+      <View style={[styles.hostPill, { backgroundColor: colors.background.glass, borderColor: colors.border.glass }]}>
         <View style={styles.hostProfile}>
-          <View style={[styles.miniAvatar, { backgroundColor: '#0d1e38', borderColor: 'rgba(92,148,233,0.40)' }]}>
-             <Text style={[styles.miniAvatarText, { color: '#5C94E9' }]}>{initial || 'V'}</Text>
+          <View style={[styles.miniAvatar, { backgroundColor: colors.primary.opacity20, borderColor: colors.primary.base + '40' }]}>
+            <Text style={[styles.miniAvatarText, { color: colors.primary.base }]}>{initial || 'V'}</Text>
           </View>
           <Text style={styles.hostName}>{author || 'Vercel Team'}</Text>
         </View>
         <Text style={styles.stageTime}>{time || 'Tonight, 8 PM'}</Text>
       </View>
-      <Button 
-        label="Reserve Your Seat" 
-        variant="brand" 
+      <Button
+        label="Reserve Your Seat"
+        variant="brand"
         style={{ width: '100%' }}
       />
     </View>
@@ -122,7 +126,6 @@ const getStyles = (colors: Colors) => StyleSheet.create({
   },
   imagePlaceholder: {
     height: 180,
-    backgroundColor: '#05070A',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -161,7 +164,6 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: 'rgba(92, 148, 233, 0.5)',
   },
   miniAvatarText: {
     fontFamily: typography.families.ui,
@@ -171,7 +173,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
   authorName: {
     fontSize: 10,
     fontWeight: '600',
-    color: 'rgba(255, 255, 255, 0.85)',
+    color: colors.text.secondary,
   },
   content: {
     padding: 16,
@@ -190,12 +192,12 @@ const getStyles = (colors: Colors) => StyleSheet.create({
   },
   dot: {
     fontSize: 9,
-    color: 'rgba(255, 255, 255, 0.25)',
+    color: colors.text.muted,
   },
   metaInfo: {
     fontSize: 9.5,
     fontWeight: '500',
-    color: 'rgba(255, 255, 255, 0.50)',
+    color: colors.text.secondary,
   },
   title: {
     fontFamily: typography.families.ui,
@@ -216,7 +218,6 @@ const getStyles = (colors: Colors) => StyleSheet.create({
   },
   bookCover: {
     width: 110,
-    backgroundColor: '#0d1e38',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -241,26 +242,21 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     marginTop: 4,
   },
   glassBtn: {
-    backgroundColor: colors.background.glass,
     borderWidth: 1,
-    borderColor: colors.border.glass,
     paddingVertical: 7,
     paddingHorizontal: 12,
     borderRadius: 8,
   },
   glassBtnText: {
-    color: colors.text.primary,
     fontSize: 10,
     fontWeight: '600',
   },
   brandBtn: {
-    backgroundColor: colors.primary.base,
     paddingVertical: 7,
     paddingHorizontal: 12,
     borderRadius: 8,
   },
   brandBtnText: {
-    color: '#fff',
     fontSize: 10,
     fontWeight: '600',
   },
@@ -274,33 +270,26 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: colors.primary.base,
   },
   stageBadge: {
     fontSize: 8.5,
     fontWeight: '700',
-    color: colors.primary.base,
     textTransform: 'uppercase',
     letterSpacing: 1.5,
   },
   freeBadge: {
     marginLeft: 'auto',
-    backgroundColor: 'rgba(255,255,255,0.05)',
     paddingHorizontal: 8,
     paddingVertical: 2,
     borderRadius: 4,
   },
   freeText: {
     fontSize: 7.5,
-    color: colors.text.secondary,
   },
   hostPill: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    backgroundColor: 'rgba(255, 255, 255, 0.04)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.07)',
     borderRadius: 12,
     padding: 9,
     marginBottom: 13,
@@ -313,15 +302,12 @@ const getStyles = (colors: Colors) => StyleSheet.create({
   hostName: {
     fontSize: 10.5,
     fontWeight: '500',
-    color: colors.text.primary,
   },
   stageTime: {
     fontSize: 10,
     fontWeight: '600',
-    color: colors.primary.base,
   },
   brandBtnLarge: {
-    backgroundColor: colors.primary.base,
     padding: 11,
     borderRadius: 12,
     alignItems: 'center',
