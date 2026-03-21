@@ -68,7 +68,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
   safeArea: {
     flex: 1,
     zIndex: 10,
-    backgroundColor: colors.background.base,
+    backgroundColor: 'transparent',
   },
   mainContainer: {
     flex: 1,

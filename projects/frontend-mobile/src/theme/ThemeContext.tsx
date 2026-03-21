@@ -14,6 +14,10 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
+import { View } from 'react-native';
+import { AmbientBackground } from '../components/atoms/AmbientBackground';
+import { ThemeToggle } from '../components/atoms/ThemeToggle';
+
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const systemColorScheme = useColorScheme();
 
@@ -35,7 +39,11 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
 
   return (
     <ThemeContext.Provider value={{ mode, setMode, isDark, colors, toggleTheme }}>
-      {children}
+      <View style={{ flex: 1, backgroundColor: colors.background.base }}>
+        <AmbientBackground />
+        {children}
+        <ThemeToggle />
+      </View>
     </ThemeContext.Provider>
   );
 };

@@ -1,14 +1,15 @@
-import { SignInScreen } from './src/screens/auth/SignInScreen';
+import { SplashScreen } from './src/screens/auth/SplashScreen';
+import { FeedWallScreen } from './src/screens/feed/FeedWallScreen';
 import { ThemeProvider } from './src/theme/ThemeContext';
-import { 
-  useFonts, 
+import {
+  useFonts,
   Montserrat_300Light,
   Montserrat_400Regular,
   Montserrat_500Medium,
   Montserrat_600SemiBold,
   Montserrat_700Bold
 } from '@expo-google-fonts/montserrat';
-import { 
+import {
   Raleway_300Light,
   Raleway_400Regular,
   Raleway_600SemiBold,
@@ -34,7 +35,7 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <SignInScreen />
+      <FeedWallScreen />
     </ThemeProvider>
   );
 }

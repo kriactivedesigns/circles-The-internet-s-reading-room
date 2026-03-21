@@ -4,12 +4,13 @@ import { useTheme } from '../../theme/ThemeContext';
 import { Colors } from '../../theme/colors';
 
 interface LogoProps {
-  variant?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'signIn';
+  variant?: 'xs' | 'sm' | 'nav' | 'md' | 'lg' | 'xl' | 'signIn';
 }
 
 const LOGO_SIZES = {
   xs: { size: 20, inset1: 3, inset2: 6, dotSize: 3, stroke: 0.6 },
   sm: { size: 32, inset1: 4, inset2: 9, dotSize: 5, stroke: 0.8 },
+  nav: { size: 27, inset1: 4, inset2: 8, dotSize: 4.5, stroke: 0.8 },
   md: { size: 48, inset1: 6, inset2: 13, dotSize: 7, stroke: 0.9 },
   signIn: { size: 56, inset1: 8, inset2: 18, dotSize: 8, stroke: 1.0 },
   lg: { size: 72, inset1: 9, inset2: 20, dotSize: 10, stroke: 1.0 },
