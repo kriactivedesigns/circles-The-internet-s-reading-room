@@ -8,10 +8,10 @@ import { BottomNav } from '../../components/molecules/BottomNav';
 import { FeedCard } from '../../components/molecules/FeedCard';
 import { Logo } from '../../components/atoms/Logo';
 
-export const FeedWallScreen: React.FC = () => {
+export const FeedWallScreen: React.FC<{ route: any }> = ({ route }) => {
   const { colors, isDark } = useTheme();
   const styles = getStyles(colors);
-  const scrollY = useRef(new Animated.Value(0)).current;
+  const scrollY = route.params?.scrollY || new Animated.Value(0);
 
   const onScroll = Animated.event(
     [{ nativeEvent: { contentOffset: { y: scrollY } } }],
@@ -96,8 +96,6 @@ export const FeedWallScreen: React.FC = () => {
           <View style={{ height: 100 }} />
         </Animated.ScrollView>
       </SafeAreaView>
-
-      <BottomNav scrollValue={scrollY} />
     </View>
   );
 };

@@ -56,10 +56,10 @@ const Particle: React.FC<{ x: number, y: number, delay: number }> = ({ x, y, del
       transform: [{ translateY }],
       opacity
     }}>
-      <View style={{ 
-        width: isDark ? 2 : 2.5, 
-        height: isDark ? 2 : 2.5, 
-        borderRadius: 2, 
+      <View style={{
+        width: isDark ? 2 : 2.5,
+        height: isDark ? 2 : 2.5,
+        borderRadius: 2,
         backgroundColor: colors.primary.base,
         shadowColor: colors.primary.base,
         shadowOpacity: isDark ? 0.5 : 0.2,
@@ -94,34 +94,11 @@ export const AmbientBackground: React.FC = () => {
   return (
     <View style={styles.container} pointerEvents="none">
       {/* 🎭 Image-Based Smooth Backdrop (Guaranteed 0% Banding) */}
-      <Image 
-        source={isDark ? DARK_GLOW : LIGHT_GLOW} 
-        style={StyleSheet.absoluteFill} 
+      <Image
+        source={isDark ? DARK_GLOW : LIGHT_GLOW}
+        style={StyleSheet.absoluteFill}
         resizeMode="cover"
       />
-
-      {/* 🕸️ Mesh Layer */}
-      <Svg width={width} height={height} style={StyleSheet.absoluteFill}>
-        <G opacity={isDark ? 0.12 : 0.08}>
-          {Array.from({ length: COLS }).map((_, i) => (
-            <Path
-              key={`v-line-${i}`}
-              d={`M ${i * colStep} 0 L ${i * colStep} ${height}`}
-              stroke={colors.primary.base}
-              strokeWidth="0.6"
-            />
-          ))}
-          {Array.from({ length: ROWS }).map((_, i) => (
-            <Path
-              key={`h-line-${i}`}
-              d={`M 0 ${i * rowStep} L ${width} ${i * rowStep}`}
-              stroke={colors.primary.base}
-              strokeWidth="0.6"
-            />
-          ))}
-        </G>
-      </Svg>
-
       <View style={StyleSheet.absoluteFill}>
         {particles}
       </View>

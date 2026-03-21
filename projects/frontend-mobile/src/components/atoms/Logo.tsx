@@ -20,9 +20,9 @@ const LOGO_SIZES = {
 export const Logo: React.FC<LogoProps> = ({ variant = 'xl' }) => {
   const { colors } = useTheme();
   const styles = getStyles(colors);
-  
+
   const specs = LOGO_SIZES[variant];
-  const ring1Size = specs.size - (specs.inset1 * 2); 
+  const ring1Size = specs.size - (specs.inset1 * 2);
   const ring2Size = specs.size - (specs.inset2 * 2);
 
   const ripple1 = useRef(new Animated.Value(0)).current;
@@ -59,10 +59,10 @@ export const Logo: React.FC<LogoProps> = ({ variant = 'xl' }) => {
   return (
     <View style={[styles.container, { width: specs.size, height: specs.size }]}>
       <View style={[styles.ring, { width: specs.size, height: specs.size, borderWidth: specs.stroke, opacity: 0.3 }]} />
-      
+
       <Animated.View style={[styles.ring, { borderWidth: specs.stroke }, getRippleStyle(ripple1, ring1Size)]} />
       <Animated.View style={[styles.ring, { borderWidth: specs.stroke }, getRippleStyle(ripple2, ring2Size)]} />
-      
+
       <View style={[styles.dot, { width: specs.dotSize, height: specs.dotSize, shadowRadius: specs.dotSize }]} />
     </View>
   );
