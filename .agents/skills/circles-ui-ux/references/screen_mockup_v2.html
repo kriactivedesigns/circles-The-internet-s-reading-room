@@ -1,0 +1,2173 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>circles — UI/UX Mockup v2.0</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      fontFamily: { sans: ['Montserrat', 'system-ui', 'sans-serif'] },
+      colors: {
+        primary: '#5C94E9',
+        dark:  { bg: '#05070A', surface: '#121212' },
+        light: { bg: '#F2F4F7', surface: '#FAFAFA' },
+      },
+      animation: {
+        'float-slow':    'float 6s ease-in-out infinite',
+        'float-delayed': 'float 6s ease-in-out 3s infinite',
+        'pulse-glow':    'pulse-glow 2s cubic-bezier(0.4,0,0.6,1) infinite',
+        'wave':          'wave 0.8s ease-in-out infinite',
+      },
+      keyframes: {
+        float:       { '0%,100%': { transform:'translateY(0)' },      '50%': { transform:'translateY(-10px)' } },
+        'pulse-glow':{ '0%,100%': { opacity:'1',   boxShadow:'0 0 15px rgba(92,148,233,0.5)' }, '50%': { opacity:'0.7', boxShadow:'0 0 30px rgba(92,148,233,0.8)' } },
+        wave:        { '0%,100%': { height:'6px' }, '50%': { height:'22px' } },
+      },
+    }
+  }
+}
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* ── Base ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Montserrat',system-ui,sans-serif;background:#030509;color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 24px 80px;gap:0;overflow-x:hidden}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:rgba(92,148,233,0.25);border-radius:10px}
+
+/* ── Presenter UI ── */
+.presenter{position:fixed;top:0;left:0;right:0;z-index:200;background:rgba(3,5,9,0.92);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:52px}
+.presenter-left{display:flex;align-items:center;gap:12px}
+.p-logo{display:flex;align-items:center;gap:8px}
+.p-logomark{position:relative;width:22px;height:22px;display:flex;align-items:center;justify-content:center}
+.p-logomark .r-out{position:absolute;inset:0;border-radius:50%;border:1px solid #5C94E9;opacity:0.3}
+.p-logomark .r-1{position:absolute;inset:3px;border-radius:50%;border:0.8px solid #5C94E9;animation:ripple 3s cubic-bezier(.25,1,.5,1) infinite}
+.p-logomark .r-2{position:absolute;inset:7px;border-radius:50%;border:0.8px solid #5C94E9;animation:ripple 3s cubic-bezier(.25,1,.5,1) 1.5s infinite}
+.p-logomark .r-dot{width:4px;height:4px;border-radius:50%;background:#5C94E9;box-shadow:0 0 6px #5C94E9}
+.p-title{font-size:12px;font-weight:600;letter-spacing:2px;color:#fff}
+.p-badge{font-size:9px;font-weight:600;color:#5C94E9;background:rgba(92,148,233,0.10);border:0.5px solid rgba(92,148,233,0.25);border-radius:20px;padding:2px 8px}
+.p-nav{display:flex;gap:2px}
+.p-btn{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;color:rgba(255,255,255,0.50);background:none;border:none;cursor:pointer;padding:5px 10px;border-radius:6px;transition:all .15s;white-space:nowrap}
+.p-btn:hover{color:#fff;background:rgba(255,255,255,0.07)}
+.p-btn.active{color:#5C94E9;background:rgba(92,148,233,0.10)}
+.p-controls{display:flex;gap:8px}
+.p-ctrl{font-family:'Montserrat',sans-serif;font-size:10px;font-weight:500;padding:5px 14px;border-radius:20px;cursor:pointer;transition:all .2s;border:none}
+.p-ctrl-prev{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.10);color:rgba(255,255,255,0.65)}
+.p-ctrl-prev:hover{background:rgba(255,255,255,0.12);color:#fff}
+.p-ctrl-next{background:#5C94E9;color:#fff}
+.p-ctrl-next:hover{opacity:.88}
+.p-counter{font-size:10px;font-weight:500;color:rgba(255,255,255,0.35);align-self:center}
+
+/* ── Stage grid (all phones side by side in overview) ── */
+.stage-grid{display:none;flex-wrap:wrap;gap:24px;justify-content:center;padding-top:72px;width:100%}
+.stage-grid.visible{display:flex}
+.stage-grid .phone-wrapper{display:flex;flex-direction:column;align-items:center;gap:8px}
+.stage-grid .phone-wrapper .screen-id{font-size:8.5px;font-weight:500;color:rgba(255,255,255,0.30);letter-spacing:1px;text-transform:uppercase}
+.stage-grid .phone-wrapper .screen-name{font-size:10px;font-weight:600;color:rgba(255,255,255,0.55)}
+.stage-grid .mini-phone{width:160px;height:346px;border-radius:22px;border:3px solid #1a1a2e;overflow:hidden;position:relative;cursor:pointer;transition:all .2s;flex-shrink:0}
+.stage-grid .mini-phone:hover{border-color:#5C94E9;transform:translateY(-3px);box-shadow:0 12px 32px rgba(92,148,233,0.2)}
+
+/* ── Single screen view ── */
+.single-view{display:flex;flex-direction:column;align-items:center;padding-top:72px;width:100%}
+.single-view.hidden{display:none}
+
+/* ── Phone Frame ── */
+.phone{position:relative;width:390px;height:844px;border-radius:48px;border:8px solid #1a1e2e;background:#05070A;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,0.06),0 40px 80px rgba(0,0,0,0.7),0 0 60px rgba(92,148,233,0.06)}
+.phone-inner{position:relative;width:100%;height:100%;overflow:hidden}
+.phone-inner > div{overflow:hidden}
+
+/* ── Ambient BG ── */
+.amb{position:absolute;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.orb{position:absolute;border-radius:9999px;will-change:transform}
+.o1{top:-10%;left:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(92,148,233,0.20),transparent 70%);filter:blur(80px)}
+.o2{top:60%;left:60%;width:400px;height:400px;background:radial-gradient(circle,rgba(20,100,140,0.10),transparent 70%);filter:blur(100px)}
+
+/* ── Screen base ── */
+.screen{position:absolute;inset:0;z-index:10;display:flex;flex-direction:column;overflow:hidden}
+
+/* ── Glass ── */
+.glass{background:rgba(26,29,36,0.6);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.10);position:relative}
+.glass::after{content:'';position:absolute;top:0;left:12%;right:12%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.5),transparent);pointer-events:none}
+
+/* ── Logo mark (reusable) ── */
+@keyframes ripple{0%{transform:scale(.2);opacity:1}100%{transform:scale(1);opacity:0}}
+.logo-mark{position:relative;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.lm-out{position:absolute;inset:0;border-radius:50%;border:1.2px solid #5C94E9;opacity:.30}
+.lm-r1{position:absolute;border-radius:50%;border:0.9px solid #5C94E9;animation:ripple 3s cubic-bezier(.25,1,.5,1) infinite}
+.lm-r2{position:absolute;border-radius:50%;border:0.9px solid #5C94E9;animation:ripple 3s cubic-bezier(.25,1,.5,1) 1.5s infinite}
+.lm-dot{border-radius:50%;background:#5C94E9;box-shadow:0 0 10px #5C94E9}
+
+/* ── Top Nav (Feed/Orbit/Shelf) ── */
+.top-nav{position:absolute;top:0;left:0;right:0;z-index:40;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(5,7,10,0.80);backdrop-filter:blur(24px);border-bottom:.5px solid rgba(255,255,255,0.07)}
+.nav-wordmark{font-size:13px;font-weight:700;letter-spacing:2.5px;color:#fff;display:flex;align-items:center;gap:8px}
+.persona-chip{display:flex;align-items:center;gap:6px;background:rgba(12,14,20,0.90);backdrop-filter:blur(16px);border:.5px solid rgba(255,255,255,0.18);border-radius:9999px;padding:4px 10px 4px 6px;cursor:pointer}
+.pc-dot{width:5px;height:5px;border-radius:50%;background:#5C94E9}
+.pc-avatar{width:22px;height:22px;border-radius:50%;border:1px solid #5C94E9}
+.pc-alias{font-size:8.5px;font-weight:500;color:#fff}
+
+/* ── Bottom Nav ── */
+.btm-nav{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);z-index:50;background:rgba(26,29,36,0.92);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.10);border-radius:30px;padding:10px 28px;display:flex;align-items:center;gap:32px}
+.nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;background:none;border:none;transition:color .2s}
+.nav-item svg{width:20px;height:20px;stroke-width:2;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.nav-item .nl{font-size:8.5px;font-weight:500}
+.nav-item.on{color:#5C94E9}.nav-item.off{color:rgba(255,255,255,0.30)}
+.nav-dot{width:4px;height:4px;border-radius:50%;background:#5C94E9}
+
+/* ── Scrollable content area ── */
+.scroll-body{flex:1;overflow-y:auto;padding:80px 16px 110px;display:flex;flex-direction:column;gap:14px;position:relative;z-index:10;min-height:0}
+.scroll-body::-webkit-scrollbar{width:3px}
+
+/* ── Feed card ── */
+.f-card{border-radius:24px;background:rgba(26,29,36,0.58);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.09);overflow:hidden;position:relative;flex-shrink:0}
+.f-card::after{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.40),transparent);pointer-events:none}
+
+/* ── Tag ── */
+.tag{display:inline-block;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;padding:3px 10px;border-radius:9999px}
+.tag-p{background:rgba(92,148,233,0.12);color:#5C94E9;border:.5px solid rgba(92,148,233,0.30)}
+.tag-w{background:rgba(245,158,11,0.10);color:#F59E0B;border:.5px solid rgba(245,158,11,0.25)}
+.tag-s{background:rgba(16,185,129,0.10);color:#10B981;border:.5px solid rgba(16,185,129,0.25)}
+.tag-e{background:rgba(239,68,68,0.10);color:#EF4444;border:.5px solid rgba(239,68,68,0.25)}
+.tag-g{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.55);border:.5px solid rgba(255,255,255,0.12)}
+
+/* ── Pill button ── */
+.btn{border-radius:9999px;font-family:'Montserrat',sans-serif;cursor:pointer;transition:all .2s;border:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn-brand{background:#5C94E9;color:#fff;font-weight:600;box-shadow:0 0 16px rgba(92,148,233,0.30)}
+.btn-brand:hover{opacity:.88}
+.btn-glass{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);color:#fff;font-weight:500}
+.btn-glass:hover{background:rgba(255,255,255,0.13)}
+.btn-white{background:#fff;color:#0D1F3C;font-weight:600}
+.btn-white:hover{background:#e8f4ff}
+.btn-danger{background:rgba(239,68,68,0.10);border:1px solid rgba(239,68,68,0.28);color:#EF4444;font-weight:500}
+.btn-success{background:rgba(16,185,129,0.10);border:1px solid rgba(16,185,129,0.28);color:#10B981;font-weight:500}
+.btn-outline{background:none;border:1px solid rgba(255,255,255,0.15);color:rgba(255,255,255,0.70);font-weight:500}
+.btn-outline:hover{border-color:rgba(255,255,255,0.30);color:#fff}
+
+/* ── Input ── */
+.inp{width:100%;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.10);border-radius:9999px;padding:13px 20px;color:#fff;font-family:'Montserrat',sans-serif;font-size:10.5px;font-weight:400;outline:none;transition:all .25s}
+.inp::placeholder{color:rgba(255,255,255,0.30)}
+.inp:focus{background:rgba(255,255,255,0.08);border-color:rgba(92,148,233,0.50);box-shadow:0 0 0 4px rgba(92,148,233,0.10)}
+
+/* ── Divider ── */
+.div-row{display:flex;align-items:center;gap:10px}
+.div-row::before,.div-row::after{content:'';flex:1;height:.5px;background:rgba(255,255,255,0.12)}
+.div-row span{font-size:8.5px;font-weight:300;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35)}
+
+/* ── Avatar ── */
+.av{border-radius:50%;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06)}
+.av-pulse{animation:pulse-glow 2s cubic-bezier(.4,0,.6,1) infinite}
+@keyframes pulse-glow{0%,100%{box-shadow:0 0 0 3px rgba(92,148,233,.4),0 0 0 7px rgba(92,148,233,.15)}50%{box-shadow:0 0 0 5px rgba(92,148,233,.6),0 0 0 12px rgba(92,148,233,.08)}}
+
+/* ── Float ── */
+.float-a{animation:floatA 6s ease-in-out infinite}
+.float-b{animation:floatA 6s ease-in-out 3s infinite}
+@keyframes floatA{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* ── Wave bars ── */
+.wb{width:4px;border-radius:3px;background:#5C94E9;animation:waveB .8s ease-in-out infinite}
+.wb:nth-child(1){animation-delay:0s}.wb:nth-child(2){animation-delay:.12s}.wb:nth-child(3){animation-delay:.24s}.wb:nth-child(4){animation-delay:.12s}.wb:nth-child(5){animation-delay:0s}
+@keyframes waveB{0%,100%{height:6px}50%{height:22px}}
+
+/* ── Video Mode Avatars ── */
+.av-video { border-radius: 16px !important; width: 88px !important; height: 88px !important; object-fit: cover; border-color: transparent !important; box-shadow: 0 8px 24px rgba(0,0,0,0.4) !important; }
+.wave-overlay { border-radius: 50%; transition: border-radius 0.4s ease; }
+.wave-video { border-radius: 16px !important; }
+
+/* ── OTP ── */
+.otp-inp{width:54px;height:62px;text-align:center;font-size:22px;font-weight:700;background:rgba(255,255,255,0.06);border:1.5px solid rgba(255,255,255,0.14);border-radius:16px;color:#fff;outline:none;font-family:'Montserrat',sans-serif;transition:all .2s}
+.otp-inp:focus{background:rgba(92,148,233,0.10);border-color:rgba(92,148,233,0.55);box-shadow:0 0 0 4px rgba(92,148,233,0.12)}
+
+/* ── Interest tag selector ── */
+.itag{padding:7px 14px;border-radius:9999px;font-size:10px;font-weight:500;cursor:pointer;transition:all .2s;border:1px solid rgba(255,255,255,0.12);background:rgba(255,255,255,0.04);color:rgba(255,255,255,0.55)}
+.itag.sel{background:rgba(92,148,233,0.15);border-color:rgba(92,148,233,0.45);color:#5C94E9;font-weight:600}
+
+/* ── Stage screen ── */
+.stage-live-dot{width:7px;height:7px;border-radius:50%;background:#EF4444;animation:livepulse 1.2s ease-in-out infinite}
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.3)}}
+
+/* ── Progress dots (onboarding) ── */
+.prog-dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.20);transition:all .3s}
+.prog-dot.on{background:#5C94E9;width:18px;border-radius:3px}
+
+/* ── Screen label below phone ── */
+.screen-label{margin-top:12px;display:flex;flex-direction:column;align-items:center;gap:3px}
+.sl-num{font-size:8.5px;font-weight:500;color:rgba(255,255,255,0.25);letter-spacing:1.5px;text-transform:uppercase}
+.sl-name{font-size:11px;font-weight:600;color:rgba(255,255,255,0.60)}
+
+/* ── Section title (scroll overview) ── */
+.section-header{width:100%;max-width:900px;margin:40px 0 8px;display:flex;align-items:baseline;gap:10px}
+.sh-num{font-size:9px;font-weight:600;color:#5C94E9;letter-spacing:2px;text-transform:uppercase}
+.sh-label{font-size:14px;font-weight:600;color:rgba(255,255,255,0.65)}
+
+/* ══════════════════════════════════════════
+   LIBRARY MODE — Light Theme Overrides
+   Applied via [data-mode=light] on injected screen root
+══════════════════════════════════════════ */
+.phone.lm { border-color:#c8ccd8 !important; background:#F2F4F7 !important;
+  box-shadow:0 0 0 1px rgba(0,0,0,0.06),0 40px 80px rgba(0,0,0,0.18),0 0 40px rgba(92,148,233,0.08) !important; }
+
+/* Base */
+[data-mode=light]                    { background:#F2F4F7; color:#111; }
+[data-mode=light] .amb .o1           { background:radial-gradient(circle,rgba(92,148,233,0.10),transparent 70%) !important; filter:blur(80px); }
+[data-mode=light] .amb .o2           { background:radial-gradient(circle,rgba(92,148,233,0.06),transparent 70%) !important; filter:blur(100px); }
+
+/* Glass cards */
+[data-mode=light] .glass             { background:rgba(255,255,255,0.75) !important; border-color:rgba(0,0,0,0.07) !important; box-shadow:0 2px 16px rgba(0,0,0,0.06) !important; }
+[data-mode=light] .glass::after      { background:linear-gradient(90deg,transparent,rgba(0,0,0,0.07),transparent) !important; }
+
+/* Navigation */
+[data-mode=light] .top-nav           { background:rgba(242,244,247,0.92) !important; border-bottom-color:rgba(0,0,0,0.07) !important; }
+[data-mode=light] .nav-wordmark      { color:#111 !important; }
+[data-mode=light] .persona-chip      { background:rgba(255,255,255,0.90) !important; border-color:rgba(0,0,0,0.10) !important; }
+[data-mode=light] .pc-alias          { color:#111 !important; }
+[data-mode=light] .btm-nav           { background:rgba(255,255,255,0.94) !important; border-color:rgba(0,0,0,0.08) !important; box-shadow:0 4px 24px rgba(0,0,0,0.10) !important; }
+[data-mode=light] .nav-item.off      { color:rgba(0,0,0,0.32) !important; }
+
+/* Feed cards */
+[data-mode=light] .f-card            { background:rgba(255,255,255,0.82) !important; border-color:rgba(0,0,0,0.06) !important; }
+[data-mode=light] .f-card::after     { background:linear-gradient(90deg,transparent,rgba(0,0,0,0.05),transparent) !important; }
+
+/* Tags */
+[data-mode=light] .tag-g             { background:rgba(0,0,0,0.05) !important; color:rgba(0,0,0,0.55) !important; border-color:rgba(0,0,0,0.10) !important; }
+
+/* Buttons */
+[data-mode=light] .btn-glass         { background:rgba(0,0,0,0.05) !important; border-color:rgba(0,0,0,0.12) !important; color:#333 !important; }
+[data-mode=light] .btn-glass:hover   { background:rgba(0,0,0,0.09) !important; }
+[data-mode=light] .btn-outline       { border-color:rgba(0,0,0,0.14) !important; color:#444 !important; }
+[data-mode=light] .btn-outline:hover { border-color:rgba(0,0,0,0.28) !important; color:#111 !important; }
+
+/* Input */
+[data-mode=light] .inp               { background:rgba(255,255,255,0.72) !important; border-color:rgba(0,0,0,0.12) !important; color:#111 !important; }
+[data-mode=light] .inp::placeholder  { color:rgba(0,0,0,0.35) !important; }
+[data-mode=light] .inp:focus         { background:rgba(255,255,255,0.92) !important; }
+
+/* Divider */
+[data-mode=light] .div-row::before,[data-mode=light] .div-row::after { background:rgba(0,0,0,0.12) !important; }
+[data-mode=light] .div-row span      { color:rgba(0,0,0,0.40) !important; }
+
+/* Interest tags */
+[data-mode=light] .itag              { background:rgba(0,0,0,0.04) !important; border-color:rgba(0,0,0,0.10) !important; color:rgba(0,0,0,0.55) !important; }
+[data-mode=light] .itag.sel          { background:rgba(92,148,233,0.12) !important; border-color:rgba(92,148,233,0.40) !important; color:#5C94E9 !important; }
+
+/* OTP */
+[data-mode=light] .otp-inp           { background:rgba(255,255,255,0.80) !important; border-color:rgba(0,0,0,0.12) !important; color:#111 !important; }
+
+/* Progress dots */
+[data-mode=light] .prog-dot          { background:rgba(0,0,0,0.14) !important; }
+
+/* Mode toggle button */
+.mode-toggle { display:flex;align-items:center;gap:5px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:9999px;padding:4px 10px 4px 8px;cursor:pointer;font-family:'Montserrat',sans-serif;font-size:9.5px;font-weight:600;color:rgba(255,255,255,0.70);transition:all .2s;white-space:nowrap; }
+.mode-toggle:hover { background:rgba(255,255,255,0.12);color:#fff; }
+.mode-toggle .mt-icon { font-size:12px;line-height:1; }
+.mode-label { display:flex;align-items:center;gap:4px;margin-left:4px;padding-left:8px;border-left:1px solid rgba(255,255,255,0.12);font-size:8px;font-weight:600;letter-spacing:1px;text-transform:uppercase; }
+.mode-label .ml-dot { width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.30); }
+.mode-label.is-light .ml-dot { background:#F59E0B; }
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     PRESENTER BAR
+══════════════════════════════════════════ -->
+<div class="presenter">
+  <div class="presenter-left">
+    <div class="p-logo">
+      <div class="p-logomark"><div class="r-out"></div><div class="r-1"></div><div class="r-2"></div><div class="r-dot"></div></div>
+      <span class="p-title">circles</span>
+    </div>
+    <span class="p-badge">UI/UX Mockup v1.0</span>
+  </div>
+  <div class="p-nav" id="p-nav">
+    <button class="p-btn" onclick="goTo(0)">Splash</button>
+    <button class="p-btn" onclick="goTo(1)">Read</button>
+    <button class="p-btn" onclick="goTo(2)">Connect</button>
+    <button class="p-btn" onclick="goTo(3)">Protect</button>
+    <button class="p-btn" onclick="goTo(4)">Sign In</button>
+    <button class="p-btn" onclick="goTo(5)">OTP</button>
+    <button class="p-btn" onclick="goTo(6)">Base</button>
+    <button class="p-btn" onclick="goTo(7)">Persona</button>
+    <button class="p-btn" onclick="goTo(8)">Feed</button>
+    <button class="p-btn" onclick="goTo(9)">Orbit</button>
+    <button class="p-btn" onclick="goTo(10)">Sandbox</button>
+    <button class="p-btn" onclick="goTo(11)">Table</button>
+    <button class="p-btn" onclick="goTo(12)">Shelf</button>
+    <button class="p-btn" onclick="goTo(13)">Identity</button>
+    <button class="p-btn" onclick="goTo(14)">Stage</button>
+  </div>
+  <div class="p-controls">
+    <span class="p-counter" id="p-counter">01 / 15</span>
+    <button class="mode-toggle" id="mode-toggle" onclick="toggleMode()">
+      <span class="mt-icon" id="mt-icon">☀️</span>
+      <span id="mt-label">Light</span>
+      <span class="mode-label" id="mode-label"><span class="ml-dot"></span><span id="mode-name">Orbit</span></span>
+    </button>
+    <button class="p-ctrl p-ctrl-prev" onclick="prev()">← Prev</button>
+    <button class="p-ctrl p-ctrl-next" onclick="next()">Next →</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SINGLE SCREEN VIEW
+══════════════════════════════════════════ -->
+<div class="single-view" id="single-view">
+  <div class="phone" id="phone-main">
+    <div class="phone-inner" id="phone-inner">
+      <!-- Screens injected here by JS -->
+    </div>
+  </div>
+  <div class="screen-label">
+    <span class="sl-num" id="sl-num">01 / 15</span>
+    <span class="sl-name" id="sl-name">Splash</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCREEN TEMPLATES (hidden)
+══════════════════════════════════════════ -->
+<div id="screens" style="display:none">
+
+<!-- ═══════ 01 SPLASH ═══════ -->
+<div data-id="0" data-name="Splash">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <div style="position:relative;z-index:10;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 32px;text-align:center;">
+    <!-- Animated logo large -->
+    <div class="logo-mark" style="width:96px;height:96px;margin-bottom:28px;">
+      <div class="lm-out"></div>
+      <div class="lm-r1" style="inset:12px"></div>
+      <div class="lm-r2" style="inset:27px"></div>
+      <div class="lm-dot" style="width:14px;height:14px"></div>
+    </div>
+    <h1 style="font-size:32px;font-weight:300;letter-spacing:5px;color:#fff;margin-bottom:10px;">circles</h1>
+    <p style="font-size:11px;font-weight:300;letter-spacing:2.5px;color:rgba(92,148,233,0.80);margin-bottom:48px;">the internet's reading room.</p>
+    <button class="btn btn-white" style="padding:14px 40px;font-size:12px;margin-bottom:16px;width:100%;">Get Started</button>
+    <button class="btn btn-outline" style="padding:14px 40px;font-size:12px;width:100%;">I already have an account</button>
+    <p style="font-size:9px;font-weight:300;color:rgba(255,255,255,0.25);margin-top:28px;line-height:1.7;">By continuing, you agree to our Terms of Service<br>and Privacy Policy. No data is ever sold.</p>
+  </div>
+  <div style="position:relative;z-index:10;padding-bottom:36px;display:flex;justify-content:center;">
+    <div style="display:flex;align-items:center;gap:6px;background:rgba(12,14,20,0.80);backdrop-filter:blur(16px);border:.5px solid rgba(255,255,255,0.12);border-radius:9999px;padding:7px 14px;">
+      <div style="width:5px;height:5px;border-radius:50%;background:#5C94E9"></div>
+      <span style="font-size:8.5px;font-weight:500;color:rgba(255,255,255,0.55);">CausalSyntax · causalsyntax.com</span>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 02 ONBOARD — READ ═══════ -->
+<div data-id="1" data-name="Onboard — Read">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2" style="background:radial-gradient(circle,rgba(92,148,233,0.08),transparent 70%)"></div></div>
+  <div style="position:relative;z-index:10;flex:1;display:flex;flex-direction:column;padding:56px 28px 32px;">
+    <!-- Illustration: floating article cards -->
+    <div style="flex:1;position:relative;display:flex;align-items:center;justify-content:center;">
+      <div class="float-a" style="position:absolute;top:20px;left:10px;width:220px;background:rgba(26,29,36,0.80);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.10);border-radius:20px;padding:16px;box-shadow:0 20px 40px rgba(0,0,0,0.40);">
+        <div style="height:80px;border-radius:12px;background:linear-gradient(135deg,rgba(92,148,233,0.25),rgba(92,148,233,0.05));margin-bottom:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+          <svg width="28" height="28" fill="none" stroke="rgba(92,148,233,0.60)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:4px;line-height:1.4;">The Death of the Follower Count</div>
+        <div style="display:flex;align-items:center;gap:6px;"><span style="font-size:8px;font-weight:500;color:#5C94E9;">UX Philosophy</span><span style="font-size:8px;color:rgba(255,255,255,0.35);">· 8 min read</span></div>
+      </div>
+      <div class="float-b" style="position:absolute;bottom:30px;right:5px;width:180px;background:rgba(26,29,36,0.70);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:14px;box-shadow:0 16px 32px rgba(0,0,0,0.35);">
+        <div style="display:flex;gap:10px;align-items:flex-start;">
+          <div style="width:44px;height:58px;border-radius:6px;background:linear-gradient(135deg,rgba(92,148,233,0.20),rgba(92,148,233,0.05));flex-shrink:0;"></div>
+          <div><div style="font-size:9.5px;font-weight:600;color:#fff;line-height:1.4;margin-bottom:3px;">The Great Good Place</div><div style="font-size:8px;color:rgba(255,255,255,0.40);">Ray Oldenburg</div></div>
+        </div>
+      </div>
+    </div>
+    <!-- Copy -->
+    <div style="margin-bottom:32px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><div style="width:20px;height:1px;background:rgba(92,148,233,0.50)"></div><span style="font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5C94E9;">Read</span></div>
+      <h2 style="font-size:22px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px;">Your curated reading room.</h2>
+      <p style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.75;">Articles, books, and live events — all precisely matched to your interests. Zero algorithmic noise. Zero vanity metrics.</p>
+    </div>
+    <!-- Progress + CTA -->
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;gap:6px;align-items:center;">
+        <div class="prog-dot on"></div><div class="prog-dot"></div><div class="prog-dot"></div>
+      </div>
+      <button class="btn btn-brand" style="padding:11px 28px;font-size:11px;" onclick="">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 03 ONBOARD — CONNECT ═══════ -->
+<div data-id="2" data-name="Onboard — Connect">
+  <div class="amb"><div class="orb o1" style="background:radial-gradient(circle,rgba(92,148,233,0.18),transparent 70%)"></div><div class="orb o2"></div></div>
+  <div style="position:relative;z-index:10;flex:1;display:flex;flex-direction:column;padding:56px 28px 32px;">
+    <!-- Illustration: floating personas with note bubble -->
+    <div style="flex:1;position:relative;display:flex;align-items:center;justify-content:center;">
+      <div class="float-a" style="position:absolute;top:30px;left:20px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">A</div>
+        <span style="font-size:9px;font-weight:600;color:#fff;background:rgba(12,14,20,0.85);border:.5px solid rgba(255,255,255,0.15);border-radius:9999px;padding:3px 10px;">Alex_UX</span>
+      </div>
+      <!-- Connection arc -->
+      <svg style="position:absolute;top:50px;left:50px;width:200px;height:80px;" viewBox="0 0 200 80">
+        <path d="M 20 60 Q 100 0 180 60" stroke="rgba(92,148,233,0.25)" stroke-width="1" fill="none" stroke-dasharray="4 4"/>
+      </svg>
+      <!-- Note bubble -->
+      <div style="position:absolute;top:55px;left:50%;transform:translateX(-50%);width:160px;background:rgba(26,29,36,0.95);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.12);border-radius:14px 14px 4px 14px;padding:12px 14px;box-shadow:0 12px 32px rgba(0,0,0,0.40);">
+        <p style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.5;font-style:italic;">"Anyone moved from Figma straight to code?"</p>
+        <button class="btn btn-brand" style="width:100%;padding:7px;font-size:9px;margin-top:10px;">Handshake</button>
+      </div>
+      <div class="float-b" style="position:absolute;top:30px;right:20px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+        <div style="width:52px;height:52px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:#34d399;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);animation:avatarPulse 2s cubic-bezier(.4,0,.6,1) infinite;">C</div>
+        <span style="font-size:9px;font-weight:600;color:#5C94E9;background:rgba(92,148,233,0.12);border:.5px solid rgba(92,148,233,0.30);border-radius:9999px;padding:3px 10px;">CodeCrafter</span>
+      </div>
+    </div>
+    <div style="margin-bottom:32px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><div style="width:20px;height:1px;background:rgba(92,148,233,0.50)"></div><span style="font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5C94E9;">Connect</span></div>
+      <h2 style="font-size:22px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px;">Serendipitous, organic conversations.</h2>
+      <p style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.75;">Drop an open note into a Lobby. Handshake. Open a private audio channel. No cold DMs. No unsolicited contact.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;gap:6px;align-items:center;">
+        <div class="prog-dot"></div><div class="prog-dot on"></div><div class="prog-dot"></div>
+      </div>
+      <button class="btn btn-brand" style="padding:11px 28px;font-size:11px;">Next →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 04 ONBOARD — PROTECT ═══════ -->
+<div data-id="3" data-name="Onboard — Protect">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <div style="position:relative;z-index:10;flex:1;display:flex;flex-direction:column;padding:56px 28px 32px;">
+    <!-- Illustration: dual persona cards -->
+    <div style="flex:1;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;">
+      <div class="float-a" style="width:240px;background:rgba(26,29,36,0.80);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.10);border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:12px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">A</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:#fff;">Alex_UX</div>
+          <div style="font-size:9px;font-weight:500;color:#5C94E9;margin-top:2px;">Design · Architecture</div>
+          <div style="font-size:8.5px;font-weight:500;color:rgba(255,255,255,0.30);margin-top:1px;">Active Persona</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div style="height:1px;width:40px;background:rgba(255,255,255,0.08)"></div>
+        <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.20)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <div style="font-size:8px;font-weight:500;color:rgba(255,255,255,0.20);letter-spacing:1px;">Hermetically sealed</div>
+        <div style="height:1px;width:40px;background:rgba(255,255,255,0.08)"></div>
+      </div>
+      <div class="float-b" style="width:240px;background:rgba(26,29,36,0.60);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.07);border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:12px;opacity:0.65;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#2a1a0d;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;color:#c4965a;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.20);filter:grayscale(0.6);">C</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.60);">CoffeeSnob</div>
+          <div style="font-size:9px;font-weight:500;color:rgba(255,255,255,0.30);margin-top:2px;">Culture · Brewing</div>
+          <div style="font-size:8.5px;font-weight:500;color:rgba(255,255,255,0.20);margin-top:1px;">Separate identity</div>
+        </div>
+      </div>
+    </div>
+    <div style="margin-bottom:32px;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><div style="width:20px;height:1px;background:rgba(92,148,233,0.50)"></div><span style="font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5C94E9;">Protect</span></div>
+      <h2 style="font-size:22px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px;">Multiple identities. Zero context collapse.</h2>
+      <p style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.75;">Create isolated Personas for each part of your life. What happens in one Persona is invisible to all others.</p>
+    </div>
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;gap:6px;align-items:center;">
+        <div class="prog-dot"></div><div class="prog-dot"></div><div class="prog-dot on"></div>
+      </div>
+      <button class="btn btn-brand" style="padding:11px 28px;font-size:11px;">Create Account →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 05 SIGN IN ═══════ -->
+<div data-id="4" data-name="Sign In">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <div style="position:relative;z-index:10;flex:1;display:flex;align-items:center;justify-content:center;padding:24px;">
+    <div class="glass" style="width:100%;border-radius:32px;padding:32px 28px;">
+      <div style="display:flex;flex-direction:column;align-items:center;text-align:center;margin-bottom:28px;">
+        <div class="logo-mark" style="width:56px;height:56px;margin-bottom:16px;">
+          <div class="lm-out"></div><div class="lm-r1" style="inset:8px"></div><div class="lm-r2" style="inset:18px"></div><div class="lm-dot" style="width:8px;height:8px"></div>
+        </div>
+        <h1 style="font-size:24px;font-weight:300;letter-spacing:4px;color:#fff;margin-bottom:5px;">circles</h1>
+        <p style="font-size:9px;font-weight:300;letter-spacing:2px;color:rgba(92,148,233,0.80);margin-bottom:18px;">the internet's reading room.</p>
+        <h2 style="font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;">Welcome back.</h2>
+        <p style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.50);line-height:1.6;">No vanity metrics. No noise.<br>Just deep conversations.</p>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:18px;">
+        <input class="inp" type="tel" placeholder="Mobile Number">
+        <button class="btn btn-white" style="width:100%;padding:13px;font-size:11.5px;">Continue</button>
+      </div>
+      <div class="div-row" style="margin-bottom:18px;"><span>or connect with</span></div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <button class="btn btn-glass" style="width:100%;padding:12px;font-size:10px;gap:10px;">
+          <svg width="15" height="15" viewBox="0 0 24 24"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          Continue with Google
+        </button>
+        <button class="btn btn-glass" style="width:100%;padding:12px;font-size:10px;gap:10px;">
+          <svg width="15" height="15" fill="white" viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.19 2.31-.88 3.5-.8 1.53.1 2.75.65 3.58 1.7-3.13 1.93-2.67 5.76.5 7.03-.78 1.83-1.63 3.37-2.66 4.24zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
+          Continue with Apple
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 06 OTP ═══════ -->
+<div data-id="5" data-name="OTP Verification">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <div style="position:relative;z-index:10;flex:1;display:flex;align-items:center;justify-content:center;padding:24px;">
+    <div class="glass" style="width:100%;border-radius:32px;padding:36px 28px;">
+      <button style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.50);display:flex;align-items:center;gap:6px;margin-bottom:28px;font-size:10.5px;font-family:'Montserrat',sans-serif;">
+        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        Back
+      </button>
+      <div style="text-align:center;margin-bottom:32px;">
+        <div style="font-size:32px;margin-bottom:14px;">📲</div>
+        <h2 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:8px;">Verify your number</h2>
+        <p style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.50);line-height:1.6;">We sent a 4-digit code to<br><span style="color:#fff;font-weight:500;">+91 98765 43210</span></p>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;margin-bottom:28px;">
+        <input class="otp-inp" type="text" maxlength="1" value="8">
+        <input class="otp-inp" type="text" maxlength="1" value="4">
+        <input class="otp-inp" type="text" maxlength="1" value="2">
+        <input class="otp-inp" type="text" maxlength="1" placeholder="·">
+      </div>
+      <button class="btn btn-brand" style="width:100%;padding:14px;font-size:11.5px;margin-bottom:16px;">Verify &amp; Enter</button>
+      <p style="text-align:center;font-size:9.5px;color:rgba(255,255,255,0.35);">Didn't get it? <span style="color:#5C94E9;font-weight:500;cursor:pointer;">Resend code</span> (60s)</p>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 07 BASE PROFILE ═══════ -->
+<div data-id="6" data-name="Base Profile">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <div style="position:relative;z-index:10;flex:1;overflow-y:auto;padding:28px 20px 24px;display:flex;flex-direction:column;gap:20px;">
+    <div style="text-align:center;">
+      <div style="display:flex;align-items:center;gap:4px;justify-content:center;margin-bottom:8px;">
+        <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <span style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);">Strictly Private</span>
+      </div>
+      <h2 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;">Set up your Base Profile</h2>
+      <p style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.50);line-height:1.6;">This is your master identity. It remains securely hidden and is never shown to other users.</p>
+    </div>
+
+    <!-- Profile Photo Upload -->
+    <div style="display:flex;justify-content:center;margin-bottom:4px;">
+      <div style="position:relative;">
+        <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px dashed rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <svg width="24" height="24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+        </div>
+        <div style="position:absolute;bottom:0;right:0;width:24px;height:24px;background:#5C94E9;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #05070A;cursor:pointer;">
+          <svg width="12" height="12" fill="white" viewBox="0 0 24 24"><path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Inputs -->
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <div>
+        <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:12px;">Full Name</div>
+        <input class="inp" type="text" placeholder="e.g. Alexandre Smith" value="">
+      </div>
+      <div>
+        <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:12px;">Date of Birth</div>
+        <input class="inp" type="date" value="" style="color-scheme:dark;">
+      </div>
+      <div>
+        <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:12px;">Location</div>
+        <input class="inp" type="text" placeholder="e.g. Bengaluru, India" value="">
+      </div>
+    </div>
+
+    <button class="btn btn-brand" style="width:100%;padding:14px;font-size:12px;font-weight:700;margin-top:auto;" onclick="next()">Continue to Persona →</button>
+  </div>
+</div>
+
+<!-- ═══════ 08 PERSONA CREATE ═══════ -->
+<div data-id="7" data-name="Create Persona">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <div style="position:relative;z-index:10;flex:1;overflow-y:auto;padding:28px 20px 24px;display:flex;flex-direction:column;gap:20px;">
+    <div style="text-align:center;">
+      <div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5C94E9;margin-bottom:8px;">Public Identity</div>
+      <h2 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;">Create your first Persona</h2>
+      <p style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.50);line-height:1.6;">This is how others will see you in a Lobby. You can add more Personas later.</p>
+    </div>
+    <!-- Avatar selection -->
+    <div class="glass" style="border-radius:24px;padding:18px;">
+      <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">Choose avatar</div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <div style="width:48px;height:48px;border-radius:50%;background:#1a1a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#8899ee;flex-shrink:0;border:2.5px solid #5C94E9;box-shadow:0 0 0 4px rgba(92,148,233,0.20);">A</div>
+        <div style="width:48px;height:48px;border-radius:50%;background:#1a3a2a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#55cc88;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.15);opacity:0.6;">B</div>
+        <div style="width:48px;height:48px;border-radius:50%;background:#3a1a2a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#ee6688;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.15);opacity:0.6;">C</div>
+        <div style="width:48px;height:48px;border-radius:50%;background:#2a2a1a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#ddcc55;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.15);opacity:0.6;">D</div>
+        <div style="width:48px;height:48px;border-radius:50%;border:1.5px dashed rgba(255,255,255,0.20);display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.03);">
+          <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+        </div>
+      </div>
+    </div>
+    <!-- Alias -->
+    <div>
+      <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">Persona alias</div>
+      <input class="inp" type="text" placeholder="e.g. Alex_UX, CodeCrafter, InkWalker..." value="Alex_UX">
+    </div>
+    <!-- Interest tags -->
+    <div>
+      <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;">
+        <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;">Interest tags</div>
+        <div style="font-size:8.5px;color:rgba(255,255,255,0.25);">min 2, max 10 · <span style="color:#5C94E9;">3 selected</span></div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:8px;">
+        <span class="itag sel">UX Design</span>
+        <span class="itag sel">Architecture</span>
+        <span class="itag sel">SaaS</span>
+        <span class="itag">AI / ML</span>
+        <span class="itag">Indie Hacking</span>
+        <span class="itag">Writing</span>
+        <span class="itag">Photography</span>
+        <span class="itag">Jazz</span>
+        <span class="itag">Philosophy</span>
+        <span class="itag">Fiction</span>
+        <span class="itag">Climate</span>
+        <span class="itag">Fintech</span>
+      </div>
+    </div>
+    <button class="btn btn-brand" style="width:100%;padding:14px;font-size:12px;font-weight:700;">Enter circles →</button>
+  </div>
+</div>
+
+<!-- ═══════ 08 FEED WALL ═══════ -->
+<div data-id="7" data-name="Feed Wall">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <div class="top-nav">
+    <div class="nav-wordmark">
+      <div class="logo-mark" style="width:24px;height:24px;">
+        <div class="lm-out"></div><div class="lm-r1" style="inset:3px"></div><div class="lm-r2" style="inset:8px"></div><div class="lm-dot" style="width:4px;height:4px"></div>
+      </div>
+      circles
+    </div>
+    <div class="persona-chip">
+      <div class="pc-dot"></div>
+      <div style="width:32px;height:32px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#5C94E9;flex-shrink:0;">A</div>
+      <span class="pc-alias">Alex_UX</span>
+      <div style="width:6px;height:6px;border-radius:50%;background:#EF4444;margin-left:2px;box-shadow:0 0 6px rgba(239,68,68,0.6)"></div>
+    </div>
+  </div>
+
+  <div class="scroll-body">
+    <div style="flex-shrink:0;">
+      <div style="font-size:8.5px;font-weight:600;color:#5C94E9;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">Curated for Alex_UX</div>
+      <div style="font-size:20px;font-weight:700;color:#fff;">Design &amp; Architecture</div>
+    </div>
+
+    <!-- ── ARTICLE CARD ── -->
+    <div class="f-card" style="cursor:pointer;display:flex;flex-direction:column;">
+      <div style="height:180px;overflow:hidden;position:relative;flex-shrink:0;">
+        <div style="width:32px;height:32px;border-radius:50%;background:#1a2a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#8899ee;flex-shrink:0;object-fit:cover;">?</div>
+        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(5,7,10,0.9))"></div>
+        <div style="position:absolute;top:12px;left:12px;"><span class="tag tag-p">Deep Read</span></div>
+        <div style="position:absolute;bottom:12px;left:16px;right:16px;">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <div style="width:20px;height:20px;border-radius:50%;background:#1a3a5c;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:7px;font-weight:700;color:#7db3f0;flex-shrink:0;border:1px solid rgba(92,148,233,0.5);">K</div>
+            <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.85);">Kevin Rose · UX Weekly</span>
+          </div>
+        </div>
+      </div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:9px;font-weight:700;color:#5C94E9;letter-spacing:0.5px;text-transform:uppercase;">UX Philosophy</span>
+          <span style="font-size:9px;color:rgba(255,255,255,0.25);">·</span>
+          <span style="font-size:9.5px;font-weight:500;color:rgba(255,255,255,0.50);">8 min read</span>
+        </div>
+        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.35;">The Death of the Follower Count</div>
+        <p style="font-size:11px;font-weight:400;color:rgba(255,255,255,0.60);line-height:1.65;">As social media pivots away from the broadcast model, highly contextual networks are proving that 15 engaged peers are worth more than 15,000 passive scrollers.</p>
+      </div>
+    </div>
+
+    <!-- ── BOOK SHELF CARD ── -->
+    <div class="f-card" id="fw-book-card" style="display:flex;flex-shrink:0;align-items:stretch;">
+      <div style="width:110px;flex-shrink:0;position:relative;">
+        <div style="width:32px;height:32px;border-radius:50%;background:#1a2a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#8899ee;flex-shrink:0;object-fit:cover;">?</div>
+        <div style="display:none;position:absolute;inset:0;width:100%;height:100%;background:linear-gradient(160deg,#1e3a6e,#0d1e38);align-items:center;justify-content:center;">
+          <svg width="22" height="22" fill="none" stroke="rgba(92,148,233,0.55)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+      </div>
+      <div style="flex:1;padding:16px;display:flex;flex-direction:column;justify-content:center;gap:6px;">
+        <span class="tag tag-p" style="width:max-content;">Book Shelf</span>
+        <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.3;">The Great Good Place</div>
+        <div style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.45);">Ray Oldenburg · Sociology</div>
+        <div id="fw-book-btns" style="display:flex;gap:7px;margin-top:4px;">
+          <button class="btn btn-glass" style="padding:7px 12px;font-size:10px;font-weight:600;" onclick="feedBookShelf(this)">+ Shelf</button>
+          <button class="btn btn-brand" style="padding:7px 12px;font-size:10px;font-weight:600;" onclick="feedBookDetails()">Details</button>
+        </div>
+        <div id="fw-book-bought" style="display:none;margin-top:4px;">
+          <span class="tag tag-s" style="font-size:9.5px;padding:5px 12px;">✓ Added to Shelf</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STAGE CARD ── -->
+    <div class="f-card" style="padding:18px;border-color:rgba(92,148,233,0.18);">
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:11px;">
+        <div style="width:6px;height:6px;border-radius:50%;background:#5C94E9;animation:livepulse 1.2s ease-in-out infinite;flex-shrink:0;"></div>
+        <span style="font-size:8.5px;font-weight:700;color:#5C94E9;text-transform:uppercase;letter-spacing:1.5px;">Upcoming Stage</span>
+        <span style="margin-left:auto;" class="tag tag-w" style="font-size:7.5px;">Free</span>
+      </div>
+      <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:5px;">Micro-SaaS scaling without burnout</div>
+      <p style="font-size:10px;font-weight:300;color:rgba(255,255,255,0.45);line-height:1.6;margin-bottom:12px;">A live session on sustainable SaaS growth — product, distribution, and founder mental health.</p>
+      <div style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:9px 12px;margin-bottom:13px;">
+        <div style="width:26px;height:26px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1px solid rgba(92,148,233,0.40);">V</div>
+        <span style="font-size:10.5px;font-weight:500;color:#fff;flex:1;">Vercel Team</span>
+        <span style="font-size:10px;font-weight:600;color:#5C94E9;white-space:nowrap;">Tonight, 8 PM</span>
+      </div>
+      <button id="fw-stage-rsvp-btn" class="btn btn-brand" style="width:100%;padding:11px;font-size:10.5px;font-weight:600;" onclick="feedStageRSVP()">Reserve Your Seat</button>
+    </div>
+
+    <!-- ── SPONSORED CARD ── -->
+    <div class="f-card" style="padding:16px 18px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span class="tag tag-w">Sponsored</span>
+        <svg width="14" height="14" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2" style="cursor:pointer;" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <div style="width:36px;height:36px;border-radius:10px;background:#1a2a40;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1px solid rgba(92,148,233,0.25);flex-shrink:0;">U</div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:#fff;line-height:1.3;">Advanced UX Research Certification</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.38);margin-top:2px;">UX Academy · 4.8 ★</div>
+        </div>
+      </div>
+      <p style="font-size:10px;font-weight:300;color:rgba(255,255,255,0.50);margin-bottom:13px;line-height:1.65;">Matched to your Design &amp; UX tags. 12-week programme, self-paced. 3,400+ graduates.</p>
+      <button class="btn btn-brand" style="width:100%;padding:10px;font-size:10px;font-weight:600;" onclick="feedSponsoredSchedule()">Schedule a 1-on-1 Circle</button>
+    </div>
+  </div>
+
+  <!-- Bottom nav -->
+  <div class="btm-nav">
+    <button class="nav-item on"><svg stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="nl">Feed</span><div class="nav-dot"></div></button>
+    <button class="nav-item off"><svg stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg><span class="nl">Orbit</span></button>
+    <button class="nav-item off"><svg stroke="currentColor" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg><span class="nl">Shelf</span></button>
+  </div>
+
+  <!-- ══ BOOK DETAILS & BUY MODAL ══ -->
+  <div id="fw-buy-modal" style="display:none;position:absolute;inset:0;z-index:100;background:rgba(5,7,10,0.75);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
+    <div style="width:100%;background:#111827;border-radius:28px 28px 0 0;border-top:1px solid rgba(255,255,255,0.10);padding:24px 22px 36px;display:flex;flex-direction:column;gap:16px;max-height:85%;overflow-y:auto;">
+      <!-- Handle -->
+      <div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,0.18);margin:0 auto 4px;"></div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:52px;height:70px;border-radius:5px;overflow:hidden;flex-shrink:0;box-shadow:4px 4px 12px rgba(0,0,0,0.50);">
+          <div style="width:32px;height:32px;border-radius:50%;background:#1a2a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#8899ee;flex-shrink:0;object-fit:cover;">?</div>
+        </div>
+        <div>
+          <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:3px;">The Great Good Place</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.45);">Ray Oldenburg · Sociology</div>
+          <div style="font-size:11px;font-weight:700;color:#5C94E9;margin-top:5px;">4.8 ★ · 320 pages</div>
+        </div>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,0.07);"></div>
+      
+      <!-- Insights Section -->
+      <div id="fw-book-insights" style="display:flex;flex-direction:column;gap:12px;">
+        <div style="font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;">Book Insights</div>
+        <p style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.6;">
+            Explore the concept of the "third place" — the local pubs, coffee shops, and community centers that form the heart of a community's social vitality, distinct from home (first place) and work (second place).
+        </p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <span class="tag tag-p" style="font-size:8px;">Urban Studies</span>
+            <span class="tag tag-p" style="font-size:8px;">Community</span>
+            <span class="tag tag-p" style="font-size:8px;">Architecture</span>
+        </div>
+        <button class="btn btn-brand" style="width:100%;padding:13px;font-size:11.5px;font-weight:700;margin-top:8px;" onclick="feedInitiateBuy()">Buy Physical Copy · ₹499</button>
+      </div>
+
+      <!-- Payment Section -->
+      <div id="fw-pay-options-container" style="display:none;flex-direction:column;gap:12px;">
+        <div style="font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;margin-bottom:-4px;">Pay with</div>
+        <div id="fw-pay-options" style="display:flex;flex-direction:column;gap:10px;">
+          <button onclick="feedBuySuccess()" style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.10);border-radius:16px;padding:13px 16px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='rgba(92,148,233,0.40)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.10)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="3" stroke="rgba(92,148,233,0.7)" stroke-width="1.5"/><path d="M2 10h20" stroke="rgba(92,148,233,0.7)" stroke-width="1.5"/></svg>
+            <div style="text-align:left;"><div style="font-size:11px;font-weight:600;color:#fff;">Credit / Debit Card</div><div style="font-size:9px;color:rgba(255,255,255,0.35);">Visa, Mastercard, Rupay</div></div>
+            <svg style="margin-left:auto;" width="16" height="16" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+          <button onclick="feedBuySuccess()" style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.10);border-radius:16px;padding:13px 16px;cursor:pointer;transition:all .2s;" onmouseover="this.style.borderColor='rgba(92,148,233,0.40)'" onmouseout="this.style.borderColor='rgba(255,255,255,0.10)'">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="rgba(92,148,233,0.7)" stroke-width="1.5"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="rgba(92,148,233,0.7)" stroke-width="1.5"/></svg>
+            <div style="text-align:left;"><div style="font-size:11px;font-weight:600;color:#fff;">UPI</div><div style="font-size:9px;color:rgba(255,255,255,0.35);">GPay, PhonePe, Paytm</div></div>
+            <svg style="margin-left:auto;" width="16" height="16" fill="none" stroke="rgba(255,255,255,0.30)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+      
+      <!-- Success state (hidden initially) -->
+      <div id="fw-pay-success" style="display:none;flex-direction:column;align-items:center;gap:12px;padding:12px 0;">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(16,185,129,0.15);border:1.5px solid rgba(16,185,129,0.40);display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" fill="none" stroke="#10B981" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;">Purchase Successful!</div>
+          <div style="font-size:10.5px;font-weight:300;color:rgba(255,255,255,0.50);">Added to your Shelf. Ships in 3–5 days.</div>
+        </div>
+        <button onclick="feedBuyDone()" class="btn btn-success" style="width:100%;padding:12px;font-size:11px;font-weight:600;">View in Shelf</button>
+      </div>
+      <button onclick="feedBuyClose()" style="background:none;border:none;color:rgba(255,255,255,0.35);font-family:'Montserrat',sans-serif;font-size:10.5px;cursor:pointer;padding:4px;">Close</button>
+    </div>
+  </div>
+
+  <!-- ══ STAGE RSVP MODAL ══ -->
+  <div id="fw-stage-modal" style="display:none;position:absolute;inset:0;z-index:100;background:rgba(5,7,10,0.75);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
+    <div style="width:100%;background:#111827;border-radius:28px 28px 0 0;border-top:1px solid rgba(255,255,255,0.10);padding:24px 22px 36px;display:flex;flex-direction:column;gap:14px;">
+      <div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,0.18);margin:0 auto 4px;"></div>
+      <div>
+        <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+          <div style="width:6px;height:6px;border-radius:50%;background:#5C94E9;animation:livepulse 1.2s ease-in-out infinite;"></div>
+          <span style="font-size:8.5px;font-weight:700;color:#5C94E9;text-transform:uppercase;letter-spacing:1.5px;">Free Stage · Tonight 8 PM</span>
+        </div>
+        <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:4px;">Micro-SaaS scaling without burnout</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1px solid rgba(92,148,233,0.35);">V</div>
+          <span style="font-size:10.5px;color:rgba(255,255,255,0.60);">Hosted by <span style="color:#fff;font-weight:600;">Vercel Team</span></span>
+        </div>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,0.07);"></div>
+      <!-- Free stage — just confirm -->
+      <div id="fw-stage-free" style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.20);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
+          <svg width="18" height="18" fill="none" stroke="#10B981" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          <span style="font-size:10.5px;font-weight:500;color:#10B981;">This Stage is Free — no payment needed</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:12px 14px;">
+          <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">What to expect</div>
+          <div style="display:flex;flex-direction:column;gap:6px;">
+            <div style="display:flex;align-items:center;gap:8px;font-size:10.5px;color:rgba(255,255,255,0.65);"><svg width="13" height="13" fill="none" stroke="#5C94E9" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>~60 minutes · Audio only</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:10.5px;color:rgba(255,255,255,0.65);"><svg width="13" height="13" fill="none" stroke="#5C94E9" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" d="M8 12h8M12 8v8"/></svg>Stage Sandbox Q&amp;A included</div>
+            <div style="display:flex;align-items:center;gap:8px;font-size:10.5px;color:rgba(255,255,255,0.65);"><svg width="13" height="13" fill="none" stroke="#5C94E9" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.362a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>Replay available after the event</div>
+          </div>
+        </div>
+        <button id="fw-stage-confirm-btn" class="btn btn-brand" style="width:100%;padding:13px;font-size:11.5px;font-weight:700;" onclick="feedStageConfirm()">Confirm My Seat</button>
+      </div>
+      <!-- Confirmed state -->
+      <div id="fw-stage-confirmed" style="display:none;flex-direction:column;align-items:center;gap:12px;padding:8px 0;">
+        <div style="width:56px;height:56px;border-radius:50%;background:rgba(92,148,233,0.12);border:1.5px solid rgba(92,148,233,0.40);display:flex;align-items:center;justify-content:center;">
+          <svg width="24" height="24" fill="none" stroke="#5C94E9" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;">You're in!</div>
+          <div style="font-size:10.5px;font-weight:300;color:rgba(255,255,255,0.50);">We'll remind you 15 minutes before.<br>Stage opens at 8:00 PM tonight.</div>
+        </div>
+        <button onclick="feedStageClose()" class="btn btn-glass" style="width:100%;padding:12px;font-size:11px;">Done</button>
+      </div>
+      <button onclick="feedStageClose()" style="background:none;border:none;color:rgba(255,255,255,0.30);font-family:'Montserrat',sans-serif;font-size:10.5px;cursor:pointer;padding:4px;">Cancel</button>
+    </div>
+  </div>
+
+  <!-- ══ SPONSORED SCHEDULE MODAL ══ -->
+  <div id="fw-sponsor-modal" style="display:none;position:absolute;inset:0;z-index:100;background:rgba(5,7,10,0.75);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
+    <div style="width:100%;background:#111827;border-radius:28px 28px 0 0;border-top:1px solid rgba(255,255,255,0.10);padding:24px 22px 36px;display:flex;flex-direction:column;gap:14px;max-height:90%;overflow-y:auto;">
+      <div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,0.18);margin:0 auto 4px;"></div>
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:44px;height:44px;border-radius:10px;background:#1a2a40;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1px solid rgba(92,148,233,0.25);">U</div>
+        <div>
+          <div style="font-size:14px;font-weight:700;color:#fff;">UX Academy</div>
+          <div style="font-size:9.5px;color:rgba(255,255,255,0.40);margin-top:2px;">Advanced UX Research Certification · Free session</div>
+        </div>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,0.07);"></div>
+      <!-- Calendar -->
+      <div>
+        <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Pick a date — April 2026</div>
+        <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;margin-bottom:6px;">
+          <span style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Su</span><span style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Mo</span><span style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Tu</span><span style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">We</span><span style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Th</span><span style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Fr</span><span style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Sa</span>
+          <span></span><span></span><span></span><span style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">1</span><span style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">2</span><span style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">3</span><span style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">4</span>
+          <span style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">5</span><span style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">6</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;background:rgba(92,148,233,0.15);border:1px solid rgba(92,148,233,0.30);">7</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">8</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">9</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">10</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">11</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">12</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">13</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">14</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;background:rgba(92,148,233,0.20);border:1px solid rgba(92,148,233,0.40);font-weight:600;" id="cal-selected">15</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">16</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">17</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.30);">18</span>
+          <span onclick="calSelect(this)" style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.30);">19</span>
+        </div>
+      </div>
+      <!-- Time slots -->
+      <div>
+        <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">Available slots — Apr 15</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;" id="fw-time-slots">
+          <button onclick="slotSelect(this)" class="btn btn-glass" style="padding:7px 14px;font-size:10px;font-weight:500;">10:00 AM</button>
+          <button onclick="slotSelect(this)" class="btn btn-glass" style="padding:7px 14px;font-size:10px;font-weight:500;">11:00 AM</button>
+          <button onclick="slotSelect(this)" class="btn btn-brand" style="padding:7px 14px;font-size:10px;font-weight:600;" id="slot-selected">2:00 PM</button>
+          <button onclick="slotSelect(this)" class="btn btn-glass" style="padding:7px 14px;font-size:10px;font-weight:500;">4:00 PM</button>
+          <button onclick="slotSelect(this)" class="btn btn-glass" style="padding:7px 14px;font-size:10px;font-weight:500;">6:00 PM</button>
+        </div>
+      </div>
+      <div style="background:rgba(92,148,233,0.07);border:1px solid rgba(92,148,233,0.18);border-radius:14px;padding:11px 14px;">
+        <div style="font-size:9px;color:rgba(255,255,255,0.40);margin-bottom:3px;text-transform:uppercase;letter-spacing:.8px;">Your availability window</div>
+        <div style="font-size:11px;font-weight:600;color:#fff;">Apr 15, 2026 · 2:00 PM IST</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">30-minute 1-on-1 Circle · No personal data shared</div>
+      </div>
+      <button onclick="feedSponsorConfirm()" class="btn btn-brand" style="width:100%;padding:13px;font-size:11.5px;font-weight:700;" id="fw-sponsor-confirm-btn">Confirm Schedule</button>
+      <!-- Confirmed state -->
+      <div id="fw-sponsor-done" style="display:none;flex-direction:column;align-items:center;gap:10px;padding:4px 0;">
+        <div style="width:52px;height:52px;border-radius:50%;background:rgba(92,148,233,0.12);border:1.5px solid rgba(92,148,233,0.40);display:flex;align-items:center;justify-content:center;">
+          <svg width="22" height="22" fill="none" stroke="#5C94E9" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+        </div>
+        <div style="text-align:center;"><div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:3px;">Circle Scheduled!</div><div style="font-size:10px;font-weight:300;color:rgba(255,255,255,0.45);">Apr 15 at 2:00 PM · No PII shared with sponsor.</div></div>
+        <button onclick="feedSponsorClose()" class="btn btn-glass" style="width:100%;padding:11px;font-size:11px;">Done</button>
+      </div>
+      <button onclick="feedSponsorClose()" style="background:none;border:none;color:rgba(255,255,255,0.30);font-family:'Montserrat',sans-serif;font-size:10.5px;cursor:pointer;padding:4px;">Cancel</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════ 09 LOBBY LIST ═══════ -->
+<div data-id="8" data-name="Orbit — Lobby List">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <div class="top-nav">
+    <div class="nav-wordmark">
+      <div class="logo-mark" style="width:24px;height:24px;"><div class="lm-out"></div><div class="lm-r1" style="inset:3px"></div><div class="lm-r2" style="inset:8px"></div><div class="lm-dot" style="width:4px;height:4px"></div></div>
+      circles
+    </div>
+    <div class="persona-chip" style="border-color:rgba(92,148,233,0.35);box-shadow:0 0 0 3px rgba(92,148,233,0.12),0 0 0 6px rgba(92,148,233,0.05);">
+      <div class="pc-dot"></div>
+      <div style="width:32px;height:32px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#5C94E9;flex-shrink:0;">A</div>
+      <span class="pc-alias">Alex_UX</span>
+    </div>
+  </div>
+  <div class="scroll-body">
+    <div>
+      <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;">Your Orbit</div>
+      <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.45);"><span style="color:#5C94E9;font-weight:600;">124</span> matching personas online</div>
+    </div>
+    <!-- Active lobby -->
+    <div class="f-card" style="padding:18px;border-color:rgba(92,148,233,0.15);cursor:pointer;" onclick="goTo(10)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+        <div style="display:flex;margin-left:-4px;">
+          <div style="width:32px;height:32px;border-radius:50%;background:#1a1a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#8899ee;flex-shrink:0;border:2px solid #05070A;">A</div>
+          <div style="width:32px;height:32px;border-radius:50%;background:#1a3a2a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#55cc88;flex-shrink:0;border:2px solid #05070A;margin-left:-8px;">B</div>
+          <div style="width:32px;height:32px;border-radius:50%;background:#3a1a2a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#ee6688;flex-shrink:0;border:2px solid #05070A;margin-left:-8px;">C</div>
+          <div style="width:32px;height:32px;border-radius:50%;border:2px solid #05070A;background:rgba(92,148,233,0.15);display:flex;align-items:center;justify-content:center;margin-left:-8px;font-size:9px;font-weight:700;color:#5C94E9;">+2</div>
+        </div>
+        <span class="tag tag-p">Active</span>
+      </div>
+      <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;">SaaS Scaling &amp; UI Architecture</div>
+      <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(12,14,20,0.90);border:.5px solid rgba(255,255,255,0.12);border-radius:12px;padding:5px 10px;">
+        <span style="font-size:8.5px;color:rgba(255,255,255,0.55);">5 Personas ·</span><span style="font-size:8.5px;font-weight:500;color:#5C94E9;">1 Note dropped</span>
+      </div>
+    </div>
+    <!-- Quiet lobby -->
+    <div class="f-card" style="padding:18px;opacity:0.65;cursor:pointer;">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+        <div style="display:flex;">
+          <div style="width:32px;height:32px;border-radius:50%;background:#2a2a1a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#ddcc55;flex-shrink:0;border:2px solid #05070A;">D</div>
+          <div style="width:32px;height:32px;border-radius:50%;background:#1a2a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#8899ee;flex-shrink:0;border:2px solid #05070A;margin-left:-8px;">E</div>
+        </div>
+        <span class="tag tag-g">Quiet</span>
+      </div>
+      <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;">Indie Publishing &amp; Long-form Writing</div>
+      <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(12,14,20,0.70);border:.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:5px 10px;">
+        <span style="font-size:8.5px;color:rgba(255,255,255,0.40);">2 Personas browsing</span>
+      </div>
+    </div>
+    <!-- Planted root -->
+    <div class="f-card" style="padding:18px;opacity:0.60;cursor:pointer;" onclick="goTo(10)">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+        <div style="width:32px;height:32px;border-radius:50%;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);display:flex;align-items:center;justify-content:center;">
+          <svg width="14" height="14" fill="none" stroke="#10B981" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+        </div>
+        <span class="tag tag-s">Planted Root</span>
+      </div>
+      <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:4px;">Indie Hackers Kerala</div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.35);">Last active 2 days ago</div>
+    </div>
+  </div>
+  <div class="btm-nav">
+    <button class="nav-item off"><svg stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="nl">Feed</span></button>
+    <button class="nav-item on"><svg stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg><span class="nl">Orbit</span><div class="nav-dot"></div></button>
+    <button class="nav-item off"><svg stroke="currentColor" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg><span class="nl">Shelf</span></button>
+  </div>
+</div>
+
+<!-- ═══════ 10 SANDBOX ═══════ -->
+<div data-id="9" data-name="Sandbox — Spatial Lobby">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+
+  <!-- Header -->
+  <div style="position:absolute;top:0;left:0;right:0;z-index:40;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(5,7,10,0.70);backdrop-filter:blur(20px);border-bottom:.5px solid rgba(255,255,255,0.06);">
+    <button onclick="goTo(9)" style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.55);display:flex;align-items:center;">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <div style="text-align:center;">
+      <div style="font-size:8.5px;font-weight:300;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1.5px;">Lobby</div>
+      <div style="font-size:13px;font-weight:700;color:#5C94E9;">SaaS Scaling</div>
+    </div>
+    <!-- Count chip — updates when circle forms -->
+    <div id="sb-count-chip" style="display:flex;align-items:center;gap:5px;background:rgba(12,14,20,0.80);border:.5px solid rgba(255,255,255,0.12);border-radius:9999px;padding:5px 10px;">
+      <div style="width:5px;height:5px;border-radius:50%;background:#10B981"></div>
+      <span id="sb-count-label" style="font-size:8px;font-weight:500;color:rgba(255,255,255,0.55);">5 inside</span>
+    </div>
+  </div>
+
+  <!-- ═══ SPATIAL CANVAS ═══ -->
+  <div style="position:relative;z-index:10;flex:1;overflow:hidden;margin-top:64px;margin-bottom:88px;">
+
+    <!-- ─ STATE 0: Free-floating personas ─ -->
+
+    <!-- Persona A (You) — top-left, floats freely -->
+    <div id="sb-alex" class="float-a" style="position:absolute;top:12%;left:6%;display:flex;flex-direction:column;align-items:center;gap:7px;transition:all 0.7s cubic-bezier(0.34,1.56,0.64,1);">
+      <div id="sb-my-note" style="display:none;position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);width:160px;background:rgba(26,29,36,0.96);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,0.12);border-radius:16px 16px 16px 4px;padding:12px;box-shadow:0 16px 40px rgba(0,0,0,0.50);z-index:10;">
+        <p id="sb-my-note-text" style="font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.55;font-style:italic;"></p>
+      </div>
+      <div style="width:52px;height:52px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:#5C94E9;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">A</div>
+      <div style="background:rgba(12,14,20,0.88);backdrop-filter:blur(12px);border:.5px solid rgba(255,255,255,0.15);border-radius:9999px;padding:4px 10px;display:flex;align-items:center;gap:5px;">
+        <div style="width:4px;height:4px;border-radius:50%;background:#5C94E9"></div>
+        <span style="font-size:8.5px;font-weight:500;color:#fff;">Alex_UX</span>
+        <span id="sb-you-mic" style="display:none;gap:2px;align-items:center;height:10px;margin-left:4px;">
+          <div style="width:2.5px;height:6px;border-radius:2px;background:#5C94E9;animation:waveB .8s ease-in-out infinite;"></div>
+          <div style="width:2.5px;height:10px;border-radius:2px;background:#5C94E9;animation:waveB .8s .12s ease-in-out infinite;"></div>
+          <div style="width:2.5px;height:6px;border-radius:2px;background:#5C94E9;animation:waveB .8s .24s ease-in-out infinite;"></div>
+        </span>
+      </div>
+    </div>
+
+    <!-- Persona B (CodeCrafter) — top-right with note bubble -->
+    <div id="sb-code" class="float-b" style="position:absolute;top:16%;right:5%;display:flex;flex-direction:column;align-items:center;gap:7px;transition:all 0.7s cubic-bezier(0.34,1.56,0.64,1);">
+      <!-- Note bubble + Handshake — visible in state 0 -->
+      <div id="sb-code-note" style="position:absolute;bottom:calc(100% + 8px);right:0;width:190px;background:rgba(26,29,36,0.96);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,0.12);border-radius:16px 16px 4px 16px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,0.50);">
+        <p style="font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.55;font-style:italic;margin-bottom:12px;">"Anyone here moved from Figma to code? Looking for advice."</p>
+        <button id="sb-hs-btn" class="btn btn-brand" style="width:100%;padding:8px;font-size:9.5px;" onclick="sbHandshake()">Handshake</button>
+      </div>
+      <div style="width:52px;height:52px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:#34d399;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);animation:pulse-glow 2s cubic-bezier(.4,0,.6,1) infinite;">C</div>
+      <div id="sb-code-label" style="background:rgba(92,148,233,0.12);border:.5px solid rgba(92,148,233,0.35);border-radius:9999px;padding:4px 10px;display:flex;align-items:center;gap:5px;">
+        <div style="width:4px;height:4px;border-radius:50%;background:#5C94E9"></div>
+        <span style="font-size:8.5px;font-weight:600;color:#5C94E9;">CodeCrafter</span>
+        <span id="sb-code-mic" style="display:none;gap:2px;align-items:center;height:10px;margin-left:4px;">
+          <div style="width:2.5px;height:6px;border-radius:2px;background:#34d399;animation:waveB .8s ease-in-out infinite;"></div>
+          <div style="width:2.5px;height:10px;border-radius:2px;background:#34d399;animation:waveB .8s .12s ease-in-out infinite;"></div>
+          <div style="width:2.5px;height:6px;border-radius:2px;background:#34d399;animation:waveB .8s .24s ease-in-out infinite;"></div>
+        </span>
+      </div>
+    </div>
+
+    <!-- Persona D (Indra_Dev) — muted, observing bottom-left -->
+    <div id="sb-indra" class="float-a" style="position:absolute;top:55%;left:18%;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0.50;animation-delay:1.5s;transition:all 0.7s ease;">
+      <div style="width:40px;height:40px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:14px;font-weight:700;color:#5C94E9;border:1px solid rgba(255,255,255,0.20);">I</div>
+      <span style="font-size:8px;color:rgba(255,255,255,0.40);background:rgba(12,14,20,0.70);border:.5px solid rgba(255,255,255,0.10);border-radius:9999px;padding:3px 8px;">Indra_Dev</span>
+    </div>
+
+    <!-- Persona E (distant) — far right, very muted -->
+    <div class="float-b" style="position:absolute;top:60%;right:10%;display:flex;flex-direction:column;align-items:center;gap:6px;opacity:0.30;animation-delay:4s;">
+      <div style="width:34px;height:34px;border-radius:50%;background:#1a2a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#66aadd;border:1px solid rgba(255,255,255,0.12);">M</div>
+      <span style="font-size:7.5px;color:rgba(255,255,255,0.28);background:rgba(12,14,20,0.50);border-radius:9999px;padding:2px 7px;">Maya_P</span>
+    </div>
+
+    <!-- ─ STATE 1+: THE CIRCLE (hidden until handshake) ─ -->
+    <!--
+      Layout: 260×260 stage. Center = (130,130). Outer ring radius = 106px.
+      Compass positions (avatar center → top-left corner via translate -50%,-50%):
+        Top-right  315°: left=205, top=55   (CodeCrafter initial)
+        Right        0°: left=236, top=130
+        Bottom-left 135°: left=55,  top=205  (Indra)
+        Top         270°: left=130, top=24
+    -->
+    <div id="sb-circle" style="display:none;position:absolute;top:50%;left:50%;transform:translate(-50%,-54%);">
+
+      <!-- Observer status pill — floats above the ring, visible to rest of lobby -->
+      <div style="position:absolute;top:-36px;left:50%;transform:translateX(-50%);white-space:nowrap;display:flex;align-items:center;gap:6px;background:rgba(12,14,20,0.90);backdrop-filter:blur(16px);border:.5px solid rgba(92,148,233,0.28);border-radius:9999px;padding:5px 13px;">
+        <div style="width:6px;height:6px;border-radius:50%;background:#10B981;animation:livepulse 1.4s ease-in-out infinite;flex-shrink:0;"></div>
+        <span id="sb-circle-label" style="font-size:8px;font-weight:600;color:rgba(255,255,255,0.70);">Circle · 2 in audio</span>
+      </div>
+
+      <!-- SVG ring — the outer orbit track -->
+      <svg width="260" height="260" viewBox="0 0 260 260" style="position:absolute;top:0;left:0;overflow:visible;pointer-events:none;">
+        <!-- outer orbit ring -->
+        <circle cx="130" cy="130" r="106" fill="none" stroke="rgba(92,148,233,0.22)" stroke-width="1.5" stroke-dasharray="4 5"/>
+        <!-- mid ring -->
+        <circle cx="130" cy="130" r="70" fill="none" stroke="rgba(92,148,233,0.10)" stroke-width="1"/>
+      </svg>
+
+      <!-- Center audio glow — pulses with audio activity -->
+      <div style="position:absolute;top:130px;left:130px;transform:translate(-50%,-50%);width:56px;height:56px;border-radius:50%;background:rgba(92,148,233,0.12);border:1.5px solid rgba(92,148,233,0.45);animation:pulse-glow 2s cubic-bezier(.4,0,.6,1) infinite;pointer-events:none;z-index:1;"></div>
+      <div style="position:absolute;top:130px;left:130px;transform:translate(-50%,-50%);width:36px;height:36px;border-radius:50%;background:rgba(92,148,233,0.18);border:1px solid rgba(92,148,233,0.55);pointer-events:none;z-index:1;"></div>
+
+      <!-- YOU — dead center, largest avatar -->
+      <div style="position:absolute;top:130px;left:130px;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:5px;z-index:4;">
+        <!-- Avatar with inner mic icon overlay -->
+        <div style="position:relative;width:52px;height:52px;">
+          <div style="width:52px;height:52px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:17px;font-weight:700;color:#5C94E9;border:2px solid #5C94E9;box-shadow:0 0 0 4px rgba(92,148,233,0.22),0 0 18px rgba(92,148,233,0.30);">A</div>
+          <!-- mic badge bottom-right -->
+          <div style="position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:#5C94E9;border:2px solid #05070A;display:flex;align-items:center;justify-content:center;">
+            <svg width="9" height="9" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4M12 3a3 3 0 00-3 3v4a3 3 0 006 0V6a3 3 0 00-3-3z"/></svg>
+          </div>
+        </div>
+        <span style="font-size:8px;font-weight:700;color:#fff;background:rgba(12,14,20,0.85);border:.5px solid rgba(92,148,233,0.30);border-radius:9999px;padding:2px 8px;white-space:nowrap;letter-spacing:.3px;">Alex_UX · You</span>
+        <!-- Speaking wave bars (shown when not muted) -->
+        <span id="sb-you-waves" style="display:flex;gap:2px;align-items:center;height:10px;margin-top:-2px;">
+          <div style="width:2.5px;border-radius:2px;background:#5C94E9;animation:waveB .8s ease-in-out infinite;"></div>
+          <div style="width:2.5px;border-radius:2px;background:#5C94E9;animation:waveB .8s .12s ease-in-out infinite;"></div>
+          <div style="width:2.5px;border-radius:2px;background:#5C94E9;animation:waveB .8s .24s ease-in-out infinite;"></div>
+        </span>
+      </div>
+
+      <!-- CodeCrafter — top-right on ring (315°, r=106) → left:205 top:55 -->
+      <div id="sb-circle-code" style="position:absolute;top:55px;left:205px;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:4px;z-index:4;">
+        <div style="position:relative;width:46px;height:46px;">
+          <div style="width:46px;height:46px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;color:#34d399;border:2px solid #34d399;box-shadow:0 0 0 3px rgba(52,211,153,0.20);">C</div>
+          <!-- speaking badge -->
+          <div id="sb-code-speaking" style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:#34d399;border:2px solid #05070A;display:flex;align-items:center;justify-content:center;">
+            <div style="width:5px;height:5px;border-radius:50%;background:#fff;"></div>
+          </div>
+        </div>
+        <span style="font-size:7.5px;font-weight:600;color:rgba(255,255,255,0.75);background:rgba(12,14,20,0.85);border:.5px solid rgba(52,211,153,0.25);border-radius:9999px;padding:2px 7px;white-space:nowrap;">CodeCrafter</span>
+      </div>
+
+      <!-- Indra_Dev — bottom-left on ring (135°, r=106) → left:55 top:205  [hidden until joined] -->
+      <div id="sb-circle-indra" style="display:none;position:absolute;top:205px;left:55px;transform:translate(-50%,-50%);flex-direction:column;align-items:center;gap:4px;z-index:4;">
+        <div style="position:relative;width:46px;height:46px;">
+          <div style="width:46px;height:46px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;color:#5C94E9;border:2px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.20);">I</div>
+          <div style="position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;background:#10B981;border:2px solid #05070A;display:flex;align-items:center;justify-content:center;">
+            <svg width="7" height="7" fill="none" stroke="#fff" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+          </div>
+        </div>
+        <span style="font-size:7.5px;font-weight:600;color:rgba(255,255,255,0.75);background:rgba(12,14,20,0.85);border:.5px solid rgba(92,148,233,0.25);border-radius:9999px;padding:2px 7px;white-space:nowrap;">Indra_Dev</span>
+      </div>
+
+    </div>
+
+    <!-- ─ INDRA WANTS TO JOIN (shown after circle forms) ─ -->
+    <div id="sb-indra-join" style="display:none;position:absolute;bottom:26%;left:50%;transform:translateX(-50%);width:200px;background:rgba(26,29,36,0.96);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,0.12);border-radius:16px;padding:12px 14px;box-shadow:0 12px 32px rgba(0,0,0,0.50);z-index:20;">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+        <div style="width:24px;height:24px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#5C94E9;border:1px solid rgba(92,148,233,0.35);">I</div>
+        <span style="font-size:9.5px;font-weight:500;color:#fff;">Indra_Dev wants to join</span>
+      </div>
+      <div style="display:flex;gap:7px;">
+        <button class="btn btn-brand" style="flex:1;padding:7px;font-size:9px;" onclick="sbIndraJoin()">Let in</button>
+        <button class="btn btn-glass" style="flex:1;padding:7px;font-size:9px;" onclick="sbIndraDismiss()">Not now</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ BOTTOM AREA — note bar (state 0) / circle controls (state 1+) ═══ -->
+
+  <!-- State 0: Note input -->
+  <div id="sb-note-bar" style="position:absolute;bottom:0;left:0;right:0;padding:10px 16px 26px;z-index:40;background:linear-gradient(to top,rgba(5,7,10,0.96) 70%,transparent);">
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(26,29,36,0.92);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.10);border-radius:9999px;padding:6px 6px 6px 14px;">
+      <div style="width:34px;height:34px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1px solid #5C94E9;">A</div>
+      <input id="sandbox-note-input" onkeypress="if(event.key==='Enter') sendSandboxNote()" style="flex:1;background:none;border:none;outline:none;font-family:'Montserrat',sans-serif;font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.60);" placeholder="Drop an open note... (max 150 chars)" maxlength="150">
+      <button class="btn btn-brand" onclick="sendSandboxNote()" style="width:34px;height:34px;border-radius:50%;padding:0;flex-shrink:0;">
+        <svg width="13" height="13" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <!-- State 1+: Circle controls (hidden until handshake) -->
+  <div id="sb-circle-controls" style="display:none;position:absolute;bottom:0;left:0;right:0;padding:10px 16px 26px;z-index:40;background:linear-gradient(to top,rgba(5,7,10,0.98) 75%,transparent);flex-direction:column;gap:8px;">
+    <!-- Timer -->
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:2px;">
+      <div style="width:5px;height:5px;border-radius:50%;background:#10B981;animation:livepulse 1.5s ease-in-out infinite;"></div>
+      <span id="sb-timer" style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.55);">00:00 · Circle active</span>
+    </div>
+    <!-- Action buttons -->
+    <div style="display:flex;gap:8px;">
+      <button id="sb-mute-btn" class="btn btn-glass" style="flex:1;padding:11px;font-size:10px;font-weight:600;" onclick="sbToggleMute()">
+        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a3 3 0 00-3 3v4a3 3 0 006 0V6a3 3 0 00-3-3z"/></svg>
+        Mute
+      </button>
+      <button class="btn btn-brand" style="flex:1;padding:11px;font-size:10px;font-weight:600;" onclick="sbBloom()">
+        <svg width="14" height="14" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path stroke-linecap="round" d="M12 3v2M12 19v2M3 12h2M19 12h2M5.6 5.6l1.4 1.4M16.9 16.9l1.4 1.4M5.6 18.4l1.4-1.4M16.9 7.1l1.4-1.4"/></svg>
+        Bloom
+      </button>
+      <button class="btn btn-danger" style="flex:1;padding:11px;font-size:10px;font-weight:600;" onclick="sbLeave()">Leave</button>
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══════ 11 TABLE ═══════ -->
+<div data-id="10" data-name="Table — Audio Channel" style="position:relative;">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+
+  <!-- Video Request Popup -->
+  <div id="video-request-popup" style="position:absolute; top:-150px; left:20px; right:20px; background:rgba(26,29,36,0.95); backdrop-filter:blur(16px); border:1px solid rgba(92,148,233,0.4); border-radius:16px; padding:16px; z-index:100; display:flex; flex-direction:column; gap:12px; transition:top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+    <div style="display:flex; align-items:center; gap:10px;">
+      <div style="width:28px;height:28px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;color:#34d399;flex-shrink:0;border:1px solid #34d399;">C</div>
+      <div style="font-size:11px; font-weight:600; color:#fff;">CodeCrafter wants to enable Video</div>
+    </div>
+    <div style="display:flex; gap:8px;">
+      <button class="btn btn-brand" style="flex:1; padding:10px; font-size:10px;" onclick="acceptVideo()">Accept Video</button>
+      <button class="btn btn-glass" style="flex:1; padding:10px; font-size:10px;" onclick="declineVideo()">Decline</button>
+    </div>
+  </div>
+
+  <!-- Plant Root Consensus Popup -->
+  <div id="root-consensus-popup" style="position:absolute; top:-150px; left:20px; right:20px; background:rgba(26,29,36,0.95); backdrop-filter:blur(16px); border:1px solid rgba(16,185,129,0.4); border-radius:16px; padding:16px; z-index:100; display:flex; flex-direction:column; gap:14px; transition:top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+    <div style="font-size:11px; font-weight:600; color:#fff; text-align:center;" id="root-consensus-text">Waiting for consensus to Plant Root...</div>
+    <div style="display:flex; align-items:center; justify-content:center; gap:16px;">
+      <!-- You -->
+      <div style="position:relative;">
+        <div style="width:36px;height:36px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#5C94E9;flex-shrink:0;border:2px solid #10B981;">A</div>
+        <div style="position:absolute;bottom:-2px;right:-2px;background:#10B981;border-radius:50%;width:14px;height:14px;display:flex;align-items:center;justify-content:center;border:1.5px solid #05070A;"><svg width="8" height="8" fill="none" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2 4l2 2 4-4"/></svg></div>
+      </div>
+      <!-- CodeCrafter -->
+      <div style="position:relative;">
+        <div style="width:36px;height:36px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#34d399;flex-shrink:0;border:2px solid rgba(255,255,255,0.15);opacity:0.4;">C</div>
+        <div id="rc-partner-check" style="display:none;position:absolute;bottom:-2px;right:-2px;background:#10B981;border-radius:50%;width:14px;height:14px;align-items:center;justify-content:center;border:1.5px solid #05070A;"><svg width="8" height="8" fill="none" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2 4l2 2 4-4"/></svg></div>
+      </div>
+      <!-- Indra_Dev -->
+      <div style="position:relative;">
+        <div style="width:36px;height:36px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#5C94E9;flex-shrink:0;border:2px solid rgba(255,255,255,0.15);opacity:0.4;">I</div>
+        <div id="rc-third-check" style="display:none;position:absolute;bottom:-2px;right:-2px;background:#10B981;border-radius:50%;width:14px;height:14px;align-items:center;justify-content:center;border:1.5px solid #05070A;"><svg width="8" height="8" fill="none" stroke="#fff" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2 4l2 2 4-4"/></svg></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:absolute;top:0;left:0;right:0;z-index:40;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(5,7,10,0.70);backdrop-filter:blur(20px);border-bottom:.5px solid rgba(255,255,255,0.06);">
+    <button style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.55);" onclick="goTo(9)">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+    </button>
+    <div style="text-align:center;">
+      <div style="font-size:9px;font-weight:700;color:#5C94E9;text-transform:uppercase;letter-spacing:2px;">Live Circle · Bloomed</div>
+      <div style="font-size:10px;font-weight:300;color:rgba(255,255,255,0.40);">Private · Audio</div>
+    </div>
+    <div style="width:20px;"></div>
+  </div>
+  
+  <!-- Content -->
+  <div style="position:relative;z-index:10;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:80px 24px 140px;">
+    
+    <!-- Ambient rings (the Table surface) -->
+    <div style="position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);width:260px;height:260px;border-radius:50%;border:1px solid rgba(92,148,233,0.15);pointer-events:none"></div>
+    <div style="position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);width:180px;height:180px;border-radius:50%;border:1px solid rgba(92,148,233,0.08);pointer-events:none"></div>
+
+    <!-- The Circular Table Container -->
+    <div style="position:relative; width:260px; height:260px; z-index:2;">
+
+      <!-- 1. YOU (Center) -->
+      <div style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:8px; z-index:30;">
+        <div style="position:relative;">
+          <div style="width:76px;height:76px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:26px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">A</div>
+          <div style="position:absolute;bottom:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#10B981;border:2px solid #05070A;z-index:10;"></div>
+          <!-- Internal Wave -->
+          <div id="wave-you" class="wave-overlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; gap:4px;">
+            <div class="wb" style="height:12px;background:#fff"></div><div class="wb" style="height:20px;background:#fff;animation-delay:.1s"></div><div class="wb" style="height:12px;background:#fff;animation-delay:.2s"></div>
+          </div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#fff;background:rgba(5,7,10,0.6);padding:2px 8px;border-radius:10px;">You</span>
+      </div>
+
+      <!-- 2. CodeCrafter Floating Note (Initial state, Top Right Perimeter) -->
+      <div id="tb-floating-note" class="float-b" style="position:absolute; top:-10px; right:-20px; display:flex; flex-direction:column; align-items:center; gap:7px; z-index:20;">
+        <div style="position:absolute;bottom:calc(100% + 8px);right:0;width:190px;background:rgba(26,29,36,0.96);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,0.12);border-radius:16px 16px 4px 16px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,0.50);">
+          <p style="font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.55;font-style:italic;margin-bottom:12px;">"Hey! Ready to jump into the audio channel?"</p>
+          <button class="btn btn-brand" style="width:100%;padding:8px;font-size:9.5px;" onclick="acceptTableHandshake(this)">Handshake</button>
+        </div>
+        <div style="width:56px;height:56px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:19px;font-weight:700;color:#34d399;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);animation:avatarPulse 2s cubic-bezier(.4,0,.6,1) infinite;">C</div>
+      </div>
+
+      <!-- 2. CodeCrafter Joined Table (Hidden initially, Top Right Perimeter) -->
+      <div id="tb-partner" style="display:none; position:absolute; top:5%; right:5%; flex-direction:column; align-items:center; gap:8px;">
+        <div style="position:relative;">
+          <div style="width:64px;height:64px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:22px;font-weight:700;color:#34d399;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);animation:avatarPulse 2s cubic-bezier(.4,0,.6,1) infinite;">C</div>
+          <div style="position:absolute;bottom:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#10B981;border:2px solid #05070A;z-index:10;"></div>
+          <!-- Internal Wave -->
+          <div id="wave-partner" class="wave-overlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; gap:4px;">
+            <div class="wb" style="height:12px;background:#34d399"></div><div class="wb" style="height:20px;background:#34d399;animation-delay:.1s"></div><div class="wb" style="height:12px;background:#34d399;animation-delay:.2s"></div>
+          </div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:#5C94E9;background:rgba(5,7,10,0.6);padding:2px 8px;border-radius:10px;">CodeCrafter</span>
+      </div>
+
+      <!-- 3. Third User (Indra_Dev) Floating Note (Hidden initially, Top Left Perimeter) -->
+      <div id="tb-third-note" class="float-a" style="display:none; position:absolute; top:5%; left:-10px; flex-direction:column; align-items:center; gap:7px; z-index:20;">
+        <div style="position:absolute;bottom:calc(100% + 8px);left:0;width:170px;background:rgba(26,29,36,0.96);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,0.12);border-radius:16px 16px 16px 4px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,0.50);">
+          <p style="font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.55;font-style:italic;margin-bottom:12px;">"Mind if I join the discussion on scaling?"</p>
+          <button class="btn btn-brand" style="width:100%;padding:8px;font-size:9.5px;" onclick="acceptThirdHandshake(this)">Handshake</button>
+        </div>
+        <div style="width:52px;height:52px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">I</div>
+      </div>
+
+      <!-- 3. Third User Joined Table (Hidden initially, Top Left Perimeter) -->
+      <div id="tb-third-partner" style="display:none; position:absolute; top:5%; left:5%; flex-direction:column; align-items:center; gap:8px;">
+        <div style="position:relative;">
+          <div style="width:64px;height:64px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:22px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">I</div>
+          <div style="position:absolute;bottom:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#10B981;border:2px solid #05070A;z-index:10;"></div>
+          <!-- Internal Wave -->
+          <div id="wave-third" class="wave-overlay" style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; gap:4px;">
+            <div class="wb" style="height:12px;background:#5C94E9"></div><div class="wb" style="height:20px;background:#5C94E9;animation-delay:.1s"></div><div class="wb" style="height:12px;background:#5C94E9;animation-delay:.2s"></div>
+          </div>
+        </div>
+        <span style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);background:rgba(5,7,10,0.6);padding:2px 8px;border-radius:10px;">Indra_Dev</span>
+      </div>
+
+    </div>
+
+    <!-- Timer chip (Hidden until mutual handshake) -->
+    <div id="tb-timer" style="display:none;position:absolute;top:85px;left:50%;transform:translateX(-50%);align-items:center;gap:8px;background:rgba(12,14,20,0.88);backdrop-filter:blur(16px);border:.5px solid rgba(255,255,255,0.12);border-radius:9999px;padding:7px 16px;z-index:30;">
+      <div style="width:5px;height:5px;border-radius:50%;background:#10B981;animation:livepulse 1.5s ease-in-out infinite"></div>
+      <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.65);">04:37 · Table active</span>
+    </div>
+
+  </div>
+  
+  <!-- Actions -->
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:12px 20px 32px;z-index:40;display:flex;flex-direction:column;gap:10px;">
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-brand" id="btn-enable-video" style="flex:1;padding:14px;font-size:11px;font-weight:700;" onclick="requestVideo()">Enable Video 🎥</button>
+      <button class="btn btn-outline" id="btn-plant-root" style="flex:1;padding:14px;font-size:11px;font-weight:700;" onclick="requestPlantRoot()">Plant Root 🌱</button>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button id="btn-mute" class="btn btn-glass" style="flex:1;padding:12px;font-size:10.5px;" onclick="toggleMute()">Mute Audio</button>
+      <button class="btn btn-danger" style="flex:1;padding:12px;font-size:10.5px;" onclick="goTo(9)">Leave Table</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════ 12 SHELF ═══════ -->
+<div data-id="11" data-name="Shelf">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <div class="top-nav">
+    <div class="nav-wordmark">
+      <div class="logo-mark" style="width:24px;height:24px;"><div class="lm-out"></div><div class="lm-r1" style="inset:3px"></div><div class="lm-r2" style="inset:8px"></div><div class="lm-dot" style="width:4px;height:4px"></div></div>
+      circles
+    </div>
+    <div class="persona-chip">
+      <div class="pc-dot"></div>
+      <div style="width:32px;height:32px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#5C94E9;flex-shrink:0;">A</div>
+      <span class="pc-alias">Alex_UX</span>
+    </div>
+  </div>
+  <div class="scroll-body">
+    <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:2px;">Your Shelf</div>
+    <!-- Filter tabs -->
+    <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;flex-shrink:0;">
+      <button class="btn btn-brand" style="padding:6px 16px;font-size:10px;font-weight:600;white-space:nowrap;">All Items</button>
+      <button class="btn btn-outline" style="padding:6px 16px;font-size:10px;font-weight:500;white-space:nowrap;">Books</button>
+      <button class="btn btn-outline" style="padding:6px 16px;font-size:10px;font-weight:500;white-space:nowrap;">Articles</button>
+      <button class="btn btn-outline" style="padding:6px 16px;font-size:10px;font-weight:500;white-space:nowrap;">Saved Stages</button>
+    </div>
+    <!-- Grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+      <div class="f-card" style="padding:10px;display:flex;flex-direction:column;">
+        <div style="width:100%;aspect-ratio:3/4;border-radius:10px;background:linear-gradient(135deg,rgba(92,148,233,0.18),rgba(92,148,233,0.04));margin-bottom:8px;display:flex;align-items:center;justify-content:center;overflow:hidden;">
+          <svg width="24" height="24" fill="none" stroke="rgba(92,148,233,0.40)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:3px;">The Great Good Place</div>
+        <div style="font-size:8.5px;color:rgba(255,255,255,0.35);">Ray Oldenburg</div>
+      </div>
+      <div class="f-card" style="padding:10px;display:flex;flex-direction:column;">
+        <div style="width:100%;aspect-ratio:3/4;border-radius:10px;background:linear-gradient(135deg,rgba(16,185,129,0.12),rgba(16,185,129,0.03));margin-bottom:8px;display:flex;align-items:center;justify-content:center;position:relative;">
+          <svg width="24" height="24" fill="none" stroke="rgba(16,185,129,0.40)" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          <div style="position:absolute;top:6px;left:6px;"><span class="tag tag-g" style="font-size:7px;">Article</span></div>
+        </div>
+        <div style="font-size:11px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:3px;">Defensive Design Patterns</div>
+        <div style="font-size:8.5px;color:rgba(255,255,255,0.35);">12 min read</div>
+      </div>
+    </div>
+    <!-- Saved stage (full width) -->
+    <div class="f-card" style="padding:14px;display:flex;align-items:center;gap:12px;">
+      <div style="width:44px;height:44px;border-radius:50%;background:rgba(92,148,233,0.12);border:1px solid rgba(92,148,233,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="16" height="16" fill="#5C94E9" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <span class="tag tag-p" style="margin-bottom:5px;display:inline-block;">Recorded Stage</span>
+        <div style="font-size:13px;font-weight:600;color:#fff;line-height:1.3;margin-bottom:2px;">State Management in 2026</div>
+        <div style="font-size:9px;color:rgba(255,255,255,0.35);">45 mins · Frontend Masters</div>
+      </div>
+    </div>
+    <!-- Reading list progress -->
+    <div class="f-card" style="padding:14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+        <div style="font-size:11px;font-weight:600;color:#fff;">Reading List</div>
+        <span style="font-size:9px;color:rgba(255,255,255,0.35);">3 / 20</span>
+      </div>
+      <div style="height:4px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden;">
+        <div style="height:100%;width:15%;background:#5C94E9;border-radius:2px;"></div>
+      </div>
+      <div style="font-size:9px;color:rgba(255,255,255,0.30);margin-top:7px;">Free plan · 17 slots remaining</div>
+    </div>
+  </div>
+  <div class="btm-nav">
+    <button class="nav-item off"><svg stroke="currentColor" viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg><span class="nl">Feed</span></button>
+    <button class="nav-item off"><svg stroke="currentColor" viewBox="0 0 24 24"><path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/></svg><span class="nl">Orbit</span></button>
+    <button class="nav-item on"><svg stroke="currentColor" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/></svg><span class="nl">Shelf</span><div class="nav-dot"></div></button>
+  </div>
+</div>
+
+<!-- ═══════ 13 IDENTITY HUB ═══════ -->
+<div data-id="12" data-name="Identity Hub">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <div style="position:absolute;top:0;left:0;right:0;z-index:40;height:64px;display:flex;align-items:center;gap:10px;padding:0 20px;background:rgba(5,7,10,0.80);backdrop-filter:blur(20px);border-bottom:.5px solid rgba(255,255,255,0.06);">
+    <button style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.55);">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <span style="font-size:13px;font-weight:700;color:#fff;">Identity Hub</span>
+  </div>
+  <div class="scroll-body">
+    <!-- Base profile (private) -->
+    <div class="f-card" style="padding:18px;margin-top:4px;position:relative;">
+      <div style="position:absolute;top:14px;right:14px;display:flex;align-items:center;gap:4px;background:rgba(255,255,255,0.04);border:.5px solid rgba(255,255,255,0.10);border-radius:8px;padding:4px 8px;">
+        <svg width="10" height="10" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <span style="font-size:8px;font-weight:500;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:.5px;">Private</span>
+      </div>
+      <div style="font-size:8.5px;font-weight:700;color:#5C94E9;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:8px;">Base Profile</div>
+      <div style="font-size:18px;font-weight:700;color:#fff;margin-bottom:3px;">Alexandre Smith</div>
+      <div style="font-size:10.5px;color:rgba(255,255,255,0.40);margin-bottom:14px;"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="6d0c0108152d08000c0401430e0200">[email&#160;protected]</a></div>
+      <button class="btn btn-glass" style="padding:7px 16px;font-size:9.5px;">Edit Base Details</button>
+    </div>
+    <!-- Personas heading -->
+    <div style="font-size:8.5px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1.5px;padding:0 2px;">Your Personas</div>
+    <!-- Active persona -->
+    <div style="background:rgba(92,148,233,0.08);border:1px solid rgba(92,148,233,0.25);border-radius:24px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">A</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:2px;">Alex_UX</div>
+          <div style="font-size:8.5px;font-weight:600;color:#5C94E9;text-transform:uppercase;letter-spacing:.8px;">Active Persona</div>
+        </div>
+      </div>
+      <button style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.35);">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+      </button>
+    </div>
+    <!-- Inactive persona -->
+    <div class="f-card" style="padding:14px 16px;display:flex;align-items:center;justify-content:space-between;opacity:0.65;">
+      <div style="display:flex;align-items:center;gap:12px;">
+        <div style="width:44px;height:44px;border-radius:50%;background:#2a1a0d;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;color:#c4965a;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.20);filter:grayscale(.5);">C</div>
+        <div>
+          <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,0.70);margin-bottom:2px;">CoffeeSnob</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);">Culture &amp; Brewing</div>
+        </div>
+      </div>
+      <button class="btn btn-brand" style="padding:7px 14px;font-size:9px;">Switch</button>
+    </div>
+    <!-- Create new persona -->
+    <button class="btn btn-outline" style="width:100%;padding:14px;font-size:10.5px;border-style:dashed;gap:7px;">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/></svg>
+      Create New Persona
+    </button>
+  </div>
+</div>
+
+<!-- ═══════ 14 STAGE ═══════ -->
+<div data-id="13" data-name="Stage — Live Broadcast">
+  <div class="amb"><div class="orb o1"></div><div class="orb o2"></div></div>
+  <!-- Header -->
+  <div style="position:absolute;top:0;left:0;right:0;z-index:40;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(5,7,10,0.80);backdrop-filter:blur(20px);border-bottom:.5px solid rgba(255,255,255,0.06);">
+    <button style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.55);">
+      <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+    </button>
+    <div style="display:flex;align-items:center;gap:7px;">
+      <div class="stage-live-dot"></div>
+      <span style="font-size:12px;font-weight:700;color:#fff;">Live Stage</span>
+    </div>
+    <div style="font-size:10px;font-weight:500;color:rgba(255,255,255,0.45);">124 watching</div>
+  </div>
+  <!-- Content -->
+  <div class="scroll-body" style="padding-top:76px;">
+    <!-- Broadcaster card -->
+    <div class="f-card" style="padding:20px;border-color:rgba(92,148,233,0.20);">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;">
+        <div style="position:relative;">
+          <div style="width:52px;height:52px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">V</div>
+          <div style="position:absolute;bottom:0;right:0;background:#EF4444;border-radius:9999px;padding:2px 6px;border:1.5px solid #05070A;">
+            <span style="font-size:7px;font-weight:700;color:#fff;letter-spacing:.5px;">LIVE</span>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:13px;font-weight:700;color:#fff;margin-bottom:3px;">Vercel Team</div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+            <span class="tag tag-p">SaaS</span>
+            <span class="tag tag-p">Architecture</span>
+          </div>
+        </div>
+        <!-- Live wave -->
+        <div style="display:flex;gap:3px;align-items:center;height:20px;">
+          <div class="wb" style="animation-delay:0s"></div>
+          <div class="wb" style="animation-delay:.08s"></div>
+          <div class="wb" style="animation-delay:.16s"></div>
+        </div>
+      </div>
+      <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:8px;">Micro-SaaS scaling without burnout</div>
+      <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.50);line-height:1.6;">Live discussion on sustainable growth patterns for indie SaaS founders — product, distribution, and mental health.</div>
+    </div>
+    <!-- Stage Sandbox (Q&A) -->
+    <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:1.5px;padding:0 2px;">Stage Sandbox — Q&amp;A</div>
+    <!-- Notes -->
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <div class="f-card" style="padding:12px 14px;">
+        <div style="display:flex;items-align:flex-start;gap:10px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#1a3a5c;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;color:#7db3f0;flex-shrink:0;border:1px solid rgba(255,255,255,0.15);flex-shrink:0;">P</div>
+          <div style="flex:1;">
+            <div style="font-size:9px;font-weight:600;color:#5C94E9;margin-bottom:4px;">Priya_Dev · 2 min ago</div>
+            <div style="font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.55;">How do you handle churn in the first 3 months when you can't afford retention tools?</div>
+          </div>
+        </div>
+      </div>
+      <div class="f-card" style="padding:12px 14px;border-color:rgba(92,148,233,0.20);">
+        <div style="display:flex;items-align:flex-start;gap:10px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#1e2a1a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;color:#66cc88;flex-shrink:0;border:1px solid rgba(92,148,233,0.40);flex-shrink:0;">M</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:4px;"><span style="font-size:9px;font-weight:600;color:#5C94E9;">Marco_PM</span><span class="tag tag-p" style="font-size:7px;">Live Q</span></div>
+            <div style="font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.55;">What's your take on building in public vs staying stealth until launch?</div>
+          </div>
+        </div>
+      </div>
+      <div class="f-card" style="padding:12px 14px;opacity:0.55;">
+        <div style="display:flex;items-align:flex-start;gap:10px;">
+          <div style="width:28px;height:28px;border-radius:50%;background:#3a1a1a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;color:#ee8888;flex-shrink:0;border:1px solid rgba(255,255,255,0.10);flex-shrink:0;">N</div>
+          <div>
+            <div style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);margin-bottom:4px;">Nila_UX · 5 min ago</div>
+            <div style="font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.50);line-height:1.55;">Is there a good framework for pricing your first B2B SaaS?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Note input -->
+  <div style="position:absolute;bottom:0;left:0;right:0;padding:10px 16px 24px;z-index:40;background:linear-gradient(to top,rgba(5,7,10,0.95) 60%,transparent);">
+    <div style="display:flex;align-items:center;gap:8px;background:rgba(26,29,36,0.92);backdrop-filter:blur(24px);border:1px solid rgba(255,255,255,0.10);border-radius:9999px;padding:6px 6px 6px 14px;">
+      <input style="flex:1;background:none;border:none;outline:none;font-family:'Montserrat',sans-serif;font-size:10.5px;color:rgba(255,255,255,0.55);" placeholder="Drop a question into Stage Sandbox...">
+      <button class="btn btn-brand" style="width:34px;height:34px;border-radius:50%;padding:0;flex-shrink:0;">
+        <svg width="12" height="12" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+</div><!-- /screens -->
+
+<style>
+@keyframes livepulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(1.35)}}
+</style>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+const SCREENS = Array.from(document.querySelectorAll('#screens > div'));
+const NAMES = ['Splash','Onboard — Read','Onboard — Connect','Onboard — Protect','Sign In','OTP','Base Profile','Create Persona','Feed Wall','Orbit','Sandbox','Table','Shelf','Identity Hub','Stage'];
+let cur = 0;
+
+function buildPhone(idx) {
+  const phone = document.getElementById('phone-main');
+  const inner = document.getElementById('phone-inner');
+  inner.innerHTML = '';
+  const tpl = SCREENS[idx].cloneNode(true);
+  if (isLight) {
+    tpl.style.cssText = 'display:flex;flex-direction:column;position:absolute;inset:0;background:#F2F4F7;overflow:hidden;';
+    phone.classList.add('lm');
+    applyLightTheme(tpl);
+  } else {
+    tpl.style.cssText = 'display:flex;flex-direction:column;position:absolute;inset:0;background:#05070A;overflow:hidden;';
+    phone.classList.remove('lm');
+  }
+  inner.appendChild(tpl);
+}
+
+function updateUI() {
+  // counter
+  document.getElementById('p-counter').textContent = String(cur+1).padStart(2,'0') + ' / ' + SCREENS.length;
+  document.getElementById('sl-num').textContent = String(cur+1).padStart(2,'0') + ' / ' + SCREENS.length;
+  document.getElementById('sl-name').textContent = NAMES[cur];
+  // nav highlight
+  document.querySelectorAll('.p-btn').forEach((b,i) => b.classList.toggle('active', i===cur));
+  buildPhone(cur);
+}
+
+function goTo(i) { cur = i; updateUI(); }
+function next()  { cur = (cur+1) % SCREENS.length; updateUI(); }
+function prev()  { cur = (cur - 1 + SCREENS.length) % SCREENS.length; updateUI(); }
+
+// ── Feed Wall Interactions ──────────────────────────
+
+// Helper: get element inside the currently active phone frame
+function fw(id) {
+  return document.getElementById('phone-inner').querySelector('#' + id);
+}
+function fwShow(id)   { const el=fw(id); if(el){ el.style.display='flex'; } }
+function fwHide(id)   { const el=fw(id); if(el){ el.style.display='none'; } }
+
+// ── Book: Add to Shelf (quick action, no modal)
+function feedBookShelf(btn) {
+  btn.textContent = '✓ Saved';
+  btn.style.background = 'rgba(16,185,129,0.15)';
+  btn.style.border = '1px solid rgba(16,185,129,0.35)';
+  btn.style.color = '#10B981';
+  btn.disabled = true;
+}
+
+// ── Book: Open Details modal
+function feedBookDetails() {
+  const modal = fw('fw-buy-modal');
+  if(modal){ modal.style.display='flex'; }
+  fwShow('fw-book-insights');
+  fwHide('fw-pay-options-container');
+  fwHide('fw-pay-success');
+}
+
+// ── Book: Transition to Buy
+function feedInitiateBuy() {
+  fwHide('fw-book-insights');
+  fwShow('fw-pay-options-container');
+}
+
+function feedBuyClose() {
+  const modal = fw('fw-buy-modal');
+  if(modal){ modal.style.display='none'; }
+}
+function feedBuySuccess() {
+  fwHide('fw-pay-options-container');
+  fwShow('fw-pay-success');
+}
+function feedBuyDone() {
+  feedBuyClose();
+  // Update the book card buttons to show "Purchased"
+  const btns = fw('fw-book-btns');
+  const bought = fw('fw-book-bought');
+  if(btns)   btns.style.display='none';
+  if(bought) bought.style.display='block';
+}
+
+// ── Stage: Open RSVP modal
+function feedStageRSVP() {
+  const modal = fw('fw-stage-modal');
+  if(modal){ modal.style.display='flex'; }
+}
+function feedStageClose() {
+  const modal = fw('fw-stage-modal');
+  if(modal){ modal.style.display='none'; }
+  fwShow('fw-stage-free');
+  fwHide('fw-stage-confirmed');
+}
+function feedStageConfirm() {
+  fwHide('fw-stage-free');
+  fwShow('fw-stage-confirmed');
+  // Update RSVP button on card
+  const btn = fw('fw-stage-rsvp-btn');
+  if(btn){
+    btn.textContent = '✓ Seat Reserved';
+    btn.style.background = 'rgba(16,185,129,0.15)';
+    btn.style.boxShadow = 'none';
+    btn.style.border = '1px solid rgba(16,185,129,0.35)';
+    btn.style.color = '#10B981';
+    btn.disabled = true;
+  }
+}
+
+// ── Sponsored: Open schedule modal
+function feedSponsoredSchedule() {
+  const modal = fw('fw-sponsor-modal');
+  if(modal){ modal.style.display='flex'; }
+}
+function feedSponsorClose() {
+  const modal = fw('fw-sponsor-modal');
+  if(modal){ modal.style.display='none'; }
+  const done = fw('fw-sponsor-done');
+  const btn  = fw('fw-sponsor-confirm-btn');
+  if(done) done.style.display='none';
+  if(btn)  btn.style.display='flex';
+}
+function feedSponsorConfirm() {
+  const done = fw('fw-sponsor-done');
+  const btn  = fw('fw-sponsor-confirm-btn');
+  if(done){ done.style.display='flex'; done.style.flexDirection='column'; done.style.alignItems='center'; done.style.gap='10px'; done.style.padding='4px 0'; }
+  if(btn)  btn.style.display='none';
+}
+
+// ── Calendar date selector
+function calSelect(el) {
+  const slots = el.closest('[id="fw-sponsor-modal"]') || el.closest('div[style*="inset:0"]');
+  const allDates = el.parentElement.querySelectorAll('span[onclick="calSelect(this)"]');
+  allDates.forEach(d => {
+    d.style.background=''; d.style.border=''; d.style.fontWeight='';
+  });
+  el.style.background='rgba(92,148,233,0.20)';
+  el.style.border='1px solid rgba(92,148,233,0.40)';
+  el.style.fontWeight='700';
+}
+
+// ── Time slot selector
+function slotSelect(btn) {
+  const parent = btn.parentElement;
+  parent.querySelectorAll('button').forEach(b => {
+    b.className = 'btn btn-glass';
+    b.style.padding='7px 14px';
+    b.style.fontSize='10px';
+    b.style.fontWeight='500';
+  });
+  btn.className = 'btn btn-brand';
+  btn.style.padding='7px 14px';
+  btn.style.fontSize='10px';
+  btn.style.fontWeight='600';
+}
+
+// ── Sandbox: In-Lobby Circle Formation ─────────────────────────
+
+let sbMuted = false;
+let sbTimerInterval = null;
+let sbSeconds = 0;
+
+function sendSandboxNote() {
+  const input = fw('sandbox-note-input');
+  if(!input) return;
+  const noteText = input.value.trim();
+  if(!noteText) return;
+  const bubble = fw('sb-my-note');
+  const textEl = fw('sb-my-note-text');
+  if(bubble && textEl) { textEl.textContent = `"${noteText}"`; bubble.style.display='block'; }
+  input.value = '';
+  setTimeout(() => { const b=fw('sb-my-note'); if(b) b.style.display='none'; }, 4000);
+}
+
+function sbHandshake() {
+  const btn = fw('sb-hs-btn');
+  if(!btn) return;
+  btn.textContent = 'Waiting…';
+  btn.className = 'btn btn-glass';
+  btn.style.pointerEvents = 'none';
+
+  setTimeout(() => {
+    // Hide note bubble
+    const noteEl = fw('sb-code-note');
+    if(noteEl) noteEl.style.display = 'none';
+
+    // Fade out free-floating avatars — they appear inside the circle
+    const alex = fw('sb-alex');
+    const code = fw('sb-code');
+    if(alex){ alex.style.opacity='0'; alex.style.transform='scale(0.5)'; alex.style.pointerEvents='none'; }
+    if(code){ code.style.opacity='0'; code.style.transform='scale(0.5)'; code.style.pointerEvents='none'; }
+
+    // Reveal the circle formation in lobby center
+    const circle = fw('sb-circle');
+    if(circle) circle.style.display='block';
+
+    // CodeCrafter speaks first — show speaking badge pulse on their avatar (already visible)
+    setTimeout(() => { const m=fw('sb-code-speaking'); if(m) m.style.background='#34d399'; }, 600);
+
+    // Swap bottom bar to circle controls
+    const noteBar = fw('sb-note-bar');
+    const ctrlBar = fw('sb-circle-controls');
+    if(noteBar) noteBar.style.display='none';
+    if(ctrlBar) ctrlBar.style.display='flex';
+
+    sbStartTimer();
+
+    // Indra notices and wants to join after 3s
+    setTimeout(() => {
+      const indra = fw('sb-indra');
+      if(indra){ indra.style.opacity='0.80'; indra.style.transform='translateY(-12px)'; }
+      setTimeout(() => { const j=fw('sb-indra-join'); if(j) j.style.display='block'; }, 1200);
+    }, 3000);
+
+  }, 1000);
+}
+
+function sbStartTimer() {
+  sbSeconds = 0;
+  if(sbTimerInterval) clearInterval(sbTimerInterval);
+  sbTimerInterval = setInterval(() => {
+    sbSeconds++;
+    const mins = String(Math.floor(sbSeconds/60)).padStart(2,'0');
+    const secs = String(sbSeconds%60).padStart(2,'0');
+    const t = fw('sb-timer');
+    if(t) t.textContent = `${mins}:${secs} · Circle active`;
+  }, 1000);
+}
+
+function sbIndraJoin() {
+  const j = fw('sb-indra-join'); if(j) j.style.display='none';
+  const indra = fw('sb-indra'); if(indra){ indra.style.opacity='0'; indra.style.transition='opacity 0.4s'; }
+  const ci = fw('sb-circle-indra'); if(ci) ci.style.display='flex';
+  const lbl = fw('sb-circle-label'); if(lbl) lbl.textContent='Circle · 3 in audio';
+}
+
+function sbIndraDismiss() {
+  const j = fw('sb-indra-join'); if(j) j.style.display='none';
+  const indra = fw('sb-indra'); if(indra){ indra.style.opacity='0.25'; indra.style.transition='opacity 0.4s'; }
+}
+
+function sbToggleMute() {
+  sbMuted = !sbMuted;
+  const btn = fw('sb-mute-btn');
+  const youWaves = fw('sb-you-waves');
+  if(youWaves) youWaves.style.display = sbMuted ? 'none' : 'flex';
+  if(btn){
+    btn.innerHTML = sbMuted
+      ? `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a3 3 0 00-3 3v4a3 3 0 006 0V6a3 3 0 00-3-3z"/><line x1="3" y1="3" x2="21" y2="21" stroke-linecap="round"/></svg> Unmute`
+      : `<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a3 3 0 00-3 3v4a3 3 0 006 0V6a3 3 0 00-3-3z"/></svg> Mute`;
+    btn.style.background = sbMuted ? 'rgba(239,68,68,0.15)' : '';
+    btn.style.borderColor = sbMuted ? 'rgba(239,68,68,0.35)' : '';
+    btn.style.color = sbMuted ? '#EF4444' : '';
+  }
+}
+
+function sbLeave() {
+  if(sbTimerInterval) clearInterval(sbTimerInterval);
+  // Reset to state 0
+  ['sb-circle','sb-indra-join'].forEach(id=>{ const e=fw(id); if(e) e.style.display='none'; });
+  const noteBar=fw('sb-note-bar'), ctrlBar=fw('sb-circle-controls');
+  if(noteBar) noteBar.style.display='block'; if(ctrlBar) ctrlBar.style.display='none';
+  const alex=fw('sb-alex'), code=fw('sb-code'), indra=fw('sb-indra');
+  if(alex){ alex.style.opacity='1'; alex.style.transform=''; alex.style.pointerEvents='auto'; }
+  if(code){ code.style.opacity='1'; code.style.transform=''; code.style.pointerEvents='auto'; }
+  if(indra){ indra.style.opacity='0.50'; indra.style.transform=''; }
+  const codeNote=fw('sb-code-note'); if(codeNote) codeNote.style.display='block';
+  const ci=fw('sb-circle-indra'); if(ci) ci.style.display='none';
+  const hsBtn=fw('sb-hs-btn'); if(hsBtn){ hsBtn.textContent='Handshake'; hsBtn.className='btn btn-brand'; hsBtn.style.pointerEvents='auto'; }
+  const codeMic=fw('sb-code-speaking'); if(codeMic) codeMic.style.background='#34d399';
+  const youWaves=fw('sb-you-waves'); if(youWaves) youWaves.style.display='flex';
+  sbMuted=false;
+  const mb=fw('sb-mute-btn'); if(mb){ mb.innerHTML=`<svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4M12 3a3 3 0 00-3 3v4a3 3 0 006 0V6a3 3 0 00-3-3z"/></svg> Mute`; mb.style.background=''; mb.style.borderColor=''; mb.style.color=''; }
+}
+
+function sbBloom() { goTo(11); }  // Bloom → extracts to private Live Circle (Table screen)
+
+function initiateHandshake(btn) {
+  btn.textContent = 'Waiting for response...';
+  btn.className = 'btn btn-glass';
+  btn.style.pointerEvents = 'none';
+  setTimeout(() => {
+    btn.textContent = 'Circle formed →';
+    btn.className = 'btn btn-success';
+    btn.style.pointerEvents = 'auto';
+    btn.onclick = () => goTo(9);
+  }, 1500);
+}
+
+function acceptTableHandshake(btn) {
+  btn.textContent = 'Connecting...';
+  btn.className = 'btn btn-glass';
+  btn.style.pointerEvents = 'none';
+  
+  setTimeout(() => {
+    const floatingNote = fw('tb-floating-note');
+    const partner = fw('tb-partner');
+    const timer = fw('tb-timer');
+
+    // Hide the floating spatial note
+    if(floatingNote) floatingNote.style.display = 'none';
+    
+    // Reveal central connected elements
+    if(partner) partner.style.display = 'flex';
+    if(timer) timer.style.display = 'inline-flex';
+
+    // Simulate CodeCrafter speaking
+    const wavePartner = fw('wave-partner');
+    if(wavePartner) wavePartner.style.display = 'flex';
+
+    // Simulate 3rd User dropping a note shortly after CodeCrafter joins!
+    setTimeout(() => {
+      const thirdNote = fw('tb-third-note');
+      if(thirdNote) thirdNote.style.display = 'flex';
+      if(wavePartner) wavePartner.style.display = 'none'; // Stop speaking
+    }, 3000);
+
+  }, 800);
+}
+
+function acceptThirdHandshake(btn) {
+  btn.textContent = 'Connecting...';
+  btn.className = 'btn btn-glass';
+  btn.style.pointerEvents = 'none';
+  
+  setTimeout(() => {
+    const thirdNote = fw('tb-third-note');
+    const thirdPartner = fw('tb-third-partner');
+
+    // Hide floating note and reveal the third partner in the circle
+    if(thirdNote) thirdNote.style.display = 'none';
+    if(thirdPartner) thirdPartner.style.display = 'flex';
+    
+    // Simulate Indra speaking
+    const waveThird = fw('wave-third');
+    if(waveThird) waveThird.style.display = 'flex';
+    setTimeout(() => { if(waveThird) waveThird.style.display='none'; }, 2000);
+  }, 800);
+}
+
+// ── Audio/Video Controls ──
+let isMuted = false;
+function toggleMute() {
+  isMuted = !isMuted;
+  const btn = fw('btn-mute');
+  const myWave = fw('wave-you');
+  if(btn) {
+    btn.textContent = isMuted ? 'Unmute Audio' : 'Mute Audio';
+    btn.style.background = isMuted ? 'rgba(239,68,68,0.2)' : '';
+  }
+  if(!isMuted && myWave) {
+    myWave.style.display = 'flex';
+    setTimeout(() => { if(myWave) myWave.style.display='none'; }, 1500);
+  } else if(myWave) {
+    myWave.style.display = 'none';
+  }
+}
+
+function requestVideo() {
+  const popup = fw('video-request-popup');
+  const btnVideo = fw('btn-enable-video');
+  if(btnVideo) {
+    btnVideo.textContent = 'Requesting...';
+    btnVideo.style.opacity = '0.5';
+    btnVideo.style.pointerEvents = 'none';
+  }
+  
+  // Simulate receiving the request (or showing consensus)
+  setTimeout(() => {
+    if(popup) popup.style.top = '70px'; // Slide down
+  }, 600);
+}
+
+function declineVideo() {
+  const popup = fw('video-request-popup');
+  const btnVideo = fw('btn-enable-video');
+  if(popup) popup.style.top = '-150px';
+  if(btnVideo) {
+    btnVideo.textContent = 'Enable Video 🎥';
+    btnVideo.style.opacity = '1';
+    btnVideo.style.pointerEvents = 'auto';
+  }
+}
+
+function acceptVideo() {
+  const popup = fw('video-request-popup');
+  if(popup) popup.style.top = '-150px'; // slide up
+  
+  // Swap avatars to realistic photos and apply video class
+  const youImg = fw('tb-you-img');
+  const partnerImg = fw('tb-partner-img');
+  const thirdImg = fw('tb-third-img');
+  
+  // Also add wave-video class to overlays to match rounded rects
+  ['wave-you','wave-partner','wave-third'].forEach(id => {
+    const el = fw(id);
+    if(el) el.classList.add('wave-video');
+  });
+
+  if(youImg) {
+    if(youImg) { youImg.style.borderRadius='14px'; youImg.style.background='linear-gradient(135deg,#1a3060,#2a4a8a)'; }
+  }
+  if(partnerImg) {
+    partnerImg.style.borderRadius='14px'; partnerImg.style.background='linear-gradient(135deg,#0d2a1e,#1a4a2a)';
+    partnerImg.style.animation='none';
+  }
+  if(thirdImg) {
+    thirdImg.style.borderRadius='14px'; thirdImg.style.background='linear-gradient(135deg,#0d1e38,#1a3060)';
+  }
+  
+  const btnVideo = fw('btn-enable-video');
+  if(btnVideo) {
+    btnVideo.textContent = 'Disable Video 🎥';
+    btnVideo.style.background = 'rgba(255,255,255,0.1)';
+    btnVideo.style.color = '#fff';
+    btnVideo.style.boxShadow = 'none';
+    btnVideo.style.opacity = '1';
+    btnVideo.style.pointerEvents = 'auto';
+    btnVideo.onclick = disableVideo; // Toggle logic
+  }
+}
+
+function disableVideo() {
+  const youImg = fw('tb-you-img');
+  const partnerImg = fw('tb-partner-img');
+  const thirdImg = fw('tb-third-img');
+  
+  ['wave-you','wave-partner','wave-third'].forEach(id => {
+    const el = fw(id);
+    if(el) el.classList.remove('wave-video');
+  });
+
+  if(youImg) {
+    youImg.style.borderRadius='50%'; youImg.style.background='#1a3060'; youImg.style.animation='';
+  }
+  if(partnerImg) {
+    partnerImg.style.borderRadius='50%'; partnerImg.style.background='#0d2a1e';
+  }
+  if(thirdImg) {
+    thirdImg.style.borderRadius='50%'; thirdImg.style.background='#0d1e38';
+  }
+
+  const btnVideo = fw('btn-enable-video');
+  if(btnVideo) {
+    btnVideo.textContent = 'Enable Video 🎥';
+    btnVideo.style.background = '#5C94E9';
+    btnVideo.onclick = requestVideo;
+  }
+}
+
+// ── Plant Root Consensus Flow ──
+function requestPlantRoot() {
+  const btn = fw('btn-plant-root');
+  if(btn) {
+    btn.textContent = 'Requesting...';
+    btn.style.opacity = '0.5';
+    btn.style.pointerEvents = 'none';
+  }
+  
+  const popup = fw('root-consensus-popup');
+  if(popup) popup.style.top = '70px'; // Slide down
+
+  // Elements
+  const pImg = fw('rc-partner-img');
+  const pCheck = fw('rc-partner-check');
+  const tImg = fw('rc-third-img');
+  const tCheck = fw('rc-third-check');
+  const text = fw('root-consensus-text');
+
+  // Reset to initial waiting state
+  if(pImg) { pImg.style.borderColor = 'rgba(255,255,255,0.15)'; pImg.style.opacity = '0.4'; }
+  if(pCheck) pCheck.style.display = 'none';
+  if(tImg) { tImg.style.borderColor = 'rgba(255,255,255,0.15)'; tImg.style.opacity = '0.4'; }
+  if(tCheck) tCheck.style.display = 'none';
+  if(text) text.textContent = 'Waiting for consensus to Plant Root...';
+
+  // 1. CodeCrafter accepts
+  setTimeout(() => {
+    if(pImg) { pImg.style.borderColor = '#10B981'; pImg.style.opacity = '1'; }
+    if(pCheck) pCheck.style.display = 'flex';
+  }, 1500);
+
+  // 2. Indra_Dev accepts (Consensus Reached!)
+  setTimeout(() => {
+    if(tImg) { tImg.style.borderColor = '#10B981'; tImg.style.opacity = '1'; }
+    if(tCheck) tCheck.style.display = 'flex';
+    if(text) {
+      text.textContent = 'Consensus reached! Root planted. 🌱';
+      text.style.color = '#10B981';
+    }
+
+    if(btn) {
+      btn.textContent = '✓ Root Planted';
+      btn.className = 'btn btn-success';
+      btn.style.opacity = '1';
+      btn.style.background = 'rgba(16,185,129,0.10)';
+      btn.style.borderColor = 'rgba(16,185,129,0.3)';
+      btn.style.color = '#10B981';
+    }
+
+    // Hide popup
+    setTimeout(() => {
+      if(popup) popup.style.top = '-150px';
+      if(text) text.style.color = '#fff'; // Reset text color
+    }, 2500);
+  }, 3200);
+}
+
+// ── LIGHT / DARK MODE TOGGLE ────────────────────────────────────
+
+let isLight = false;
+
+function toggleMode() {
+  isLight = !isLight;
+  const icon     = document.getElementById('mt-icon');
+  const label    = document.getElementById('mt-label');
+  const modeName = document.getElementById('mode-name');
+  const modeLbl  = document.getElementById('mode-label');
+  const phone    = document.getElementById('phone-main');
+  if (isLight) {
+    icon.textContent = '🌙'; label.textContent = 'Dark';
+    modeName.textContent = 'Library'; modeLbl.classList.add('is-light');
+    phone.classList.add('lm');
+  } else {
+    icon.textContent = '☀️'; label.textContent = 'Light';
+    modeName.textContent = 'Orbit'; modeLbl.classList.remove('is-light');
+    phone.classList.remove('lm');
+  }
+  buildPhone(cur);
+}
+
+// Walk inline styles and remap dark values to light equivalents
+function applyLightTheme(root) {
+  root.setAttribute('data-mode', 'light');
+
+  root.querySelectorAll('[style]').forEach(el => {
+    let s = el.getAttribute('style');
+
+    // ── Solid backgrounds ──
+    s = s.replace(/background:\s*#05070A/gi, 'background:#F2F4F7');
+    s = s.replace(/background:\s*#0f1623/gi, 'background:#ffffff');
+    s = s.replace(/background:\s*#111827/gi, 'background:#ffffff');
+    s = s.replace(/background:\s*#0d1e38/gi, 'background:#dce8f8');
+    s = s.replace(/background:\s*#0d1828/gi, 'background:#dce8f8');
+    s = s.replace(/background:\s*#1a2a40/gi, 'background:#e2ecf8');
+    s = s.replace(/background:\s*#1a3060/gi, 'background:#d8e6f6');
+    s = s.replace(/background:\s*#1a3a5c/gi, 'background:#cce0f5');
+    s = s.replace(/background:\s*#0d2a1e/gi, 'background:#d8f0e8');
+    s = s.replace(/background:\s*#2a1a0d/gi, 'background:#f0e8d8');
+    s = s.replace(/background:\s*#1a1a3a/gi, 'background:#e4e4f4');
+    s = s.replace(/background:\s*#1a3a2a/gi, 'background:#daf0e6');
+    s = s.replace(/background:\s*#3a1a2a/gi, 'background:#f4e0ea');
+    s = s.replace(/background:\s*#2a2a1a/gi, 'background:#f0f0da');
+    s = s.replace(/background:\s*#1a2a3a/gi, 'background:#dce8f4');
+    s = s.replace(/background:\s*#1e2a1a/gi, 'background:#dceada');
+    s = s.replace(/background:\s*#3a1a1a/gi, 'background:#f4dada');
+    s = s.replace(/background:\s*#1e3a6e/gi, 'background:#c0d4ee');
+
+    // ── rgba dark surfaces ──
+    s = s.replace(/background:\s*rgba\(5,\s*7,\s*10,\s*(0\.[0-9]+)\)/gi, (_, a) =>
+      parseFloat(a) > 0.65 ? 'background:rgba(242,244,247,0.94)' : 'background:rgba(242,244,247,0.75)');
+    s = s.replace(/background:\s*rgba\(26,\s*29,\s*36,\s*(0\.[0-9]+)\)/gi, (_, a) =>
+      `background:rgba(255,255,255,${Math.min(0.90, parseFloat(a) + 0.28)})`);
+    s = s.replace(/background:\s*rgba\(12,\s*14,\s*20,\s*[0-9.]+\)/gi, 'background:rgba(255,255,255,0.90)');
+    s = s.replace(/background:\s*rgba\(10,\s*22,\s*44,\s*[0-9.]+\)/gi, 'background:rgba(232,240,252,0.80)');
+    s = s.replace(/background:\s*rgba\(15,\s*30,\s*58,\s*[0-9.]+\)/gi, 'background:rgba(228,238,252,0.70)');
+    s = s.replace(/background:\s*rgba\(30,\s*58,\s*95,\s*[0-9.]+\)/gi, 'background:rgba(220,232,250,0.60)');
+    s = s.replace(/background:\s*rgba\(18,\s*20,\s*26,\s*[0-9.]+\)/gi, 'background:rgba(248,249,251,0.95)');
+
+    // ── Gradient rgba dark values ──
+    s = s.replace(/rgba\(5,\s*7,\s*10,\s*0\.(8|9)[0-9]*\)/gi, 'rgba(242,244,247,0.92)');
+    s = s.replace(/rgba\(5,\s*7,\s*10,\s*0\.[456][0-9]*\)/gi, 'rgba(242,244,247,0.70)');
+    s = s.replace(/rgba\(5,\s*7,\s*10,\s*0\.[123][0-9]*\)/gi, 'rgba(242,244,247,0.35)');
+    s = s.replace(/#0d1e38/gi, '#dce8f8');
+    s = s.replace(/#1a2f50/gi, '#c8daf0');
+    s = s.replace(/#1a3560/gi, '#c4d8f0');
+    s = s.replace(/#2a5080/gi, '#a0c0e0');
+    s = s.replace(/#0d1828/gi, '#dce8f8');
+
+    // ── Text ──
+    s = s.replace(/(^|[;:{,\s])color:\s*#fff([;}\s!]|$)/gi, '$1color:#111$2');
+    s = s.replace(/(^|[;:{,\s])color:\s*rgba\(255,\s*255,\s*255,\s*(0\.[0-9]+)\)/gi, (_, pre, a) => {
+      const v = parseFloat(a);
+      const out = v >= 0.70 ? 0.80 : v >= 0.55 ? 0.65 : v >= 0.42 ? 0.52 : v >= 0.30 ? 0.40 : 0.28;
+      return `${pre}color:rgba(0,0,0,${out})`;
+    });
+
+    // ── Borders ──
+    s = s.replace(/border:\s*([\d.]+px)\s+solid\s+rgba\(255,\s*255,\s*255,\s*(0\.[0-9]+)\)/gi, (_, w, a) => {
+      const v = parseFloat(a);
+      const out = v >= 0.50 ? 0.32 : v >= 0.18 ? 0.14 : v >= 0.10 ? 0.10 : 0.07;
+      return `border:${w} solid rgba(0,0,0,${out})`;
+    });
+    s = s.replace(/border-bottom:\s*\.5px\s+solid\s+rgba\(255,\s*255,\s*255,\s*(0\.[0-9]+)\)/gi,
+      (_, a) => `border-bottom:.5px solid rgba(0,0,0,${Math.round(parseFloat(a)*0.6*100)/100})`);
+    s = s.replace(/border-top:\s*1px\s+solid\s+rgba\(255,\s*255,\s*255,\s*(0\.[0-9]+)\)/gi,
+      (_, a) => `border-top:1px solid rgba(0,0,0,${Math.round(parseFloat(a)*0.6*100)/100})`);
+
+    // ── Shadows ──
+    s = s.replace(/box-shadow:\s*0\s+16px\s+40px\s+rgba\(0,0,0,[0-9.]+\)/gi, 'box-shadow:0 8px 24px rgba(0,0,0,0.12)');
+    s = s.replace(/box-shadow:\s*0\s+20px\s+40px\s+rgba\(0,0,0,[0-9.]+\)/gi, 'box-shadow:0 6px 18px rgba(0,0,0,0.10)');
+    s = s.replace(/box-shadow:\s*0\s+12px\s+32px\s+rgba\(0,0,0,[0-9.]+\)/gi, 'box-shadow:0 5px 14px rgba(0,0,0,0.09)');
+    s = s.replace(/box-shadow:\s*3px\s+3px\s+1[24]px\s+rgba\(0,0,0,[0-9.]+\)/gi, 'box-shadow:2px 2px 8px rgba(0,0,0,0.12)');
+    s = s.replace(/box-shadow:\s*4px\s+4px\s+1[26]px\s+rgba\(0,0,0,[0-9.]+\)/gi, 'box-shadow:2px 2px 8px rgba(0,0,0,0.12)');
+
+    el.setAttribute('style', s);
+  });
+
+  // SVG attribute stroke overrides
+  const strokeMap = {
+    'rgba(255,255,255,0.55)':'rgba(0,0,0,0.45)',
+    'rgba(255,255,255,0.40)':'rgba(0,0,0,0.35)',
+    'rgba(255,255,255,0.35)':'rgba(0,0,0,0.30)',
+    'rgba(255,255,255,0.30)':'rgba(0,0,0,0.26)',
+    'rgba(255,255,255,0.25)':'rgba(0,0,0,0.22)',
+    'rgba(255,255,255,0.22)':'rgba(0,0,0,0.20)',
+    'rgba(255,255,255,0.20)':'rgba(0,0,0,0.18)',
+  };
+  root.querySelectorAll('[stroke]').forEach(el => {
+    const v = el.getAttribute('stroke');
+    if (strokeMap[v]) el.setAttribute('stroke', strokeMap[v]);
+  });
+}
+
+// ── Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') next();
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   prev();
+});
+
+// Init on load
+document.addEventListener('DOMContentLoaded', updateUI);
+</script>
+</body>
+</html>

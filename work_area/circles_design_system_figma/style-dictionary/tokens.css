@@ -1,0 +1,269 @@
+/* ============================================================
+   circles Design System — CSS Variables
+   Generated from tokens.json | CausalSyntax
+   Import: <link rel="stylesheet" href="tokens.css">
+   ============================================================ */
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Raleway:wght@400;500;600;700&display=swap');
+
+:root {
+  /* ── Color: Raw palette ── */
+  --color-blue-50:    #EFF7FF;
+  --color-blue-100:   #BAD8FF;
+  --color-blue-200:   #7DBCFF;   /* circles brand */
+  --color-blue-300:   #4F9EE8;
+  --color-blue-400:   #3B82F6;
+  --color-blue-500:   #1E3A5F;   /* navy */
+  --color-blue-600:   #0F172A;
+
+  /* ── Color: Dark surfaces ── */
+  --color-dark-bg:    #0A1628;
+  --color-dark-surf:  #111D30;
+  --color-dark-surf2: #1A2B42;
+  --color-dark-muted: #94A3B8;
+
+  /* ── Color: Semantic ── */
+  --color-success:    #10B981;
+  --color-success-bg: #064E3B;
+  --color-warning:    #F59E0B;
+  --color-warning-bg: #451A03;
+  --color-error:      #EF4444;
+  --color-error-bg:   #7F1D1D;
+
+  /* ── Typography ── */
+  --font-product:     'Montserrat', system-ui, sans-serif;
+  --font-company:     'Raleway', system-ui, sans-serif;
+
+  --fw-light:         300;
+  --fw-regular:       400;
+  --fw-medium:        500;
+  --fw-semibold:      600;
+
+  --fs-display:       28px;
+  --fs-h1:            22px;
+  --fs-h2:            18px;
+  --fs-h3:            15px;
+  --fs-body-lg:       13px;
+  --fs-body:          11px;
+  --fs-caption:       9px;
+  --fs-micro:         8px;
+
+  --lh-tight:         1.2;
+  --lh-snug:          1.3;
+  --lh-normal:        1.4;
+  --lh-relaxed:       1.6;
+
+  --ls-tighter:       -0.5px;
+  --ls-tight:         -0.3px;
+  --ls-normal:        0px;
+  --ls-wide:          0.3px;
+  --ls-wider:         0.8px;
+  --ls-widest:        1.2px;
+  --ls-display:       3px;
+
+  /* ── Spacing (base-4) ── */
+  --space-1:    4px;
+  --space-2:    8px;
+  --space-3:    12px;
+  --space-4:    16px;   /* base unit */
+  --space-5:    20px;
+  --space-6:    24px;
+  --space-8:    32px;
+  --space-10:   40px;
+  --space-12:   48px;
+  --space-16:   64px;
+
+  /* ── Border radius ── */
+  --radius-xs:   4px;
+  --radius-sm:   8px;
+  --radius-md:   10px;
+  --radius-lg:   12px;
+  --radius-xl:   16px;
+  --radius-pill: 50px;
+  --radius-full: 9999px;
+
+  /* ── Border width ── */
+  --border-hairline: 0.5px;
+  --border-thin:     1px;
+  --border-base:     1.5px;
+  --border-thick:    2px;
+
+  /* ── Shadow ── */
+  --shadow-glow-sm: 0 0 0 3px rgba(125,188,255,0.18), 0 0 0 6px rgba(125,188,255,0.07);
+  --shadow-glow-md: 0 0 0 6px rgba(125,188,255,0.18), 0 0 0 12px rgba(125,188,255,0.07);
+
+  /* ── Motion ── */
+  --duration-fast:    120ms;
+  --duration-base:    200ms;
+  --duration-enter:   300ms;
+  --duration-exit:    200ms;
+  --duration-ambient: 2400ms;
+  --duration-bloom:   500ms;
+  --duration-snap:    350ms;
+
+  --ease-out:   ease-out;
+  --ease-in:    ease-in;
+  --ease-enter: cubic-bezier(0.2, 0.8, 0.3, 1);
+  --ease-bloom: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-snap:  cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Stroke widths ── */
+  --stroke-logo-outer: 0.9px;
+  --stroke-logo-inner: 0.8px;
+  --stroke-icon:       2px;
+  --stroke-divider:    0.5px;
+}
+
+/* ── DARK MODE (default) ── */
+[data-theme="dark"], :root {
+  --color-bg:           var(--color-dark-bg);
+  --color-surface:      var(--color-dark-surf);
+  --color-surface-2:    var(--color-dark-surf2);
+  --color-text:         #F1F5F9;
+  --color-text-muted:   var(--color-dark-muted);
+  --color-brand:        var(--color-blue-200);
+  --color-brand-accent: var(--color-blue-300);
+  --color-border:       var(--color-blue-500);
+  --color-border-brand: var(--color-blue-200);
+  --color-navy:         var(--color-blue-500);
+}
+
+/* ── LIGHT MODE ── */
+[data-theme="light"] {
+  --color-bg:           #F0F7FF;
+  --color-surface:      #FFFFFF;
+  --color-surface-2:    #E6F2FF;
+  --color-text:         var(--color-blue-600);
+  --color-text-muted:   #64748B;
+  --color-brand:        var(--color-blue-300);
+  --color-brand-accent: var(--color-blue-400);
+  --color-border:       var(--color-blue-100);
+  --color-border-brand: var(--color-blue-300);
+  --color-navy:         var(--color-blue-500);
+}
+
+/* ── Component classes ── */
+
+/* Button — Primary */
+.btn-primary {
+  font-family:     var(--font-product);
+  font-size:       var(--fs-body);
+  font-weight:     var(--fw-medium);
+  letter-spacing:  var(--ls-wide);
+  background:      var(--color-brand);
+  color:           var(--color-dark-bg);
+  border:          none;
+  border-radius:   var(--radius-pill);
+  padding:         8px 18px;   /* 80% of original 13px vertical */
+  cursor:          pointer;
+  transition:      opacity var(--duration-fast) var(--ease-out);
+}
+.btn-primary:hover { opacity: 0.88; }
+
+/* Button — Social / Secondary */
+.btn-social {
+  font-family:     var(--font-product);
+  font-size:       10.5px;
+  font-weight:     var(--fw-regular);
+  letter-spacing:  0.15px;
+  background:      var(--color-surface-2);
+  color:           var(--color-text);
+  border:          var(--border-hairline) solid var(--color-border);
+  border-radius:   var(--radius-pill);
+  padding:         8px 14px;
+  cursor:          pointer;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  gap:             var(--space-2);
+}
+
+/* Input */
+.input {
+  font-family:   var(--font-product);
+  font-size:     var(--fs-body);
+  font-weight:   var(--fw-regular);
+  background:    var(--color-surface-2);
+  color:         var(--color-text);
+  border:        var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-pill);
+  padding:       7px 14px;
+  width:         100%;
+  outline:       none;
+  transition:    border-color var(--duration-fast) var(--ease-out);
+}
+.input:focus { border-color: var(--color-brand); }
+
+/* Card */
+.card {
+  background:    var(--color-surface-2);
+  border:        var(--border-hairline) solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding:       var(--space-3);
+}
+
+/* Avatar */
+.avatar {
+  border-radius: var(--radius-full);
+  border:        var(--border-thick) solid var(--color-brand);
+  display:       flex;
+  align-items:   center;
+  justify-content: center;
+  font-family:   var(--font-product);
+  font-weight:   var(--fw-semibold);
+}
+.avatar.glow { box-shadow: var(--shadow-glow-sm); }
+
+/* Tag / Badge */
+.tag {
+  display:       inline-block;
+  padding:       2px 7px;
+  border-radius: var(--radius-full);
+  font-family:   var(--font-product);
+  font-size:     var(--fs-micro);
+  font-weight:   var(--fw-semibold);
+  background:    var(--color-navy);
+  color:         var(--color-brand);
+  border:        var(--border-hairline) solid var(--color-brand);
+}
+
+/* Collision Card accent bar */
+.collision-card {
+  background:     var(--color-surface-2);
+  border-radius:  var(--radius-lg);
+  border:         var(--border-hairline) solid var(--color-border);
+  padding:        var(--space-3) var(--space-3) var(--space-3) 13px;
+  position:       relative;
+  overflow:       hidden;
+  cursor:         pointer;
+  transition:     border-color var(--duration-fast) var(--ease-out);
+}
+.collision-card:hover       { border-color: var(--color-brand); }
+.collision-card.hot         { border-color: var(--color-brand); }
+.collision-card::before {
+  content:        '';
+  position:       absolute;
+  left:           0; top: 0; bottom: 0;
+  width:          3px;
+  background:     var(--color-border);
+  border-radius:  3px 0 0 3px;
+}
+.collision-card.hot::before { background: var(--color-brand); }
+
+/* Bottom nav */
+.nav-tab {
+  display:        flex;
+  flex-direction: column;
+  align-items:    center;
+  gap:            3px;
+  padding:        7px 4px;
+  font-family:    var(--font-product);
+  font-size:      var(--fs-micro);
+  color:          var(--color-text-muted);
+  background:     transparent;
+  border:         none;
+  cursor:         pointer;
+  transition:     color var(--duration-fast) var(--ease-out);
+}
+.nav-tab.active { color: var(--color-brand); font-weight: var(--fw-semibold); }

@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="256" height="208" viewBox="0 0 256 208">
+  <rect width="256" height="208" fill="#0A1628"/>
+  <text x="8" y="20" font-family="Montserrat,sans-serif" font-size="10" fill="#7DBCFF" font-weight="500">circles icon set — 24×24 — 2px stroke — never filled</text>
+  <g transform="translate(16.0,36)" id="icon-feed">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 4h8M2 8h8M2 12h5" stroke-linecap="round"/>
+    </g>
+  </g>
+  <text x="28.0" y="62" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">feed</text>
+  <g transform="translate(56.0,36)" id="icon-lobby">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/>
+    </g>
+  </g>
+  <text x="68.0" y="62" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">lobby</text>
+  <g transform="translate(96.0,36)" id="icon-shelf">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M2 18h20M5 18V9M10 18V5M15 18V11M20 18V7" stroke-linecap="round"/>
+    </g>
+  </g>
+  <text x="108.0" y="62" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">shelf</text>
+  <g transform="translate(136.0,36)" id="icon-handshake">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12h16M4 12l4-4M4 12l4 4" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text x="148.0" y="62" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">handshake</text>
+  <g transform="translate(176.0,36)" id="icon-table">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="8" width="18" height="10" rx="2"/><circle cx="8" cy="13" r="1.5"/><circle cx="16" cy="13" r="1.5"/>
+    </g>
+  </g>
+  <text x="188.0" y="62" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">table</text>
+  <g transform="translate(216.0,36)" id="icon-bloom">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="2"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8" stroke-linecap="round"/>
+    </g>
+  </g>
+  <text x="228.0" y="62" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">bloom</text>
+  <g transform="translate(16.0,76)" id="icon-stage">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 4l14 8-14 8V4z" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text x="28.0" y="102" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">stage</text>
+  <g transform="translate(56.0,76)" id="icon-persona">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke-linecap="round"/>
+    </g>
+  </g>
+  <text x="68.0" y="102" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">persona</text>
+  <g transform="translate(96.0,76)" id="icon-settings">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" stroke-linecap="round"/>
+    </g>
+  </g>
+  <text x="108.0" y="102" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">settings</text>
+  <g transform="translate(136.0,76)" id="icon-note">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 12h8M8 8h8" stroke-linecap="round"/><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M8 16h5" stroke-linecap="round"/>
+    </g>
+  </g>
+  <text x="148.0" y="102" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">note</text>
+  <g transform="translate(176.0,76)" id="icon-reading-list">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="4" y="2" width="12" height="20" rx="1"/><path d="M4 17l6-3 6 3V7H4v10z"/>
+    </g>
+  </g>
+  <text x="188.0" y="102" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">reading-list</text>
+  <g transform="translate(216.0,76)" id="icon-book">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 19V5a2 2 0 012-2h14v18H6a2 2 0 01-2-2z"/><path d="M4 15h16"/>
+    </g>
+  </g>
+  <text x="228.0" y="102" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">book</text>
+  <g transform="translate(16.0,116)" id="icon-sponsored">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18" stroke-linecap="round"/><circle cx="12" cy="15" r="2"/>
+    </g>
+  </g>
+  <text x="28.0" y="142" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">sponsored</text>
+  <g transform="translate(56.0,116)" id="icon-back-arrow">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text x="68.0" y="142" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">back-arrow</text>
+  <g transform="translate(96.0,116)" id="icon-close">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M18 6L6 18M6 6l12 12" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text x="108.0" y="142" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">close</text>
+  <g transform="translate(136.0,116)" id="icon-check">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 12l6 6 10-10" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text x="148.0" y="142" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">check</text>
+  <g transform="translate(176.0,116)" id="icon-chevron-right">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text x="188.0" y="142" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">chevron-right</text>
+  <g transform="translate(216.0,116)" id="icon-microphone">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2a3 3 0 013 3v6a3 3 0 01-6 0V5a3 3 0 013-3z"/><path d="M19 10a7 7 0 01-14 0M12 19v3M8 22h8" stroke-linecap="round"/>
+    </g>
+  </g>
+  <text x="228.0" y="142" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">microphone</text>
+  <g transform="translate(16.0,156)" id="icon-video">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M15 10l5-3v10l-5-3V10z"/><rect x="2" y="7" width="13" height="10" rx="2"/>
+    </g>
+  </g>
+  <text x="28.0" y="182" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">video</text>
+  <g transform="translate(56.0,156)" id="icon-plant-roots">
+    <rect width="24" height="24" fill="transparent"/>
+    <g fill="none" stroke="#7DBCFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 22V12M12 12C12 7 7 4 3 6M12 12C12 7 17 4 21 6M12 12C12 16 9 19 6 18M12 12C12 16 15 19 18 18" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+  </g>
+  <text x="68.0" y="182" text-anchor="middle" font-family="Montserrat,sans-serif" font-size="5.5" fill="#64748B">plant-roots</text>
+</svg>
