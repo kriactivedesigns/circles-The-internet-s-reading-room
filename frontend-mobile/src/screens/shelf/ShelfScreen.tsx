@@ -2,25 +2,9 @@ import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions } from 'react-native';
 import { useTheme } from '../../theme/ThemeContext';
 import { typography } from '../../theme/typography';
-import { FeedCard } from '../../components/molecules/FeedCard';
+import { ShelfCard } from '../../components/molecules/ShelfCard';
 
 const { width } = Dimensions.get('window');
-
-const CollectionCard: React.FC<{ title: string, count: number, color: string }> = ({ title, count, color }) => {
-  const { colors, isDark } = useTheme();
-
-  return (
-    <TouchableOpacity style={[styles.collectionCard, { backgroundColor: colors.background.glass, borderColor: colors.border.glass }]}>
-      <View style={[styles.collectionIcon, { backgroundColor: color + '20' }]}>
-         <View style={{ width: 12, height: 16, backgroundColor: color, borderRadius: 2 }} />
-      </View>
-      <View>
-        <Text style={[styles.collectionTitle, { color: colors.text.primary }]}>{title}</Text>
-        <Text style={[styles.collectionCount, { color: colors.text.muted }]}>{count} items</Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
 
 export const ShelfScreen: React.FC = () => {
   const { colors, isDark } = useTheme();
@@ -29,49 +13,45 @@ export const ShelfScreen: React.FC = () => {
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         <View style={styles.titleSection}>
-          <Text style={[styles.pageTitle, { color: isDark ? '#fff' : '#05070A' }]}>Your Shelf</Text>
-          {/* Progress Bar (Skill mockup 12) */}
-          <View style={styles.progressContainer}>
-            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 8 }}>
-              <Text style={styles.progressLabel}>Reading List Progress</Text>
-              <Text style={styles.progressValue}>3 / 20</Text>
-            </View>
-            <View style={[styles.progressBarBase, { backgroundColor: isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)' }]}>
-              <View style={[styles.progressBarFill, { backgroundColor: colors.primary.base }]} />
-            </View>
-          </View>
+          <Text style={[styles.pageTitle, { color: colors.text.primary }]}>Your Shelf</Text>
         </View>
 
         {/* ── Category Filters ── */}
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScroll}>
-           <TouchableOpacity style={[styles.filterBtn, { backgroundColor: colors.primary.base }]}><Text style={styles.filterBtnTextActive}>All Items</Text></TouchableOpacity>
-            <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}><Text style={styles.filterBtnText}>Books</Text></TouchableOpacity>
-            <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}><Text style={styles.filterBtnText}>Articles</Text></TouchableOpacity>
-            <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}><Text style={styles.filterBtnText}>Saved Stages</Text></TouchableOpacity>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filterScroll} contentContainerStyle={{ paddingRight: 40 }}>
+           <TouchableOpacity style={[styles.filterBtn, { backgroundColor: colors.primary.base }]}>
+             <Text style={[styles.filterBtnText, { color: '#fff' }]}>All Items</Text>
+           </TouchableOpacity>
+           <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}>
+             <Text style={[styles.filterBtnText, { color: colors.text.secondary }]}>Books</Text>
+           </TouchableOpacity>
+           <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}>
+             <Text style={[styles.filterBtnText, { color: colors.text.secondary }]}>Articles</Text>
+           </TouchableOpacity>
+           <TouchableOpacity style={[styles.filterBtn, styles.filterBtnOutline, { borderColor: colors.border.glass }]}>
+             <Text style={[styles.filterBtnText, { color: colors.text.secondary }]}>Saved Stages</Text>
+           </TouchableOpacity>
         </ScrollView>
 
-        <View style={styles.shelfGrid}>
-           {/* Reusing FeedCard for consistency */}
-          <View style={styles.gridItem}>
-             <FeedCard 
-               type="book" 
-               title="The Great Good Place" 
-               author="Ray Oldenburg" 
-               description="Exploring the third place..."
-             />
+        <View style={styles.shelfBody}>
+          <View style={styles.shelfGrid}>
+            <ShelfCard type="book" title="The Great Good Place" subtitle="Ray Oldenburg" />
+            <ShelfCard type="article" title="Defensive Design Patterns" subtitle="12 min read" />
           </View>
           
-          <View style={styles.sectionHeader}>
-            <Text style={[styles.sectionTitle, { color: colors.primary.base }]}>Collections</Text>
-            <TouchableOpacity><Text style={{ color: colors.primary.base, fontSize: 10, fontWeight: '700' }}>EDIT</Text></TouchableOpacity>
+          <ShelfCard type="stage" title="State Management in 2026" subtitle="45 mins · Frontend Masters" />
+
+          {/* Reading List Progress */}
+          <View style={[styles.progressContainer, { borderColor: colors.border.glass, backgroundColor: colors.background.glass }]}>
+            <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
+              <Text style={[styles.progressLabel, { color: colors.text.primary }]}>Reading List</Text>
+              <Text style={[styles.progressValue, { color: colors.text.muted }]}>3<Text style={{ fontSize: 9.5 }}> / 20</Text></Text>
+            </View>
+            <View style={[styles.progressBarBase, { backgroundColor: 'rgba(255,255,255,0.06)' }]}>
+              <View style={[styles.progressBarFill, { backgroundColor: colors.primary.base }]} />
+            </View>
+            <Text style={[styles.progressSubValue, { color: colors.text.muted }]}>Free plan - 17 slots remaining</Text>
           </View>
-          
-          <View style={styles.collectionGrid}>
-            <CollectionCard title="UX & Design" count={24} color="#5C94E9" />
-            <CollectionCard title="Sociology" count={12} color="#10B981" />
-            <CollectionCard title="Indie Hacking" count={8} color="#F59E0B" />
-            <CollectionCard title="Daily Reads" count={45} color="#8B5CF6" />
-          </View>
+
         </View>
       </ScrollView>
     </View>
@@ -87,83 +67,64 @@ const styles = StyleSheet.create({
   },
   titleSection: {
     padding: 20,
-    paddingTop: 24,
+    paddingTop: 16, // Under header space
   },
   pageTitle: {
-    fontSize: 24,
-    fontWeight: '700',
-    marginBottom: 20,
+    fontFamily: typography.families.ui,
+    fontSize: 22,
+    fontWeight: '800',
+    letterSpacing: -0.5,
   },
-  progressContainer: {
-    borderRadius: 16,
-    padding: 16,
-    borderWidth: 1,
-  },
-  progressLabel: { fontSize: 11, fontWeight: '600' },
-  progressValue: { fontSize: 11, fontWeight: '600' },
-  progressBarBase: { height: 4, borderRadius: 2, overflow: 'hidden' },
-  progressBarFill: { width: '15%', height: '100%' },
-
   filterScroll: {
     paddingLeft: 20,
     marginBottom: 24,
   },
   filterBtn: {
-    paddingHorizontal: 16,
-    paddingVertical: 8,
-    borderRadius: 8,
-    marginRight: 8,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 999,
+    marginRight: 10,
   },
   filterBtnOutline: {
     borderWidth: 1,
     backgroundColor: 'transparent',
   },
-  filterBtnText: { fontSize: 10, fontWeight: '600' },
-  filterBtnTextActive: { fontSize: 10, fontWeight: '700' },
-
-  shelfGrid: {
+  filterBtnText: {
+    fontFamily: typography.families.ui,
+    fontSize: 10.5,
+    fontWeight: '700',
+  },
+  shelfBody: {
     paddingHorizontal: 20,
   },
-  gridItem: {
-    marginBottom: 24,
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'baseline',
-    marginBottom: 16,
-  },
-  sectionTitle: {
-    fontSize: 9,
-    fontWeight: '700',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
-  },
-  collectionGrid: {
+  shelfGrid: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 12,
+    justifyContent: 'space-between',
+    gap: 16,
+    marginBottom: 16,
   },
-  collectionCard: {
-    width: (width - 52) / 2,
-    padding: 16,
+  progressContainer: {
     borderRadius: 20,
+    padding: 20,
     borderWidth: 1,
-    gap: 12,
+    marginBottom: 24,
   },
-  collectionIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  collectionTitle: {
+  progressLabel: {
+    fontFamily: typography.families.ui,
     fontSize: 12,
     fontWeight: '700',
   },
-  collectionCount: {
-    fontSize: 9,
-    marginTop: 2,
+  progressValue: {
+    fontFamily: typography.families.ui,
+    fontSize: 11,
+    fontWeight: '600',
   },
+  progressSubValue: {
+    fontFamily: typography.families.ui,
+    fontSize: 9.5,
+    marginTop: 10,
+  },
+  progressBarBase: { height: 4, borderRadius: 2, overflow: 'hidden' },
+  progressBarFill: { width: '15%', height: '100%' },
 });

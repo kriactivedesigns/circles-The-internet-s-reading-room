@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
-import Animated, { 
-  useSharedValue, 
-  useAnimatedStyle, 
-  withSpring, 
-  withTiming, 
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withSpring,
+  withTiming,
   useAnimatedReaction,
   interpolate,
   SharedValue
@@ -18,9 +18,9 @@ import { GlowEffect } from '../atoms/GlowEffect';
 const { width } = Dimensions.get('window');
 
 const FULL_HEIGHT = 70;
-const SHRUNK_HEIGHT = 40;
-const FULL_WIDTH = width * 0.85;
-const SHRUNK_WIDTH = 155;
+const SHRUNK_HEIGHT = 25;
+const FULL_WIDTH = width * 0.70;
+const SHRUNK_WIDTH = 110;
 
 interface BottomNavProps {
   routeName: string;
@@ -30,7 +30,6 @@ interface BottomNavProps {
 
 const TABS = [
   { name: 'Feed', icon: 'home' },
-  { name: 'Orbit', icon: 'users' },
   { name: 'Shelf', icon: 'bookmark' },
 ];
 
@@ -50,7 +49,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({ routeName, onTabPress, scr
 
     // Restore expansion when leaving Feed tab
     if (routeName !== 'Feed') {
-      animValue.value = withSpring(1, { damping: 15, stiffness: 100 });
+      animValue.value = withTiming(1, { duration: 250 });
     }
   }, [routeName]);
 
@@ -65,13 +64,13 @@ export const BottomNav: React.FC<BottomNavProps> = ({ routeName, onTabPress, scr
       const diff = current - lastScrollY.value;
 
       if (current < 40) {
-        animValue.value = withSpring(1, { damping: 15, stiffness: 100 });
+        animValue.value = withTiming(1, { duration: 250 });
       } else if (diff > 8) {
-        animValue.value = withSpring(0, { damping: 15, stiffness: 100 });
+        animValue.value = withTiming(0, { duration: 250 });
       } else if (diff < -8) {
-        animValue.value = withSpring(1, { damping: 15, stiffness: 100 });
+        animValue.value = withTiming(1, { duration: 250 });
       }
-      
+
       lastScrollY.value = current;
     },
     [routeName]
@@ -93,24 +92,21 @@ export const BottomNav: React.FC<BottomNavProps> = ({ routeName, onTabPress, scr
   }));
 
   const iconContainerStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: interpolate(animValue.value, [0, 1], [0.85, 1]) }],
+    transform: [{ scale: interpolate(animValue.value, [0, 1], [0.5, 1]) }],
   }));
 
-  const labelStyle = (isFocused: boolean) => useAnimatedStyle(() => {
+  const labelContainerStyle = (isFocused: boolean) => useAnimatedStyle(() => {
     const opacity = interpolate(animValue.value, [0.7, 1], [0, 1]);
-    const height = interpolate(animValue.value, [0.7, 1], [0, 12]);
+    const height = interpolate(animValue.value, [0, 1], [0, 10]); // shrink to 0 height
     return {
       opacity,
       height,
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
       marginTop: interpolate(animValue.value, [0, 1], [0, 4]),
-      color: isFocused ? colors.primary.base : colors.text.secondary,
     };
   });
-
-  const activeDotStyle = useAnimatedStyle(() => ({
-    bottom: interpolate(animValue.value, [0, 1], [-2, -8]),
-    opacity: interpolate(animValue.value, [0.7, 1], [0, 1]),
-  }));
 
   const getIcon = (name: string, focused: boolean) => {
     const color = focused ? colors.primary.base : colors.text.secondary;
@@ -120,12 +116,6 @@ export const BottomNav: React.FC<BottomNavProps> = ({ routeName, onTabPress, scr
         return (
           <Svg width={size} height={size} stroke={color} strokeWidth="2" fill="none" viewBox="0 0 24 24">
             <Path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-          </Svg>
-        );
-      case 'Orbit':
-        return (
-          <Svg width={size} height={size} stroke={color} strokeWidth="2" fill="none" viewBox="0 0 24 24">
-            <Path d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
           </Svg>
         );
       case 'Shelf':
@@ -158,13 +148,18 @@ export const BottomNav: React.FC<BottomNavProps> = ({ routeName, onTabPress, scr
                   {getIcon(tab.name, isFocused)}
                 </Animated.View>
 
-                <Animated.Text numberOfLines={1} style={[styles.navLabel, labelStyle(isFocused)]}>
-                  {tab.name}
-                </Animated.Text>
-
-                {isFocused && (
-                  <Animated.View style={[styles.activeDot, activeDotStyle]} />
-                )}
+                <Animated.View style={labelContainerStyle(isFocused)}>
+                  <Text numberOfLines={1} style={[
+                    styles.navLabel, {
+                      color: isFocused ? colors.primary.base : colors.text.secondary
+                    }
+                  ]}>
+                    {tab.name}
+                  </Text>
+                  {isFocused && (
+                    <View style={styles.activeDot} />
+                  )}
+                </Animated.View>
               </TouchableOpacity>
             );
           })}
@@ -205,15 +200,19 @@ const getStyles = (colors: Colors, background: string, isDark: boolean) => Style
     alignItems: 'center',
     justifyContent: 'center',
   },
+  iconContainerStyle: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   iconContainer: {
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   navLabel: {
     fontFamily: typography.families.ui,
     fontSize: 8.5,
     fontWeight: '700',
-    letterSpacing: 0.5,
+    letterSpacing: 2,
   },
   activeDot: {
     width: 2.5,
@@ -221,5 +220,6 @@ const getStyles = (colors: Colors, background: string, isDark: boolean) => Style
     borderRadius: 1.25,
     backgroundColor: colors.primary.base,
     position: 'absolute',
+    bottom: -6,
   },
 });

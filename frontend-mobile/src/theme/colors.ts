@@ -8,6 +8,7 @@ export interface Colors {
     base: string;
     surface: string;
     glass: string;
+    transparent: string;
   };
   border: {
     glass: string;
@@ -34,6 +35,7 @@ export const darkColors: Colors = {
     base: '#05070A',
     surface: '#121212',
     glass: 'rgba(26, 29, 36, 0.6)',
+    transparent: 'transparent',
   },
   border: {
     glass: 'rgba(255, 255, 255, 0.12)',
@@ -60,6 +62,7 @@ export const lightColors: Colors = {
     base: '#F2F4F7',
     surface: '#FAFAFA',
     glass: 'rgba(255, 255, 255, 0.7)',
+    transparent: 'transparent',
   },
   border: {
     glass: 'rgba(0, 0, 0, 0.08)',

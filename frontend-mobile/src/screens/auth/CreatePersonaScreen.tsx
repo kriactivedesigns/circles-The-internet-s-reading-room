@@ -10,8 +10,8 @@ import { useTheme } from '../../theme/ThemeContext';
 import { Colors } from '../../theme/colors';
 
 const INTERESTS = [
-  'UX Design', 'Architecture', 'SaaS', 'AI / ML', 'Indie Hacking', 
-  'Writing', 'Photography', 'Jazz', 'Philosophy', 'Fiction', 
+  'UX Design', 'Architecture', 'SaaS', 'AI / ML', 'Indie Hacking',
+  'Writing', 'Photography', 'Jazz', 'Philosophy', 'Fiction',
   'Climate', 'Fintech'
 ];
 
@@ -35,7 +35,7 @@ export const CreatePersonaScreen: React.FC = () => {
 
       <SafeAreaView style={styles.safeArea}>
         <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-          
+
           {/* Header */}
           <View style={styles.header}>
             <Text style={styles.badge}>Public Identity</Text>
@@ -52,9 +52,9 @@ export const CreatePersonaScreen: React.FC = () => {
 
           {/* Alias */}
           <View style={styles.section}>
-            <LabeledInput 
-              label="Persona alias" 
-              placeholder="e.g. Alex_UX, CodeCrafter, InkWalker..." 
+            <LabeledInput
+              label="Persona alias"
+              placeholder="e.g. Alex_UX, CodeCrafter, InkWalker..."
               defaultValue="Alex_UX"
             />
           </View>
@@ -69,9 +69,9 @@ export const CreatePersonaScreen: React.FC = () => {
             </View>
             <View style={styles.tagsGrid}>
               {INTERESTS.map((interest) => (
-                <Tag 
-                  key={interest} 
-                  label={interest} 
+                <Tag
+                  key={interest}
+                  label={interest}
                   selected={selectedInterests.includes(interest)}
                   onPress={() => toggleInterest(interest)}
                 />
@@ -80,9 +80,9 @@ export const CreatePersonaScreen: React.FC = () => {
           </View>
 
           <View style={styles.footer}>
-            <Button 
-              label="Enter circles →" 
-              variant="brand" 
+            <Button
+              label="Enter circles →"
+              variant="brand"
               style={styles.completeButton}
             />
           </View>
@@ -96,7 +96,7 @@ export const CreatePersonaScreen: React.FC = () => {
 const getStyles = (colors: Colors) => StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: colors.background.base,
+    backgroundColor: colors.background.transparent,
   },
   scrollContent: {
     paddingHorizontal: 20,

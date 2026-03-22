@@ -12,6 +12,12 @@ import { BottomNav } from './src/components/molecules/BottomNav';
 import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
 import { AmbientBackground } from './src/components/atoms/AmbientBackground';
 import { Header } from './src/components/molecules/Header';
+import { SplashScreen } from './src/screens/auth/SplashScreen';
+import { SignInScreen } from './src/screens/auth/SignInScreen';
+import { OTPScreen } from './src/screens/auth/OTPScreen';
+import { IdentityHubScreen } from './src/screens/identity/IdentityHubScreen';
+import { EditBaseProfileScreen } from './src/screens/identity/EditBaseProfileScreen';
+import { EditPersonaScreen } from './src/screens/identity/EditPersonaScreen';
 import { useNavigationContainerRef } from '@react-navigation/native';
 import {
   useFonts,
@@ -40,7 +46,6 @@ const MainTabs = ({ scrollY }: { scrollY: any }) => {
         component={FeedWallScreen}
         initialParams={{ scrollY }}
       />
-      <Tab.Screen name="Orbit" component={OrbitScreen} />
       <Tab.Screen name="Shelf" component={ShelfScreen} />
     </Tab.Navigator>
   );
@@ -50,7 +55,7 @@ const AppContent = () => {
   const { isDark } = useTheme();
   const scrollY = useSharedValue(0);
   const navigationRef = useNavigationContainerRef();
-  const [routeName, setRouteName] = React.useState<string>('Feed');
+  const [routeName, setRouteName] = React.useState<string>('Splash');
   const [canGoBack, setCanGoBack] = React.useState(false);
 
   const NavigationTheme = {
@@ -83,8 +88,10 @@ const AppContent = () => {
             onBack={() => navigationRef.goBack()}
           />
           <Stack.Navigator
+            initialRouteName="Splash"
             screenOptions={{
               headerShown: false,
+              animation: 'none',
               contentStyle: { backgroundColor: 'transparent' }
             }}
           >
@@ -94,22 +101,26 @@ const AppContent = () => {
             >
               {(props) => <MainTabs {...props} scrollY={scrollY} />}
             </Stack.Screen>
+            <Stack.Screen name="Splash" component={SplashScreen} />
+            <Stack.Screen name="SignIn" component={SignInScreen} />
+            <Stack.Screen name="OTP" component={OTPScreen} />
+            <Stack.Screen name="IdentityHub" component={IdentityHubScreen} />
+            <Stack.Screen name="EditBaseProfile" component={EditBaseProfileScreen} />
+            <Stack.Screen name="EditPersona" component={EditPersonaScreen} />
             <Stack.Screen
               name="Sandbox"
               component={SandboxScreen}
-              options={{
-                animation: 'slide_from_right',
-                title: 'Sandbox'
-              }}
             />
           </Stack.Navigator>
-          <BottomNav
-            routeName={routeName}
-            scrollY={scrollY}
-            onTabPress={(name) => {
-              (navigationRef as any).navigate('MainTabs', { screen: name });
-            }}
-          />
+          {['Feed', 'Shelf'].includes(routeName) && (
+            <BottomNav
+              routeName={routeName}
+              scrollY={scrollY}
+              onTabPress={(name) => {
+                (navigationRef as any).navigate('MainTabs', { screen: name });
+              }}
+            />
+          )}
         </View>
       </NavigationContainer>
     </View>

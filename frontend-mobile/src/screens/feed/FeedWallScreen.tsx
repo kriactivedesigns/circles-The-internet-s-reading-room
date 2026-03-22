@@ -23,7 +23,7 @@ export const FeedWallScreen: React.FC<{ route: any }> = ({ route }) => {
   return (
     <View style={styles.base}>
       <StatusBar barStyle={isDark ? "light-content" : "dark-content"} backgroundColor={colors.background.base} />
-      
+
       <SafeAreaView style={styles.safeArea} edges={['left', 'right']}>
         <Animated.ScrollView
           style={styles.scrollView}
@@ -39,7 +39,7 @@ export const FeedWallScreen: React.FC<{ route: any }> = ({ route }) => {
           </View>
 
           {/* Feed Content */}
-          <FeedCard 
+          <FeedCard
             type="article"
             title="The Death of the Follower Count"
             subtitle="UX Philosophy"
@@ -50,14 +50,23 @@ export const FeedWallScreen: React.FC<{ route: any }> = ({ route }) => {
             initial="K"
           />
 
-          <FeedCard 
+          <FeedCard
             type="book"
             title="The Great Good Place"
             author="Ray Oldenburg · Sociology"
           />
 
-          <FeedCard 
+          <FeedCard
             type="stage"
+            title="Micro-SaaS scaling without burnout"
+            description="A live session on sustainable SaaS growth — product, distribution, and founder mental health."
+            author="Vercel Team"
+            initial="V"
+            time="Tonight, 8 PM"
+          />
+
+          <FeedCard
+            type="sponsored"
             title="Micro-SaaS scaling without burnout"
             description="A live session on sustainable SaaS growth — product, distribution, and founder mental health."
             author="Vercel Team"
@@ -67,16 +76,16 @@ export const FeedWallScreen: React.FC<{ route: any }> = ({ route }) => {
 
           {/* Dummy Boxes for Scroll Testing */}
           {Array.from({ length: 5 }).map((_, i) => (
-             <FeedCard 
-                key={`dummy-${i}`}
-                type="article"
-                title={`Testing Scroll Physics Content ${i + 1}`}
-                subtitle="DUMMY CONTENT"
-                description="This card exists purely to test the bottom navigation shrink/restore animation as you navigate through the feed."
-                author="System Tester"
-                time="1 min read"
-                initial="T"
-             />
+            <FeedCard
+              key={`dummy-${i}`}
+              type="article"
+              title={`Testing Scroll Physics Content ${i + 1}`}
+              subtitle="DUMMY CONTENT"
+              description="This card exists purely to test the bottom navigation shrink/restore animation as you navigate through the feed."
+              author="System Tester"
+              time="1 min read"
+              initial="T"
+            />
           ))}
 
           {/* Extra padding for BottomNav transparency area */}
@@ -90,11 +99,11 @@ export const FeedWallScreen: React.FC<{ route: any }> = ({ route }) => {
 const getStyles = (colors: Colors) => StyleSheet.create({
   base: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: colors.background.transparent,
   },
   safeArea: {
     flex: 1,
-    backgroundColor: 'transparent',
+    backgroundColor: colors.background.transparent,
   },
   scrollView: {
     flex: 1,

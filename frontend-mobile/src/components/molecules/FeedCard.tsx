@@ -9,7 +9,7 @@ import { Button } from '../atoms/Button';
 import { GlowEffect } from '../atoms/GlowEffect';
 
 interface FeedCardProps {
-  type: 'article' | 'book' | 'stage';
+  type: 'article' | 'book' | 'stage' | 'sponsored';
   title: string;
   subtitle?: string;
   description?: string;
@@ -32,7 +32,7 @@ export const FeedCard: React.FC<FeedCardProps> = ({ type, title, subtitle, descr
             <Text style={[styles.avatarText, { color: colors.primary.base }]}>?</Text>
           </View>
           <View style={styles.overlay}>
-            <Tag label={tag || "Deep Read"} selected />
+            <Tag label={tag || "Deep Read"} variant="tech" />
           </View>
           <View style={styles.bottomOverlay}>
             <View style={styles.authorRow}>
@@ -67,7 +67,7 @@ export const FeedCard: React.FC<FeedCardProps> = ({ type, title, subtitle, descr
         </View>
         <View style={styles.bookContent}>
           <View style={{ alignSelf: 'flex-start' }}>
-            <Tag label="Book Shelf" selected />
+            <Tag label="Book Shelf" variant="tech" />
           </View>
           <Text style={styles.bookTitle}>{title}</Text>
           <Text style={styles.bookAuthor}>{author}</Text>
@@ -84,27 +84,54 @@ export const FeedCard: React.FC<FeedCardProps> = ({ type, title, subtitle, descr
     );
   }
 
+  if (type === 'sponsored') {
+    return (
+      <View style={[styles.card, { padding: 18 }]}>
+        <GlowEffect />
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 12 }}>
+          <Tag label="Sponsored" variant="warning" />
+          <TouchableOpacity>
+            <Svg width="14" height="14" fill="none" stroke={colors.text.muted} viewBox="0 0 24 24">
+              <Path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </Svg>
+          </TouchableOpacity>
+        </View>
+        <View style={{ flexDirection: 'row', gap: 12, marginBottom: 12 }}>
+          <View style={[styles.avatarFixed, { backgroundColor: colors.background.surface, borderWidth: 1, borderColor: 'rgba(255,255,255,0.06)', borderRadius: 10, width: 44, height: 44 }]}>
+            <Text style={[styles.avatarText, { color: colors.primary.base, fontSize: 13 }]}>{initial || 'U'}</Text>
+          </View>
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <Text style={[styles.title, { marginBottom: 2 }]}>{title}</Text>
+            <Text style={{ fontSize: 10, color: colors.text.muted }}>{subtitle}</Text>
+          </View>
+        </View>
+        <Text style={[styles.description, { marginBottom: 16 }]}>{description}</Text>
+        <Button label="Schedule a 1-on-1 Circle" variant="brand" style={{ width: '100%' }} />
+      </View>
+    );
+  }
+
   // Stage Card
   return (
     <View style={[styles.card, { padding: 18 }]}>
       <GlowEffect />
-      <View style={styles.stageHeader}>
-        <View style={[styles.livePulse, { backgroundColor: colors.primary.base }]} />
-        <Text style={styles.stageBadge}>Upcoming Stage</Text>
-        <View style={[styles.freeBadge, { backgroundColor: colors.background.glass }]}>
-          <Text style={styles.freeText}>Free</Text>
+      <View style={[styles.stageHeader, { justifyContent: 'space-between' }]}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 7 }}>
+          <View style={[styles.livePulse, { backgroundColor: colors.primary.base }]} />
+          <Text style={[styles.stageBadge, { color: colors.primary.base }]}>UPCOMING STAGE</Text>
         </View>
+        <Tag label="Free" variant="warning" />
       </View>
       <Text style={[styles.title, { marginBottom: 5 }]}>{title}</Text>
-      <Text style={[styles.description, { marginBottom: 12 }]}>{description}</Text>
-      <View style={[styles.hostPill, { backgroundColor: colors.background.glass, borderColor: colors.border.glass }]}>
+      <Text style={[styles.description, { marginBottom: 16 }]}>{description}</Text>
+      <View style={styles.hostPill}>
         <View style={styles.hostProfile}>
-          <View style={[styles.miniAvatar, { backgroundColor: colors.primary.opacity20, borderColor: colors.primary.base + '40' }]}>
-            <Text style={[styles.miniAvatarText, { color: colors.primary.base }]}>{initial || 'V'}</Text>
+          <View style={[styles.miniAvatar, { backgroundColor: colors.primary.opacity10, borderColor: colors.primary.base + '40', width: 28, height: 28, borderRadius: 14 }]}>
+            <Text style={[styles.miniAvatarText, { color: colors.primary.base, fontSize: 10 }]}>{initial || 'V'}</Text>
           </View>
-          <Text style={styles.hostName}>{author || 'Vercel Team'}</Text>
+          <Text style={[styles.hostName, { color: colors.text.primary }]}>{author || 'Vercel Team'}</Text>
         </View>
-        <Text style={styles.stageTime}>{time || 'Tonight, 8 PM'}</Text>
+        <Text style={[styles.stageTime, { color: colors.primary.base }]}>{time || 'Tonight, 8 PM'}</Text>
       </View>
       <Button
         label="Reserve Your Seat"
@@ -243,22 +270,27 @@ const getStyles = (colors: Colors) => StyleSheet.create({
   },
   glassBtn: {
     borderWidth: 1,
-    paddingVertical: 7,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+    borderColor: 'rgba(255,255,255,0.12)',
+    backgroundColor: 'rgba(255,255,255,0.03)',
+    paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 999,
   },
   glassBtnText: {
     fontSize: 10,
-    fontWeight: '600',
+    fontWeight: '700',
+    color: colors.text.primary,
   },
   brandBtn: {
-    paddingVertical: 7,
-    paddingHorizontal: 12,
-    borderRadius: 8,
+    backgroundColor: colors.primary.base,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 999,
   },
   brandBtnText: {
     fontSize: 10,
-    fontWeight: '600',
+    fontWeight: '700',
+    color: '#fff',
   },
   stageHeader: {
     flexDirection: 'row',
@@ -277,22 +309,14 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     textTransform: 'uppercase',
     letterSpacing: 1.5,
   },
-  freeBadge: {
-    marginLeft: 'auto',
-    paddingHorizontal: 8,
-    paddingVertical: 2,
-    borderRadius: 4,
-  },
-  freeText: {
-    fontSize: 7.5,
-  },
   hostPill: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    borderRadius: 12,
-    padding: 9,
-    marginBottom: 13,
+    marginBottom: 16,
+    backgroundColor: colors.background.base,
+    padding: 10,
+    borderRadius: 12
   },
   hostProfile: {
     flexDirection: 'row',

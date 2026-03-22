@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, StatusBar, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useNavigation } from '@react-navigation/native';
 import { Logo } from '../../components/atoms/Logo';
 import { Button } from '../../components/atoms/Button';
 import { typography } from '../../theme/typography';
@@ -10,6 +11,7 @@ import { Colors } from '../../theme/colors';
 export const SplashScreen: React.FC = () => {
   const { colors, isDark, toggleTheme } = useTheme();
   const styles = getStyles(colors);
+  const navigation = useNavigation<any>();
 
   return (
     <>
@@ -17,7 +19,7 @@ export const SplashScreen: React.FC = () => {
 
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.mainContainer}>
-          
+
           {/* Logo */}
           <View style={styles.logoWrapper}>
             <TouchableOpacity activeOpacity={0.8} onPress={toggleTheme}>
@@ -27,20 +29,22 @@ export const SplashScreen: React.FC = () => {
 
           {/* Title */}
           <Text style={styles.title}>circles</Text>
-          
+
           {/* Subtitle */}
           <Text style={styles.subtitle}>the internet's reading room.</Text>
 
           {/* Actions */}
-          <Button 
-            variant="white" 
-            label="Get Started" 
-            style={styles.primaryButton} 
+          <Button
+            variant="white"
+            label="Get Started"
+            style={styles.primaryButton}
+            onPress={() => navigation.navigate('SignIn')}
           />
-          <Button 
-            variant="outline" 
-            label="I already have an account" 
-            style={styles.secondaryButton} 
+          <Button
+            variant="outline"
+            label="I already have an account"
+            style={styles.secondaryButton}
+            onPress={() => navigation.navigate('SignIn')}
           />
 
           {/* Legal Text */}
@@ -68,7 +72,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
   safeArea: {
     flex: 1,
     zIndex: 10,
-    backgroundColor: 'transparent',
+    backgroundColor: colors.background.transparent,
   },
   mainContainer: {
     flex: 1,
@@ -109,7 +113,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     fontWeight: '300',
     color: colors.text.muted,
     marginTop: 28,
-    lineHeight: 15.3, 
+    lineHeight: 15.3,
     textAlign: 'center',
   },
   footerContainer: {
@@ -121,7 +125,7 @@ const getStyles = (colors: Colors) => StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     backgroundColor: colors.background.glass,
-    borderColor: colors.border.glassLight,
+    borderColor: colors.border.glass,
     borderWidth: 0.5,
     borderRadius: 9999,
     paddingVertical: 7,
