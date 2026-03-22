@@ -21,7 +21,19 @@
 *   **Real-time Communication:** LiveKit (WebRTC for Video/Audio in Live Circles & Stages)
 *   **Payments:** Stripe Connect (Tickets, Consultation Circles)
 *   **Frontend Apps:** React Native (Expo) primarily for mobile, Next.js for web endpoints.
+*   **Animation Engine:** React Native Reanimated 3 (Mandatory for all high-fidelity UI/UX).
 *   **State Management:** Zustand
+
+---
+
+## 1.1 Animation Standards (Reanimated 3)
+
+To maintain the "premium, state-of-the-art" feel required for circles:
+1. **Never use the legacy `Animated` API.** 
+2. Use **Worklets** for all UI-thread logic.
+3. Prioritize `withSpring` for organic feeling movements over `withTiming`.
+4. Use `Layout Transitions` (entering, exiting, layout) for all dynamic list items and screen switches.
+5. All layout-affecting properties (`width`, `height`, `gap`) must be animated via Reanimated to avoid JS thread jitter.
 
 ---
 

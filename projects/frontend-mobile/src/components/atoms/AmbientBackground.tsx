@@ -1,6 +1,15 @@
-import React, { useEffect, useRef } from 'react';
-import { StyleSheet, Animated, Dimensions, Easing, View, Image } from 'react-native';
-import Svg, { Path, G } from 'react-native-svg';
+import React, { useEffect } from 'react';
+import { StyleSheet, Dimensions, View, Image } from 'react-native';
+import Animated, { 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withTiming, 
+  withRepeat, 
+  withSequence, 
+  withDelay, 
+  Easing as ReanimatedEasing,
+  interpolate
+} from 'react-native-reanimated';
 import { useTheme } from '../../theme/ThemeContext';
 
 const { width, height } = Dimensions.get('window');
@@ -16,46 +25,44 @@ const LIGHT_GLOW = { uri: 'file:///C:/Users/kriac/.gemini/antigravity/brain/422c
 
 const Particle: React.FC<{ x: number, y: number, delay: number }> = ({ x, y, delay }) => {
   const { colors, isDark } = useTheme();
-  const anim = useRef(new Animated.Value(0)).current;
+  const anim = useSharedValue(0);
 
   useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.delay(delay),
-        Animated.timing(anim, {
-          toValue: 1,
-          duration: WAVE_SPEED,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-        Animated.timing(anim, {
-          toValue: 0,
-          duration: WAVE_SPEED,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
+    anim.value = withDelay(delay, 
+      withRepeat(
+        withSequence(
+          withTiming(1, { duration: WAVE_SPEED, easing: ReanimatedEasing.inOut(ReanimatedEasing.sin) }),
+          withTiming(0, { duration: WAVE_SPEED, easing: ReanimatedEasing.inOut(ReanimatedEasing.sin) })
+        ),
+        -1, // Infinite repeat
+        false
+      )
+    );
   }, []);
 
-  const translateY = anim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [-15, 15],
-  });
+  const animatedStyle = useAnimatedStyle(() => {
+    const translateY = interpolate(anim.value, [0, 1], [-15, 15]);
+    const opacity = interpolate(
+      anim.value, 
+      [0, 0.5, 1], 
+      [isDark ? 0.1 : 0.2, isDark ? 0.4 : 0.6, isDark ? 0.1 : 0.2]
+    );
 
-  const opacity = anim.interpolate({
-    inputRange: [0, 0.5, 1],
-    outputRange: [isDark ? 0.1 : 0.2, isDark ? 0.4 : 0.6, isDark ? 0.1 : 0.2],
+    return {
+      transform: [{ translateY }],
+      opacity,
+    };
   });
 
   return (
-    <Animated.View style={{
-      position: 'absolute',
-      left: x,
-      top: y,
-      transform: [{ translateY }],
-      opacity
-    }}>
+    <Animated.View style={[
+      {
+        position: 'absolute',
+        left: x,
+        top: y,
+      },
+      animatedStyle
+    ]}>
       <View style={{
         width: isDark ? 2 : 2.5,
         height: isDark ? 2 : 2.5,

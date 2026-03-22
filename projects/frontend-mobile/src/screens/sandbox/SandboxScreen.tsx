@@ -1,5 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet, Animated, Dimensions, TouchableOpacity, TextInput, Easing, KeyboardAvoidingView, Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, TextInput, KeyboardAvoidingView, Platform } from 'react-native';
+import Animated, { 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withTiming, 
+  withRepeat, 
+  withSequence, 
+  Easing as ReanimatedEasing,
+  interpolate
+} from 'react-native-reanimated';
 import Svg, { Circle, G, Defs, RadialGradient, Stop, Path } from 'react-native-svg';
 import { useTheme } from '../../theme/ThemeContext';
 import { typography } from '../../theme/typography';
@@ -10,38 +19,51 @@ import { radii } from '../../theme/radii';
 const { width, height } = Dimensions.get('window');
 
 const FloatingPersona: React.FC<{ 
-  initial: string;
-  color: string;
-  note?: string;
-  delay?: number;
+  initial: string; 
+  color: string; 
+  note?: string; 
+  delay?: number; 
 }> = ({ initial, color, note, delay = 0 }) => {
-  const { colors, isDark } = useTheme();
-  const driftX = useRef(new Animated.Value(0)).current;
-  const driftY = useRef(new Animated.Value(0)).current;
-  const scale = useRef(new Animated.Value(1)).current;
+  const { colors } = useTheme();
+  const driftX = useSharedValue(0);
+  const driftY = useSharedValue(0);
+  const scale = useSharedValue(1);
 
   useEffect(() => {
-    const createDrift = (anim: Animated.Value, range: number, duration: number) => {
-      return Animated.loop(
-        Animated.sequence([
-          Animated.timing(anim, { toValue: range, duration, easing: Easing.bezier(0.445, 0.05, 0.55, 0.95), useNativeDriver: true }),
-          Animated.timing(anim, { toValue: -range, duration, easing: Easing.bezier(0.445, 0.05, 0.55, 0.95), useNativeDriver: true }),
-          Animated.timing(anim, { toValue: 0, duration, easing: Easing.bezier(0.445, 0.05, 0.55, 0.95), useNativeDriver: true }),
-        ])
-      );
-    };
+    const durationX = 6000 + delay;
+    const durationY = 8000 + (delay * 0.5);
 
-    Animated.parallel([
-      createDrift(driftX, 15, 6000 + delay),
-      createDrift(driftY, 10, 8000 + (delay * 0.5)),
-    ]).start();
+    driftX.value = withRepeat(
+      withSequence(
+        withTiming(15, { duration: durationX, easing: ReanimatedEasing.bezier(0.445, 0.05, 0.55, 0.95) }),
+        withTiming(-15, { duration: durationX, easing: ReanimatedEasing.bezier(0.445, 0.05, 0.55, 0.95) }),
+        withTiming(0, { duration: durationX, easing: ReanimatedEasing.bezier(0.445, 0.05, 0.55, 0.95) })
+      ),
+      -1,
+      false
+    );
+
+    driftY.value = withRepeat(
+      withSequence(
+        withTiming(10, { duration: durationY, easing: ReanimatedEasing.bezier(0.445, 0.05, 0.55, 0.95) }),
+        withTiming(-10, { duration: durationY, easing: ReanimatedEasing.bezier(0.445, 0.05, 0.55, 0.95) }),
+        withTiming(0, { duration: durationY, easing: ReanimatedEasing.bezier(0.445, 0.05, 0.55, 0.95) })
+      ),
+      -1,
+      false
+    );
   }, []);
 
+  const animatedStyle = useAnimatedStyle(() => ({
+    transform: [
+      { translateX: driftX.value },
+      { translateY: driftY.value },
+      { scale: scale.value }
+    ],
+  }));
+
   return (
-    <Animated.View style={[
-      styles.personaContainer,
-      { transform: [{ translateX: driftX }, { translateY: driftY }, { scale }] }
-    ]}>
+    <Animated.View style={[styles.personaContainer, animatedStyle]}>
       {note && (
         <View style={[styles.noteBubble, { backgroundColor: colors.background.glass, borderColor: colors.border.glass }]}>
            <Text style={[styles.noteText, { color: colors.text.secondary }]}>"{note}"</Text>

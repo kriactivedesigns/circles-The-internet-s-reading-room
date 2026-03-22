@@ -16,6 +16,14 @@ Whenever a decision is made that changes the application flow, design, structure
 2. Update `.agents/skills/circles-technical-architecture/SKILLS.md` to map changes to the underlying Prisma schema, state machine phases, or tech stack.
 3. Explicitly notify the user that these foundational documents have been recalibrated to match the new reality.
 
+### 1.1. Skill Adherence & Model Switching
+
+To prevent "instruction drift" or loss of context when switching between models (e.g., Flash to Pro):
+1. **Always re-read** the `SKILLS.md` files at the start of every new task and immediately after a model switch is detected in the metadata.
+2. If you notice a conflict between a user's ad-hoc request and a defined Skill, flag it to the user.
+3. Treat the Skills as the high-level "System Prompt Extension" — they are not optional.
+4. When writing code, cross-reference the `circles-technical-architecture` skill to ensure you are using the correct tech stack (e.g., Reanimated 3 vs legacy Animated).
+
 ## 2. Iterative Development Flow
 
 **NEVER** generate the entire application, an entire backend, or an entire frontend layer all at once. The development lifecycle must be hyper-iterative and strictly sequential.

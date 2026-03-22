@@ -2,7 +2,8 @@ import React from 'react';
 import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, Animated } from 'react-native';
+import { View } from 'react-native';
+import { useSharedValue } from 'react-native-reanimated';
 import { FeedWallScreen } from './src/screens/feed/FeedWallScreen';
 import { OrbitScreen } from './src/screens/orbit/OrbitScreen';
 import { ShelfScreen } from './src/screens/shelf/ShelfScreen';
@@ -24,7 +25,7 @@ import {
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const MainTabs = ({ scrollY }: { scrollY: Animated.Value }) => {
+const MainTabs = ({ scrollY }: { scrollY: any }) => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -47,7 +48,7 @@ const MainTabs = ({ scrollY }: { scrollY: Animated.Value }) => {
 
 const AppContent = () => {
   const { isDark } = useTheme();
-  const scrollY = React.useRef(new Animated.Value(0)).current;
+  const scrollY = useSharedValue(0);
   const navigationRef = useNavigationContainerRef();
   const [routeName, setRouteName] = React.useState<string>('Feed');
   const [canGoBack, setCanGoBack] = React.useState(false);

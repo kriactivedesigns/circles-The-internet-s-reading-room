@@ -1,5 +1,14 @@
-import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Easing } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
+import Animated, { 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withTiming, 
+  withRepeat, 
+  withDelay, 
+  Easing as ReanimatedEasing,
+  interpolate
+} from 'react-native-reanimated';
 import { useTheme } from '../../theme/ThemeContext';
 import { Colors } from '../../theme/colors';
 
@@ -25,43 +34,36 @@ export const Logo: React.FC<LogoProps> = ({ variant = 'xl' }) => {
   const ring1Size = specs.size - (specs.inset1 * 2);
   const ring2Size = specs.size - (specs.inset2 * 2);
 
-  const ripple1 = useRef(new Animated.Value(0)).current;
-  const ripple2 = useRef(new Animated.Value(0)).current;
+  const ripple1 = useSharedValue(0);
+  const ripple2 = useSharedValue(0);
 
   useEffect(() => {
-    const createRipple = (animValue: Animated.Value) => {
-      return Animated.loop(
-        Animated.timing(animValue, {
-          toValue: 1,
-          duration: 3000,
-          easing: Easing.bezier(0.25, 1, 0.5, 1),
-          useNativeDriver: true,
-        })
-      );
-    };
+    const config = { duration: 3000, easing: ReanimatedEasing.bezier(0.25, 1, 0.5, 1) };
+    
+    ripple1.value = withRepeat(withTiming(1, config), -1, false);
+    ripple2.value = withDelay(1500, withRepeat(withTiming(1, config), -1, false));
+  }, []);
 
-    createRipple(ripple1).start();
-    const ring2Timeout = setTimeout(() => {
-      createRipple(ripple2).start();
-    }, 1500);
+  const rippleStyle1 = useAnimatedStyle(() => ({
+    width: ring1Size,
+    height: ring1Size,
+    opacity: interpolate(ripple1.value, [0, 1], [0.8, 0]),
+    transform: [{ scale: interpolate(ripple1.value, [0, 1], [0.2, 1]) }],
+  }));
 
-    return () => clearTimeout(ring2Timeout);
-  }, [ripple1, ripple2]);
-
-  const getRippleStyle = (animValue: Animated.Value, baseSize: number) => {
-    const scale = animValue.interpolate({ inputRange: [0, 1], outputRange: [0.2, 1] });
-    const opacity = animValue.interpolate({ inputRange: [0, 1], outputRange: [0.8, 0] });
-    return {
-      width: baseSize, height: baseSize, opacity, transform: [{ scale }],
-    };
-  };
+  const rippleStyle2 = useAnimatedStyle(() => ({
+    width: ring2Size,
+    height: ring2Size,
+    opacity: interpolate(ripple2.value, [0, 1], [0.8, 0]),
+    transform: [{ scale: interpolate(ripple2.value, [0, 1], [0.2, 1]) }],
+  }));
 
   return (
     <View style={[styles.container, { width: specs.size, height: specs.size }]}>
       <View style={[styles.ring, { width: specs.size, height: specs.size, borderWidth: specs.stroke, opacity: 0.3 }]} />
 
-      <Animated.View style={[styles.ring, { borderWidth: specs.stroke }, getRippleStyle(ripple1, ring1Size)]} />
-      <Animated.View style={[styles.ring, { borderWidth: specs.stroke }, getRippleStyle(ripple2, ring2Size)]} />
+      <Animated.View style={[styles.ring, { borderWidth: specs.stroke }, rippleStyle1]} />
+      <Animated.View style={[styles.ring, { borderWidth: specs.stroke }, rippleStyle2]} />
 
       <View style={[styles.dot, { width: specs.dotSize, height: specs.dotSize, shadowRadius: specs.dotSize }]} />
     </View>

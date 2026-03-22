@@ -1,5 +1,14 @@
-import React, { useEffect, useRef } from 'react';
-import { View, Text, StyleSheet, Animated, TouchableOpacity, Dimensions } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import Animated, { 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withSpring, 
+  withTiming, 
+  useAnimatedReaction,
+  interpolate,
+  SharedValue
+} from 'react-native-reanimated';
 import Svg, { Path } from 'react-native-svg';
 import { useTheme } from '../../theme/ThemeContext';
 import { Colors } from '../../theme/colors';
@@ -16,7 +25,7 @@ const SHRUNK_WIDTH = 155;
 interface BottomNavProps {
   routeName: string;
   onTabPress: (name: string) => void;
-  scrollY: Animated.Value;
+  scrollY: SharedValue<number>;
 }
 
 const TABS = [
@@ -30,103 +39,78 @@ export const BottomNav: React.FC<BottomNavProps> = ({ routeName, onTabPress, scr
   const background = colors.background.surface;
   const styles = getStyles(colors, background, isDark);
 
-  const lastScrollY = useRef(0);
-  const animValue = useRef(new Animated.Value(1)).current;
-  const fadeAnim = useRef(new Animated.Value(1)).current;
+  const animValue = useSharedValue(1); // 1 = expanded, 0 = shrunk
+  const fadeValue = useSharedValue(1); // 1 = visible, 0 = hidden
+  const lastScrollY = useSharedValue(0);
 
   // Dissolve effect when navigating away from MainTabs
   useEffect(() => {
     const isMainTab = TABS.some(t => t.name === routeName);
-    
-    if (!isMainTab) {
-      Animated.timing(fadeAnim, { toValue: 0, duration: 300, useNativeDriver: true }).start();
-    } else {
-      Animated.timing(fadeAnim, { toValue: 1, duration: 300, useNativeDriver: true }).start();
-    }
-  }, [routeName]);
+    fadeValue.value = withTiming(isMainTab ? 1 : 0, { duration: 300 });
 
-  useEffect(() => {
+    // Restore expansion when leaving Feed tab
     if (routeName !== 'Feed') {
-      Animated.spring(animValue, {
-        toValue: 1,
-        friction: 8,
-        tension: 60,
-        useNativeDriver: false,
-      }).start();
+      animValue.value = withSpring(1, { damping: 15, stiffness: 100 });
     }
   }, [routeName]);
 
-  useEffect(() => {
-    if (!scrollY) return;
-
-    const listenerId = scrollY.addListener(({ value }) => {
+  // Scroll reaction for Feed tab shrink/expand
+  useAnimatedReaction(
+    () => scrollY.value,
+    (current, previous) => {
+      // Only run on Feed tab
       if (routeName !== 'Feed') return;
+      if (!previous) return;
 
-      const diff = value - lastScrollY.current;
+      const diff = current - lastScrollY.value;
 
-      if (value < 40) {
-        Animated.spring(animValue, {
-          toValue: 1,
-          friction: 8,
-          tension: 60,
-          useNativeDriver: false,
-        }).start();
+      if (current < 40) {
+        animValue.value = withSpring(1, { damping: 15, stiffness: 100 });
       } else if (diff > 8) {
-        Animated.spring(animValue, {
-          toValue: 0,
-          friction: 8,
-          tension: 60,
-          useNativeDriver: false,
-        }).start();
+        animValue.value = withSpring(0, { damping: 15, stiffness: 100 });
       } else if (diff < -8) {
-        Animated.spring(animValue, {
-          toValue: 1,
-          friction: 8,
-          tension: 60,
-          useNativeDriver: false,
-        }).start();
+        animValue.value = withSpring(1, { damping: 15, stiffness: 100 });
       }
+      
+      lastScrollY.value = current;
+    },
+    [routeName]
+  );
 
-      lastScrollY.current = value;
-    });
+  const outerStyle = useAnimatedStyle(() => ({
+    opacity: fadeValue.value,
+    transform: [{ translateY: interpolate(fadeValue.value, [0, 1], [20, 0]) }]
+  }));
 
-    return () => scrollY.removeListener(listenerId);
-  }, [scrollY, routeName]);
+  const containerStyle = useAnimatedStyle(() => ({
+    width: interpolate(animValue.value, [0, 1], [SHRUNK_WIDTH, FULL_WIDTH]),
+    height: interpolate(animValue.value, [0, 1], [SHRUNK_HEIGHT, FULL_HEIGHT]),
+  }));
 
-  const navWidth = animValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [SHRUNK_WIDTH, FULL_WIDTH],
+  const tabContentStyle = useAnimatedStyle(() => ({
+    gap: interpolate(animValue.value, [0, 1], [16, 60]),
+    paddingHorizontal: interpolate(animValue.value, [0, 1], [12, 20]),
+  }));
+
+  const iconContainerStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: interpolate(animValue.value, [0, 1], [0.85, 1]) }],
+  }));
+
+  const labelStyle = (isFocused: boolean) => useAnimatedStyle(() => {
+    const opacity = interpolate(animValue.value, [0.7, 1], [0, 1]);
+    const height = interpolate(animValue.value, [0.7, 1], [0, 12]);
+    return {
+      opacity,
+      height,
+      marginTop: interpolate(animValue.value, [0, 1], [0, 4]),
+      color: isFocused ? colors.primary.base : colors.text.secondary,
+    };
   });
 
-  const navHeight = animValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [SHRUNK_HEIGHT, FULL_HEIGHT],
-  });
-
-  const iconScale = animValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [0.85, 1],
-  });
-
-  const itemGap = animValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [16, 60],
-  });
-
-  const navPadding = animValue.interpolate({
-    inputRange: [0, 1],
-    outputRange: [12, 20],
-  });
-
-  const labelOpacity = animValue.interpolate({
-    inputRange: [0.7, 1],
-    outputRange: [0, 1],
-  });
-
-  const labelHeight = animValue.interpolate({
-    inputRange: [0.7, 1],
-    outputRange: [0, 12],
-  });
+  const activeDotStyle = useAnimatedStyle(() => ({
+    bottom: interpolate(animValue.value, [0, 1], [-2, -8]),
+    opacity: interpolate(animValue.value, [0.7, 1], [0, 1]),
+  }));
 
   const getIcon = (name: string, focused: boolean) => {
     const color = focused ? colors.primary.base : colors.text.secondary;
@@ -156,25 +140,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({ routeName, onTabPress, scr
   };
 
   return (
-    <Animated.View
-      style={[
-        styles.outerContainer,
-        {
-          opacity: fadeAnim,
-        }
-      ]}
-    >
-      <Animated.View
-        style={[
-          styles.container,
-          {
-            width: navWidth,
-            height: navHeight,
-          }
-        ]}
-      >
+    <Animated.View style={[styles.outerContainer, outerStyle]}>
+      <Animated.View style={[styles.container, containerStyle]}>
         <GlowEffect style={{ left: '10%', right: '10%' }} />
-        <Animated.View style={[styles.tabContent, { gap: itemGap, paddingHorizontal: navPadding }]}>
+        <Animated.View style={[styles.tabContent, tabContentStyle]}>
           {TABS.map((tab) => {
             const isFocused = routeName === tab.name;
 
@@ -182,40 +151,19 @@ export const BottomNav: React.FC<BottomNavProps> = ({ routeName, onTabPress, scr
               <TouchableOpacity
                 key={tab.name}
                 onPress={() => onTabPress(tab.name)}
-                style={[styles.navItem]}
+                style={styles.navItem}
                 activeOpacity={0.7}
               >
-                <Animated.View style={{
-                  transform: [{ scale: iconScale }],
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}>
+                <Animated.View style={[styles.iconContainer, iconContainerStyle]}>
                   {getIcon(tab.name, isFocused)}
                 </Animated.View>
 
-                <Animated.Text
-                  numberOfLines={1}
-                  style={[
-                    styles.navLabel,
-                    {
-                      color: isFocused ? colors.primary.base : colors.text.secondary,
-                      opacity: labelOpacity,
-                      height: labelHeight,
-                      marginTop: labelHeight.interpolate({ inputRange: [0, 12], outputRange: [0, 4] })
-                    }
-                  ]}
-                >
+                <Animated.Text numberOfLines={1} style={[styles.navLabel, labelStyle(isFocused)]}>
                   {tab.name}
                 </Animated.Text>
 
                 {isFocused && (
-                  <Animated.View style={[
-                    styles.activeDot,
-                    {
-                      bottom: labelHeight.interpolate({ inputRange: [0, 12], outputRange: [-2, -8] }),
-                      opacity: labelOpacity
-                    }
-                  ]} />
+                  <Animated.View style={[styles.activeDot, activeDotStyle]} />
                 )}
               </TouchableOpacity>
             );
@@ -252,18 +200,20 @@ const getStyles = (colors: Colors, background: string, isDark: boolean) => Style
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   navItem: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  iconContainer: {
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   navLabel: {
     fontFamily: typography.families.ui,
     fontSize: 8.5,
     fontWeight: '700',
     letterSpacing: 0.5,
-    color: colors.text.secondary,
   },
   activeDot: {
     width: 2.5,

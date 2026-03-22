@@ -1,5 +1,6 @@
-import React, { useRef } from 'react';
-import { View, Text, StyleSheet, Animated, StatusBar, ScrollView } from 'react-native';
+import React from 'react';
+import { View, Text, StyleSheet, StatusBar } from 'react-native';
+import Animated, { useAnimatedScrollHandler } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useTheme } from '../../theme/ThemeContext';
 import { Colors } from '../../theme/colors';
@@ -9,12 +10,15 @@ import { FeedCard } from '../../components/molecules/FeedCard';
 export const FeedWallScreen: React.FC<{ route: any }> = ({ route }) => {
   const { colors, isDark } = useTheme();
   const styles = getStyles(colors);
-  const scrollY = route.params?.scrollY || new Animated.Value(0);
+  const scrollY = route.params?.scrollY;
 
-  const onScroll = Animated.event(
-    [{ nativeEvent: { contentOffset: { y: scrollY } } }],
-    { useNativeDriver: true }
-  );
+  const onScroll = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      if (scrollY) {
+        scrollY.value = event.contentOffset.y;
+      }
+    },
+  });
 
   return (
     <View style={styles.base}>
