@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>circles — UI/UX Mockup v2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Montserrat', 'system-ui', 'sans-serif'] },
+          colors: {
+            primary: '#5C94E9',
+            dark: { bg: '#05070A', surface: '#121212' },
+            light: { bg: '#F2F4F7', surface: '#FAFAFA' },
+          },
+          animation: {
+            'float-slow': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 6s ease-in-out 3s infinite',
+            'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4,0,0.6,1) infinite',
+            'wave': 'wave 0.8s ease-in-out infinite',
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            'pulse-glow': { '0%,100%': { opacity: '1', boxShadow: '0 0 15px rgba(92,148,233,0.5)' }, '50%': { opacity: '0.7', boxShadow: '0 0 30px rgba(92,148,233,0.8)' } },
+            wave: { '0%,100%': { height: '6px' }, '50%': { height: '22px' } },
+          },
+        }
+      }
+    }
+  </script>
+  <script src="./script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="./styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════
+     PRESENTER BAR
+══════════════════════════════════════════ -->
+  <div class="presenter">
+    <div class="presenter-left">
+      <div class="p-logo">
+        <div class="p-logomark">
+          <div class="r-out"></div>
+          <div class="r-1"></div>
+          <div class="r-2"></div>
+          <div class="r-dot"></div>
+        </div>
+        <span class="p-title">circles</span>
+      </div>
+      <span class="p-badge">UI/UX Mockup v1.0</span>
+    </div>
+    <div class="p-nav" id="p-nav">
+      <button class="p-btn" onclick="goTo('splash.html')">Splash</button>
+      <button class="p-btn" onclick="goTo('read.html')">Read</button>
+      <button class="p-btn" onclick="goTo('connect.html')">Connect</button>
+      <button class="p-btn" onclick="goTo('protect.html')">Protect</button>
+      <button class="p-btn" onclick="goTo('signin.html')">Sign In</button>
+      <button class="p-btn" onclick="goTo('otp.html')">OTP</button>
+      <button class="p-btn" onclick="goTo('base.html')">Base</button>
+      <button class="p-btn" onclick="goTo('persona.html')">Persona</button>
+      <button class="p-btn" onclick="goTo('feed.html')">Feed</button>
+      <button class="p-btn" onclick="goTo('orbit.html')">Orbit</button>
+      <button class="p-btn" onclick="goTo('sandbox.html')">Sandbox</button>
+      <button class="p-btn" onclick="goTo('table.html')">Table</button>
+      <button class="p-btn" onclick="goTo('shelf.html')">Shelf</button>
+      <button class="p-btn" onclick="goTo('identity.html')">Identity</button>
+      <button class="p-btn" onclick="goTo('stage.html')">Stage</button>
+    </div>
+    <div class="p-controls">
+      <span class="p-counter" id="p-counter">01 / 15</span>
+      <button class="mode-toggle" id="mode-toggle" onclick="toggleMode()">
+        <span class="mt-icon" id="mt-icon">☀️</span>
+        <span id="mt-label">Light</span>
+        <span class="mode-label" id="mode-label"><span class="ml-dot"></span><span id="mode-name">Orbit</span></span>
+      </button>
+      <button class="p-ctrl p-ctrl-prev" onclick="prev()">← Prev</button>
+      <button class="p-ctrl p-ctrl-next" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SINGLE SCREEN VIEW
+══════════════════════════════════════════ -->
+  <div class="single-view" id="single-view">
+    <div class="phone" id="phone-main">
+      <div class="phone-inner" id="phone-inner">
+        <!-- Screens injected here by JS -->
+      </div>
+    </div>
+    <div class="screen-label">
+      <span class="sl-num" id="sl-num">01 / 15</span>
+      <span class="sl-name" id="sl-name">Splash</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SCREEN TEMPLATES (hidden)
+══════════════════════════════════════════ -->
+  <div id="screens" style="display:none">
+
+    <!-- ═══════ 11 TABLE ═══════ -->
+    <div data-id="10" data-name="Table — Audio Channel" style="position:relative;">
+      <div class="amb">
+        <div class="orb o1"></div>
+        <div class="orb o2"></div>
+      </div>
+
+      <!-- Video Request Popup -->
+      <div id="video-request-popup"
+        style="position:absolute; top:-150px; left:20px; right:20px; background:rgba(26,29,36,0.95); backdrop-filter:blur(16px); border:1px solid rgba(92,148,233,0.4); border-radius:16px; padding:16px; z-index:100; display:flex; flex-direction:column; gap:12px; transition:top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div
+            style="width:28px;height:28px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;color:#34d399;flex-shrink:0;border:1px solid #34d399;">
+            C</div>
+          <div style="font-size:11px; font-weight:600; color:#fff;">CodeCrafter wants to enable Video</div>
+        </div>
+        <div style="display:flex; gap:8px;">
+          <button class="btn btn-brand" style="flex:1; padding:10px; font-size:10px;" onclick="acceptVideo()">Accept
+            Video</button>
+          <button class="btn btn-glass" style="flex:1; padding:10px; font-size:10px;"
+            onclick="declineVideo()">Decline</button>
+        </div>
+      </div>
+
+      <!-- Plant Root Consensus Popup -->
+      <div id="root-consensus-popup"
+        style="position:absolute; top:-150px; left:20px; right:20px; background:rgba(26,29,36,0.95); backdrop-filter:blur(16px); border:1px solid rgba(16,185,129,0.4); border-radius:16px; padding:16px; z-index:100; display:flex; flex-direction:column; gap:14px; transition:top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); box-shadow:0 10px 30px rgba(0,0,0,0.5);">
+        <div style="font-size:11px; font-weight:600; color:#fff; text-align:center;" id="root-consensus-text">Waiting
+          for consensus to Plant Root...</div>
+        <div style="display:flex; align-items:center; justify-content:center; gap:16px;">
+          <!-- You -->
+          <div style="position:relative;">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#5C94E9;flex-shrink:0;border:2px solid #10B981;">
+              A</div>
+            <div
+              style="position:absolute;bottom:-2px;right:-2px;background:#10B981;border-radius:50%;width:14px;height:14px;display:flex;align-items:center;justify-content:center;border:1.5px solid #05070A;">
+              <svg width="8" height="8" fill="none" stroke="#fff" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2 4l2 2 4-4" />
+              </svg></div>
+          </div>
+          <!-- CodeCrafter -->
+          <div style="position:relative;">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#34d399;flex-shrink:0;border:2px solid rgba(255,255,255,0.15);opacity:0.4;">
+              C</div>
+            <div id="rc-partner-check"
+              style="display:none;position:absolute;bottom:-2px;right:-2px;background:#10B981;border-radius:50%;width:14px;height:14px;align-items:center;justify-content:center;border:1.5px solid #05070A;">
+              <svg width="8" height="8" fill="none" stroke="#fff" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2 4l2 2 4-4" />
+              </svg></div>
+          </div>
+          <!-- Indra_Dev -->
+          <div style="position:relative;">
+            <div
+              style="width:36px;height:36px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#5C94E9;flex-shrink:0;border:2px solid rgba(255,255,255,0.15);opacity:0.4;">
+              I</div>
+            <div id="rc-third-check"
+              style="display:none;position:absolute;bottom:-2px;right:-2px;background:#10B981;border-radius:50%;width:14px;height:14px;align-items:center;justify-content:center;border:1.5px solid #05070A;">
+              <svg width="8" height="8" fill="none" stroke="#fff" stroke-width="2.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2 4l2 2 4-4" />
+              </svg></div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style="position:absolute;top:0;left:0;right:0;z-index:40;height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 20px;background:rgba(5,7,10,0.70);backdrop-filter:blur(20px);border-bottom:.5px solid rgba(255,255,255,0.06);">
+        <button style="background:none;border:none;cursor:pointer;color:rgba(255,255,255,0.55);" onclick="goTo('sandbox.html')">
+          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+        </button>
+        <div style="text-align:center;">
+          <div style="font-size:9px;font-weight:700;color:#5C94E9;text-transform:uppercase;letter-spacing:2px;">Live
+            Circle · Bloomed</div>
+          <div style="font-size:10px;font-weight:300;color:rgba(255,255,255,0.40);">Private · Audio</div>
+        </div>
+        <div style="width:20px;"></div>
+      </div>
+
+      <!-- Content -->
+      <div
+        style="position:relative;z-index:10;flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:80px 24px 140px;">
+
+        <!-- Ambient rings (the Table surface) -->
+        <div
+          style="position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);width:260px;height:260px;border-radius:50%;border:1px solid rgba(92,148,233,0.15);pointer-events:none">
+        </div>
+        <div
+          style="position:absolute;top:45%;left:50%;transform:translate(-50%,-50%);width:180px;height:180px;border-radius:50%;border:1px solid rgba(92,148,233,0.08);pointer-events:none">
+        </div>
+
+        <!-- The Circular Table Container -->
+        <div style="position:relative; width:260px; height:260px; z-index:2;">
+
+          <!-- 1. YOU (Center) -->
+          <div
+            style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); display:flex; flex-direction:column; align-items:center; gap:8px; z-index:30;">
+            <div style="position:relative;">
+              <div
+                style="width:76px;height:76px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:26px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">
+                A</div>
+              <div
+                style="position:absolute;bottom:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#10B981;border:2px solid #05070A;z-index:10;">
+              </div>
+              <!-- Internal Wave -->
+              <div id="wave-you" class="wave-overlay"
+                style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; gap:4px;">
+                <div class="wb" style="height:12px;background:#fff"></div>
+                <div class="wb" style="height:20px;background:#fff;animation-delay:.1s"></div>
+                <div class="wb" style="height:12px;background:#fff;animation-delay:.2s"></div>
+              </div>
+            </div>
+            <span
+              style="font-size:11px;font-weight:600;color:#fff;background:rgba(5,7,10,0.6);padding:2px 8px;border-radius:10px;">You</span>
+          </div>
+
+          <!-- 2. CodeCrafter Floating Note (Initial state, Top Right Perimeter) -->
+          <div id="tb-floating-note" class="float-b"
+            style="position:absolute; top:-10px; right:-20px; display:flex; flex-direction:column; align-items:center; gap:7px; z-index:20;">
+            <div
+              style="position:absolute;bottom:calc(100% + 8px);right:0;width:190px;background:rgba(26,29,36,0.96);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,0.12);border-radius:16px 16px 4px 16px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,0.50);">
+              <p
+                style="font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.55;font-style:italic;margin-bottom:12px;">
+                "Hey! Ready to jump into the audio channel?"</p>
+              <button class="btn btn-brand" style="width:100%;padding:8px;font-size:9.5px;"
+                onclick="acceptTableHandshake(this)">Handshake</button>
+            </div>
+            <div
+              style="width:56px;height:56px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:19px;font-weight:700;color:#34d399;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);animation:avatarPulse 2s cubic-bezier(.4,0,.6,1) infinite;">
+              C</div>
+          </div>
+
+          <!-- 2. CodeCrafter Joined Table (Hidden initially, Top Right Perimeter) -->
+          <div id="tb-partner"
+            style="display:none; position:absolute; top:5%; right:5%; flex-direction:column; align-items:center; gap:8px;">
+            <div style="position:relative;">
+              <div
+                style="width:64px;height:64px;border-radius:50%;background:#0d2a1e;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:22px;font-weight:700;color:#34d399;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);animation:avatarPulse 2s cubic-bezier(.4,0,.6,1) infinite;">
+                C</div>
+              <div
+                style="position:absolute;bottom:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#10B981;border:2px solid #05070A;z-index:10;">
+              </div>
+              <!-- Internal Wave -->
+              <div id="wave-partner" class="wave-overlay"
+                style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; gap:4px;">
+                <div class="wb" style="height:12px;background:#34d399"></div>
+                <div class="wb" style="height:20px;background:#34d399;animation-delay:.1s"></div>
+                <div class="wb" style="height:12px;background:#34d399;animation-delay:.2s"></div>
+              </div>
+            </div>
+            <span
+              style="font-size:11px;font-weight:600;color:#5C94E9;background:rgba(5,7,10,0.6);padding:2px 8px;border-radius:10px;">CodeCrafter</span>
+          </div>
+
+          <!-- 3. Third User (Indra_Dev) Floating Note (Hidden initially, Top Left Perimeter) -->
+          <div id="tb-third-note" class="float-a"
+            style="display:none; position:absolute; top:5%; left:-10px; flex-direction:column; align-items:center; gap:7px; z-index:20;">
+            <div
+              style="position:absolute;bottom:calc(100% + 8px);left:0;width:170px;background:rgba(26,29,36,0.96);backdrop-filter:blur(28px);border:1px solid rgba(255,255,255,0.12);border-radius:16px 16px 16px 4px;padding:14px;box-shadow:0 16px 40px rgba(0,0,0,0.50);">
+              <p
+                style="font-size:10.5px;font-weight:400;color:rgba(255,255,255,0.75);line-height:1.55;font-style:italic;margin-bottom:12px;">
+                "Mind if I join the discussion on scaling?"</p>
+              <button class="btn btn-brand" style="width:100%;padding:8px;font-size:9.5px;"
+                onclick="acceptThirdHandshake(this)">Handshake</button>
+            </div>
+            <div
+              style="width:52px;height:52px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:18px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">
+              I</div>
+          </div>
+
+          <!-- 3. Third User Joined Table (Hidden initially, Top Left Perimeter) -->
+          <div id="tb-third-partner"
+            style="display:none; position:absolute; top:5%; left:5%; flex-direction:column; align-items:center; gap:8px;">
+            <div style="position:relative;">
+              <div
+                style="width:64px;height:64px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:22px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1.5px solid #5C94E9;box-shadow:0 0 0 3px rgba(92,148,233,0.15),0 0 0 6px rgba(92,148,233,0.06);">
+                I</div>
+              <div
+                style="position:absolute;bottom:2px;right:2px;width:14px;height:14px;border-radius:50%;background:#10B981;border:2px solid #05070A;z-index:10;">
+              </div>
+              <!-- Internal Wave -->
+              <div id="wave-third" class="wave-overlay"
+                style="display:none; position:absolute; inset:0; background:rgba(0,0,0,0.6); align-items:center; justify-content:center; gap:4px;">
+                <div class="wb" style="height:12px;background:#5C94E9"></div>
+                <div class="wb" style="height:20px;background:#5C94E9;animation-delay:.1s"></div>
+                <div class="wb" style="height:12px;background:#5C94E9;animation-delay:.2s"></div>
+              </div>
+            </div>
+            <span
+              style="font-size:11px;font-weight:600;color:rgba(255,255,255,0.8);background:rgba(5,7,10,0.6);padding:2px 8px;border-radius:10px;">Indra_Dev</span>
+          </div>
+
+        </div>
+
+        <!-- Timer chip (Hidden until mutual handshake) -->
+        <div id="tb-timer"
+          style="display:none;position:absolute;top:85px;left:50%;transform:translateX(-50%);align-items:center;gap:8px;background:rgba(12,14,20,0.88);backdrop-filter:blur(16px);border:.5px solid rgba(255,255,255,0.12);border-radius:9999px;padding:7px 16px;z-index:30;">
+          <div
+            style="width:5px;height:5px;border-radius:50%;background:#10B981;animation:livepulse 1.5s ease-in-out infinite">
+          </div>
+          <span style="font-size:11px;font-weight:500;color:rgba(255,255,255,0.65);">04:37 · Table active</span>
+        </div>
+
+      </div>
+
+      <!-- Actions -->
+      <div
+        style="position:absolute;bottom:0;left:0;right:0;padding:12px 20px 32px;z-index:40;display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;gap:10px;">
+          <button class="btn btn-brand" id="btn-enable-video"
+            style="flex:1;padding:14px;font-size:11px;font-weight:700;" onclick="requestVideo()">Enable Video
+            🎥</button>
+          <button class="btn btn-outline" id="btn-plant-root"
+            style="flex:1;padding:14px;font-size:11px;font-weight:700;" onclick="requestPlantRoot()">Plant Root
+            🌱</button>
+        </div>
+        <div style="display:flex;gap:10px;">
+          <button id="btn-mute" class="btn btn-glass" style="flex:1;padding:12px;font-size:10.5px;"
+            onclick="toggleMute()">Mute Audio</button>
+          <button class="btn btn-danger" style="flex:1;padding:12px;font-size:10.5px;" onclick="goTo('sandbox.html')">Leave
+            Table</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+</body>
+
+</html>

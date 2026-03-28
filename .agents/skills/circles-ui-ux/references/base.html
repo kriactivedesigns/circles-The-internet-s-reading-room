@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>circles — UI/UX Mockup v2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Montserrat', 'system-ui', 'sans-serif'] },
+          colors: {
+            primary: '#5C94E9',
+            dark: { bg: '#05070A', surface: '#121212' },
+            light: { bg: '#F2F4F7', surface: '#FAFAFA' },
+          },
+          animation: {
+            'float-slow': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 6s ease-in-out 3s infinite',
+            'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4,0,0.6,1) infinite',
+            'wave': 'wave 0.8s ease-in-out infinite',
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            'pulse-glow': { '0%,100%': { opacity: '1', boxShadow: '0 0 15px rgba(92,148,233,0.5)' }, '50%': { opacity: '0.7', boxShadow: '0 0 30px rgba(92,148,233,0.8)' } },
+            wave: { '0%,100%': { height: '6px' }, '50%': { height: '22px' } },
+          },
+        }
+      }
+    }
+  </script>
+  <script src="./script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="./styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════
+     PRESENTER BAR
+══════════════════════════════════════════ -->
+  <div class="presenter">
+    <div class="presenter-left">
+      <div class="p-logo">
+        <div class="p-logomark">
+          <div class="r-out"></div>
+          <div class="r-1"></div>
+          <div class="r-2"></div>
+          <div class="r-dot"></div>
+        </div>
+        <span class="p-title">circles</span>
+      </div>
+      <span class="p-badge">UI/UX Mockup v1.0</span>
+    </div>
+    <div class="p-nav" id="p-nav">
+      <button class="p-btn" onclick="goTo('splash.html')">Splash</button>
+      <button class="p-btn" onclick="goTo('read.html')">Read</button>
+      <button class="p-btn" onclick="goTo('connect.html')">Connect</button>
+      <button class="p-btn" onclick="goTo('protect.html')">Protect</button>
+      <button class="p-btn" onclick="goTo('signin.html')">Sign In</button>
+      <button class="p-btn" onclick="goTo('otp.html')">OTP</button>
+      <button class="p-btn" onclick="goTo('base.html')">Base</button>
+      <button class="p-btn" onclick="goTo('persona.html')">Persona</button>
+      <button class="p-btn" onclick="goTo('feed.html')">Feed</button>
+      <button class="p-btn" onclick="goTo('orbit.html')">Orbit</button>
+      <button class="p-btn" onclick="goTo('sandbox.html')">Sandbox</button>
+      <button class="p-btn" onclick="goTo('table.html')">Table</button>
+      <button class="p-btn" onclick="goTo('shelf.html')">Shelf</button>
+      <button class="p-btn" onclick="goTo('identity.html')">Identity</button>
+      <button class="p-btn" onclick="goTo('stage.html')">Stage</button>
+    </div>
+    <div class="p-controls">
+      <span class="p-counter" id="p-counter">01 / 15</span>
+      <button class="mode-toggle" id="mode-toggle" onclick="toggleMode()">
+        <span class="mt-icon" id="mt-icon">☀️</span>
+        <span id="mt-label">Light</span>
+        <span class="mode-label" id="mode-label"><span class="ml-dot"></span><span id="mode-name">Orbit</span></span>
+      </button>
+      <button class="p-ctrl p-ctrl-prev" onclick="prev()">← Prev</button>
+      <button class="p-ctrl p-ctrl-next" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SINGLE SCREEN VIEW
+══════════════════════════════════════════ -->
+  <div class="single-view" id="single-view">
+    <div class="phone" id="phone-main">
+      <div class="phone-inner" id="phone-inner">
+        <!-- Screens injected here by JS -->
+      </div>
+    </div>
+    <div class="screen-label">
+      <span class="sl-num" id="sl-num">01 / 15</span>
+      <span class="sl-name" id="sl-name">Splash</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SCREEN TEMPLATES (hidden)
+══════════════════════════════════════════ -->
+  <div id="screens" style="display:none">
+
+    <!-- ═══════ 07 BASE PROFILE ═══════ -->
+    <div data-id="6" data-name="Base Profile">
+      <div class="amb">
+        <div class="orb o1"></div>
+        <div class="orb o2"></div>
+      </div>
+      <div
+        style="position:relative;z-index:10;flex:1;overflow-y:auto;padding:28px 20px 24px;display:flex;flex-direction:column;gap:20px;">
+        <div style="text-align:center;">
+          <div style="display:flex;align-items:center;gap:4px;justify-content:center;margin-bottom:8px;">
+            <svg width="12" height="12" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+            </svg>
+            <span
+              style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);">Strictly
+              Private</span>
+          </div>
+          <h2 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;">Set up your Base Profile</h2>
+          <p style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.50);line-height:1.6;">This is your master
+            identity. It remains securely hidden and is never shown to other users.</p>
+        </div>
+
+        <!-- Profile Photo Upload -->
+        <div style="display:flex;justify-content:center;margin-bottom:4px;">
+          <div style="position:relative;">
+            <div
+              style="width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,0.05);border:1px dashed rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;cursor:pointer;">
+              <svg width="24" height="24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+            </div>
+            <div
+              style="position:absolute;bottom:0;right:0;width:24px;height:24px;background:#5C94E9;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #05070A;cursor:pointer;">
+              <svg width="12" height="12" fill="white" viewBox="0 0 24 24">
+                <path d="M12 5v14m-7-7h14" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" />
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- Inputs -->
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div>
+            <div
+              style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:12px;">
+              Full Name</div>
+            <input class="inp" type="text" placeholder="e.g. Alexandre Smith" value="">
+          </div>
+          <div>
+            <div
+              style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:12px;">
+              Date of Birth</div>
+            <input class="inp" type="date" value="" style="color-scheme:dark;">
+          </div>
+          <div>
+            <div
+              style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;padding-left:12px;">
+              Location</div>
+            <input class="inp" type="text" placeholder="e.g. Bengaluru, India" value="">
+          </div>
+        </div>
+
+        <button class="btn btn-brand" style="width:100%;padding:14px;font-size:12px;font-weight:700;margin-top:auto;"
+          onclick="next()">Continue to Persona →</button>
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+</body>
+
+</html>

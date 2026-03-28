@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>circles — UI/UX Mockup v2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Montserrat', 'system-ui', 'sans-serif'] },
+          colors: {
+            primary: '#5C94E9',
+            dark: { bg: '#05070A', surface: '#121212' },
+            light: { bg: '#F2F4F7', surface: '#FAFAFA' },
+          },
+          animation: {
+            'float-slow': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 6s ease-in-out 3s infinite',
+            'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4,0,0.6,1) infinite',
+            'wave': 'wave 0.8s ease-in-out infinite',
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            'pulse-glow': { '0%,100%': { opacity: '1', boxShadow: '0 0 15px rgba(92,148,233,0.5)' }, '50%': { opacity: '0.7', boxShadow: '0 0 30px rgba(92,148,233,0.8)' } },
+            wave: { '0%,100%': { height: '6px' }, '50%': { height: '22px' } },
+          },
+        }
+      }
+    }
+  </script>
+  <script src="./script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="./styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════
+     PRESENTER BAR
+══════════════════════════════════════════ -->
+  <div class="presenter">
+    <div class="presenter-left">
+      <div class="p-logo">
+        <div class="p-logomark">
+          <div class="r-out"></div>
+          <div class="r-1"></div>
+          <div class="r-2"></div>
+          <div class="r-dot"></div>
+        </div>
+        <span class="p-title">circles</span>
+      </div>
+      <span class="p-badge">UI/UX Mockup v1.0</span>
+    </div>
+    <div class="p-nav" id="p-nav">
+      <button class="p-btn" onclick="goTo('splash.html')">Splash</button>
+      <button class="p-btn" onclick="goTo('read.html')">Read</button>
+      <button class="p-btn" onclick="goTo('connect.html')">Connect</button>
+      <button class="p-btn" onclick="goTo('protect.html')">Protect</button>
+      <button class="p-btn" onclick="goTo('signin.html')">Sign In</button>
+      <button class="p-btn" onclick="goTo('otp.html')">OTP</button>
+      <button class="p-btn" onclick="goTo('base.html')">Base</button>
+      <button class="p-btn" onclick="goTo('persona.html')">Persona</button>
+      <button class="p-btn" onclick="goTo('feed.html')">Feed</button>
+      <button class="p-btn" onclick="goTo('orbit.html')">Orbit</button>
+      <button class="p-btn" onclick="goTo('sandbox.html')">Sandbox</button>
+      <button class="p-btn" onclick="goTo('table.html')">Table</button>
+      <button class="p-btn" onclick="goTo('shelf.html')">Shelf</button>
+      <button class="p-btn" onclick="goTo('identity.html')">Identity</button>
+      <button class="p-btn" onclick="goTo('stage.html')">Stage</button>
+    </div>
+    <div class="p-controls">
+      <span class="p-counter" id="p-counter">01 / 15</span>
+      <button class="mode-toggle" id="mode-toggle" onclick="toggleMode()">
+        <span class="mt-icon" id="mt-icon">☀️</span>
+        <span id="mt-label">Light</span>
+        <span class="mode-label" id="mode-label"><span class="ml-dot"></span><span id="mode-name">Orbit</span></span>
+      </button>
+      <button class="p-ctrl p-ctrl-prev" onclick="prev()">← Prev</button>
+      <button class="p-ctrl p-ctrl-next" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SINGLE SCREEN VIEW
+══════════════════════════════════════════ -->
+  <div class="single-view" id="single-view">
+    <div class="phone" id="phone-main">
+      <div class="phone-inner" id="phone-inner">
+        <!-- Screens injected here by JS -->
+      </div>
+    </div>
+    <div class="screen-label">
+      <span class="sl-num" id="sl-num">01 / 15</span>
+      <span class="sl-name" id="sl-name">Splash</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SCREEN TEMPLATES (hidden)
+══════════════════════════════════════════ -->
+  <div id="screens" style="display:none">
+
+    <!-- ═══════ 08 PERSONA CREATE ═══════ -->
+    <div data-id="7" data-name="Create Persona">
+      <div class="amb">
+        <div class="orb o1"></div>
+        <div class="orb o2"></div>
+      </div>
+      <div
+        style="position:relative;z-index:10;flex:1;overflow-y:auto;padding:28px 20px 24px;display:flex;flex-direction:column;gap:20px;">
+        <div style="text-align:center;">
+          <div
+            style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5C94E9;margin-bottom:8px;">
+            Public Identity</div>
+          <h2 style="font-size:20px;font-weight:700;color:#fff;margin-bottom:6px;">Create your first Persona</h2>
+          <p style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.50);line-height:1.6;">This is how others
+            will see you in a Lobby. You can add more Personas later.</p>
+        </div>
+        <!-- Avatar selection -->
+        <div class="glass" style="border-radius:24px;padding:18px;">
+          <div
+            style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:12px;">
+            Choose avatar</div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+            <div
+              style="width:48px;height:48px;border-radius:50%;background:#1a1a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#8899ee;flex-shrink:0;border:2.5px solid #5C94E9;box-shadow:0 0 0 4px rgba(92,148,233,0.20);">
+              A</div>
+            <div
+              style="width:48px;height:48px;border-radius:50%;background:#1a3a2a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#55cc88;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.15);opacity:0.6;">
+              B</div>
+            <div
+              style="width:48px;height:48px;border-radius:50%;background:#3a1a2a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#ee6688;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.15);opacity:0.6;">
+              C</div>
+            <div
+              style="width:48px;height:48px;border-radius:50%;background:#2a2a1a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:16px;font-weight:700;color:#ddcc55;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.15);opacity:0.6;">
+              D</div>
+            <div
+              style="width:48px;height:48px;border-radius:50%;border:1.5px dashed rgba(255,255,255,0.20);display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.03);">
+              <svg width="16" height="16" fill="none" stroke="rgba(255,255,255,0.35)" stroke-width="2"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <!-- Alias -->
+        <div>
+          <div
+            style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+            Persona alias</div>
+          <input class="inp" type="text" placeholder="e.g. Alex_UX, CodeCrafter, InkWalker..." value="Alex_UX">
+        </div>
+        <!-- Interest tags -->
+        <div>
+          <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px;">
+            <div
+              style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;">
+              Interest tags</div>
+            <div style="font-size:8.5px;color:rgba(255,255,255,0.25);">min 2, max 10 · <span style="color:#5C94E9;">3
+                selected</span></div>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;">
+            <span class="itag sel">UX Design</span>
+            <span class="itag sel">Architecture</span>
+            <span class="itag sel">SaaS</span>
+            <span class="itag">AI / ML</span>
+            <span class="itag">Indie Hacking</span>
+            <span class="itag">Writing</span>
+            <span class="itag">Photography</span>
+            <span class="itag">Jazz</span>
+            <span class="itag">Philosophy</span>
+            <span class="itag">Fiction</span>
+            <span class="itag">Climate</span>
+            <span class="itag">Fintech</span>
+          </div>
+        </div>
+        <button class="btn btn-brand" style="width:100%;padding:14px;font-size:12px;font-weight:700;">Enter circles
+          →</button>
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+</body>
+
+</html>

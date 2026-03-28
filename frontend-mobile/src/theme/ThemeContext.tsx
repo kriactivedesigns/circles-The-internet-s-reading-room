@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import { useColorScheme } from 'react-native';
 import { darkColors, lightColors, Colors } from './colors';
+import { View } from 'react-native';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
@@ -13,9 +14,6 @@ interface ThemeContextType {
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
-
-import { View } from 'react-native';
-import { AmbientBackground } from '../components/atoms/AmbientBackground';
 
 export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const systemColorScheme = useColorScheme();
@@ -39,7 +37,6 @@ export const ThemeProvider: React.FC<{ children: ReactNode }> = ({ children }) =
   return (
     <ThemeContext.Provider value={{ mode, setMode, isDark, colors, toggleTheme }}>
       <View style={{ flex: 1, backgroundColor: colors.background.base }}>
-        <AmbientBackground />
         {children}
       </View>
     </ThemeContext.Provider>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>circles — UI/UX Mockup v2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Montserrat', 'system-ui', 'sans-serif'] },
+          colors: {
+            primary: '#5C94E9',
+            dark: { bg: '#05070A', surface: '#121212' },
+            light: { bg: '#F2F4F7', surface: '#FAFAFA' },
+          },
+          animation: {
+            'float-slow': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 6s ease-in-out 3s infinite',
+            'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4,0,0.6,1) infinite',
+            'wave': 'wave 0.8s ease-in-out infinite',
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            'pulse-glow': { '0%,100%': { opacity: '1', boxShadow: '0 0 15px rgba(92,148,233,0.5)' }, '50%': { opacity: '0.7', boxShadow: '0 0 30px rgba(92,148,233,0.8)' } },
+            wave: { '0%,100%': { height: '6px' }, '50%': { height: '22px' } },
+          },
+        }
+      }
+    }
+  </script>
+  <script src="./script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="./styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════
+     PRESENTER BAR
+══════════════════════════════════════════ -->
+  <div class="presenter">
+    <div class="presenter-left">
+      <div class="p-logo">
+        <div class="p-logomark">
+          <div class="r-out"></div>
+          <div class="r-1"></div>
+          <div class="r-2"></div>
+          <div class="r-dot"></div>
+        </div>
+        <span class="p-title">circles</span>
+      </div>
+      <span class="p-badge">UI/UX Mockup v1.0</span>
+    </div>
+    <div class="p-nav" id="p-nav">
+      <button class="p-btn" onclick="goTo('splash.html')">Splash</button>
+      <button class="p-btn" onclick="goTo('read.html')">Read</button>
+      <button class="p-btn" onclick="goTo('connect.html')">Connect</button>
+      <button class="p-btn" onclick="goTo('protect.html')">Protect</button>
+      <button class="p-btn" onclick="goTo('signin.html')">Sign In</button>
+      <button class="p-btn" onclick="goTo('otp.html')">OTP</button>
+      <button class="p-btn" onclick="goTo('base.html')">Base</button>
+      <button class="p-btn" onclick="goTo('persona.html')">Persona</button>
+      <button class="p-btn" onclick="goTo('feed.html')">Feed</button>
+      <button class="p-btn" onclick="goTo('orbit.html')">Orbit</button>
+      <button class="p-btn" onclick="goTo('sandbox.html')">Sandbox</button>
+      <button class="p-btn" onclick="goTo('table.html')">Table</button>
+      <button class="p-btn" onclick="goTo('shelf.html')">Shelf</button>
+      <button class="p-btn" onclick="goTo('identity.html')">Identity</button>
+      <button class="p-btn" onclick="goTo('stage.html')">Stage</button>
+    </div>
+    <div class="p-controls">
+      <span class="p-counter" id="p-counter">01 / 15</span>
+      <button class="mode-toggle" id="mode-toggle" onclick="toggleMode()">
+        <span class="mt-icon" id="mt-icon">☀️</span>
+        <span id="mt-label">Light</span>
+        <span class="mode-label" id="mode-label"><span class="ml-dot"></span><span id="mode-name">Orbit</span></span>
+      </button>
+      <button class="p-ctrl p-ctrl-prev" onclick="prev()">← Prev</button>
+      <button class="p-ctrl p-ctrl-next" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SINGLE SCREEN VIEW
+══════════════════════════════════════════ -->
+  <div class="single-view" id="single-view">
+    <div class="phone" id="phone-main">
+      <div class="phone-inner" id="phone-inner">
+        <!-- Screens injected here by JS -->
+      </div>
+    </div>
+    <div class="screen-label">
+      <span class="sl-num" id="sl-num">01 / 15</span>
+      <span class="sl-name" id="sl-name">Splash</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SCREEN TEMPLATES (hidden)
+══════════════════════════════════════════ -->
+  <div id="screens" style="display:none">
+
+    <!-- ═══════ 02 ONBOARD — READ ═══════ -->
+    <div data-id="1" data-name="Onboard — Read">
+      <div class="amb">
+        <div class="orb o1"></div>
+        <div class="orb o2" style="background:radial-gradient(circle,rgba(92,148,233,0.08),transparent 70%)"></div>
+      </div>
+      <div style="position:relative;z-index:10;flex:1;display:flex;flex-direction:column;padding:56px 28px 32px;">
+        <!-- Illustration: floating article cards -->
+        <div style="flex:1;position:relative;display:flex;align-items:center;justify-content:center;">
+          <div class="float-a"
+            style="position:absolute;top:20px;left:10px;width:220px;background:rgba(26,29,36,0.80);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.10);border-radius:20px;padding:16px;box-shadow:0 20px 40px rgba(0,0,0,0.40);">
+            <div
+              style="height:80px;border-radius:12px;background:linear-gradient(135deg,rgba(92,148,233,0.25),rgba(92,148,233,0.05));margin-bottom:10px;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+              <svg width="28" height="28" fill="none" stroke="rgba(92,148,233,0.60)" stroke-width="1.5"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+            <div style="font-size:11px;font-weight:600;color:#fff;margin-bottom:4px;line-height:1.4;">The Death of the
+              Follower Count</div>
+            <div style="display:flex;align-items:center;gap:6px;"><span
+                style="font-size:8px;font-weight:500;color:#5C94E9;">UX Philosophy</span><span
+                style="font-size:8px;color:rgba(255,255,255,0.35);">· 8 min read</span></div>
+          </div>
+          <div class="float-b"
+            style="position:absolute;bottom:30px;right:5px;width:180px;background:rgba(26,29,36,0.70);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.08);border-radius:18px;padding:14px;box-shadow:0 16px 32px rgba(0,0,0,0.35);">
+            <div style="display:flex;gap:10px;align-items:flex-start;">
+              <div
+                style="width:44px;height:58px;border-radius:6px;background:linear-gradient(135deg,rgba(92,148,233,0.20),rgba(92,148,233,0.05));flex-shrink:0;">
+              </div>
+              <div>
+                <div style="font-size:9.5px;font-weight:600;color:#fff;line-height:1.4;margin-bottom:3px;">The Great
+                  Good Place</div>
+                <div style="font-size:8px;color:rgba(255,255,255,0.40);">Ray Oldenburg</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Copy -->
+        <div style="margin-bottom:32px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
+            <div style="width:20px;height:1px;background:rgba(92,148,233,0.50)"></div><span
+              style="font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5C94E9;">Read</span>
+          </div>
+          <h2 style="font-size:22px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:10px;">Your curated
+            reading room.</h2>
+          <p style="font-size:12px;font-weight:300;color:rgba(255,255,255,0.55);line-height:1.75;">Articles, books, and
+            live events — all precisely matched to your interests. Zero algorithmic noise. Zero vanity metrics.</p>
+        </div>
+        <!-- Progress + CTA -->
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="display:flex;gap:6px;align-items:center;">
+            <div class="prog-dot on"></div>
+            <div class="prog-dot"></div>
+            <div class="prog-dot"></div>
+          </div>
+          <button class="btn btn-brand" style="padding:11px 28px;font-size:11px;" onclick="">Next →</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+</body>
+
+</html>

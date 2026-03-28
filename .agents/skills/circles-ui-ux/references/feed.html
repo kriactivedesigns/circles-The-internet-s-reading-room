@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>circles — UI/UX Mockup v2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Montserrat', 'system-ui', 'sans-serif'] },
+          colors: {
+            primary: '#5C94E9',
+            dark: { bg: '#05070A', surface: '#121212' },
+            light: { bg: '#F2F4F7', surface: '#FAFAFA' },
+          },
+          animation: {
+            'float-slow': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 6s ease-in-out 3s infinite',
+            'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4,0,0.6,1) infinite',
+            'wave': 'wave 0.8s ease-in-out infinite',
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            'pulse-glow': { '0%,100%': { opacity: '1', boxShadow: '0 0 15px rgba(92,148,233,0.5)' }, '50%': { opacity: '0.7', boxShadow: '0 0 30px rgba(92,148,233,0.8)' } },
+            wave: { '0%,100%': { height: '6px' }, '50%': { height: '22px' } },
+          },
+        }
+      }
+    }
+  </script>
+  <script src="./script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="./styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════
+     PRESENTER BAR
+══════════════════════════════════════════ -->
+  <div class="presenter">
+    <div class="presenter-left">
+      <div class="p-logo">
+        <div class="p-logomark">
+          <div class="r-out"></div>
+          <div class="r-1"></div>
+          <div class="r-2"></div>
+          <div class="r-dot"></div>
+        </div>
+        <span class="p-title">circles</span>
+      </div>
+      <span class="p-badge">UI/UX Mockup v1.0</span>
+    </div>
+    <div class="p-nav" id="p-nav">
+      <button class="p-btn" onclick="goTo('splash.html')">Splash</button>
+      <button class="p-btn" onclick="goTo('read.html')">Read</button>
+      <button class="p-btn" onclick="goTo('connect.html')">Connect</button>
+      <button class="p-btn" onclick="goTo('protect.html')">Protect</button>
+      <button class="p-btn" onclick="goTo('signin.html')">Sign In</button>
+      <button class="p-btn" onclick="goTo('otp.html')">OTP</button>
+      <button class="p-btn" onclick="goTo('base.html')">Base</button>
+      <button class="p-btn" onclick="goTo('persona.html')">Persona</button>
+      <button class="p-btn" onclick="goTo('feed.html')">Feed</button>
+      <button class="p-btn" onclick="goTo('orbit.html')">Orbit</button>
+      <button class="p-btn" onclick="goTo('sandbox.html')">Sandbox</button>
+      <button class="p-btn" onclick="goTo('table.html')">Table</button>
+      <button class="p-btn" onclick="goTo('shelf.html')">Shelf</button>
+      <button class="p-btn" onclick="goTo('identity.html')">Identity</button>
+      <button class="p-btn" onclick="goTo('stage.html')">Stage</button>
+    </div>
+    <div class="p-controls">
+      <span class="p-counter" id="p-counter">01 / 15</span>
+      <button class="mode-toggle" id="mode-toggle" onclick="toggleMode()">
+        <span class="mt-icon" id="mt-icon">☀️</span>
+        <span id="mt-label">Light</span>
+        <span class="mode-label" id="mode-label"><span class="ml-dot"></span><span id="mode-name">Orbit</span></span>
+      </button>
+      <button class="p-ctrl p-ctrl-prev" onclick="prev()">← Prev</button>
+      <button class="p-ctrl p-ctrl-next" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SINGLE SCREEN VIEW
+══════════════════════════════════════════ -->
+  <div class="single-view" id="single-view">
+    <div class="phone" id="phone-main">
+      <div class="phone-inner" id="phone-inner">
+        <!-- Screens injected here by JS -->
+      </div>
+    </div>
+    <div class="screen-label">
+      <span class="sl-num" id="sl-num">01 / 15</span>
+      <span class="sl-name" id="sl-name">Splash</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SCREEN TEMPLATES (hidden)
+══════════════════════════════════════════ -->
+  <div id="screens" style="display:none">
+
+    <!-- ═══════ 08 FEED WALL ═══════ -->
+    <div data-id="7" data-name="Feed Wall">
+      <div class="amb">
+        <div class="orb o1"></div>
+        <div class="orb o2"></div>
+      </div>
+      <div class="top-nav">
+        <div class="nav-wordmark">
+          <div class="logo-mark" style="width:24px;height:24px;">
+            <div class="lm-out"></div>
+            <div class="lm-r1" style="inset:3px"></div>
+            <div class="lm-r2" style="inset:8px"></div>
+            <div class="lm-dot" style="width:4px;height:4px"></div>
+          </div>
+          circles
+        </div>
+        <div class="persona-chip">
+          <div class="pc-dot"></div>
+          <div
+            style="width:32px;height:32px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#5C94E9;flex-shrink:0;">
+            A</div>
+          <span class="pc-alias">Alex_UX</span>
+          <div
+            style="width:6px;height:6px;border-radius:50%;background:#EF4444;margin-left:2px;box-shadow:0 0 6px rgba(239,68,68,0.6)">
+          </div>
+        </div>
+      </div>
+
+      <div class="scroll-body">
+        <div style="flex-shrink:0;">
+          <div
+            style="font-size:8.5px;font-weight:600;color:#5C94E9;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;">
+            Curated for Alex_UX</div>
+          <div style="font-size:20px;font-weight:700;color:#fff;">Design &amp; Architecture</div>
+        </div>
+
+        <!-- ── ARTICLE CARD ── -->
+        <div class="f-card" style="cursor:pointer;display:flex;flex-direction:column;">
+          <div style="height:180px;overflow:hidden;position:relative;flex-shrink:0;">
+            <div
+              style="width:32px;height:32px;border-radius:50%;background:#1a2a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#8899ee;flex-shrink:0;object-fit:cover;">
+              ?</div>
+            <div
+              style="position:absolute;inset:0;background:linear-gradient(to bottom,transparent 30%,rgba(5,7,10,0.9))">
+            </div>
+            <div style="position:absolute;top:12px;left:12px;"><span class="tag tag-p">Deep Read</span></div>
+            <div style="position:absolute;bottom:12px;left:16px;right:16px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <div
+                  style="width:20px;height:20px;border-radius:50%;background:#1a3a5c;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:7px;font-weight:700;color:#7db3f0;flex-shrink:0;border:1px solid rgba(92,148,233,0.5);">
+                  K</div>
+                <span style="font-size:10px;font-weight:600;color:rgba(255,255,255,0.85);">Kevin Rose · UX Weekly</span>
+              </div>
+            </div>
+          </div>
+          <div style="padding:16px;display:flex;flex-direction:column;gap:8px;">
+            <div style="display:flex;align-items:center;gap:6px;">
+              <span
+                style="font-size:9px;font-weight:700;color:#5C94E9;letter-spacing:0.5px;text-transform:uppercase;">UX
+                Philosophy</span>
+              <span style="font-size:9px;color:rgba(255,255,255,0.25);">·</span>
+              <span style="font-size:9.5px;font-weight:500;color:rgba(255,255,255,0.50);">8 min read</span>
+            </div>
+            <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.35;">The Death of the Follower Count
+            </div>
+            <p style="font-size:11px;font-weight:400;color:rgba(255,255,255,0.60);line-height:1.65;">As social media
+              pivots away from the broadcast model, highly contextual networks are proving that 15 engaged peers are
+              worth more than 15,000 passive scrollers.</p>
+          </div>
+        </div>
+
+        <!-- ── BOOK SHELF CARD ── -->
+        <div class="f-card" id="fw-book-card" style="display:flex;flex-shrink:0;align-items:stretch;">
+          <div style="width:110px;flex-shrink:0;position:relative;">
+            <div
+              style="width:32px;height:32px;border-radius:50%;background:#1a2a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#8899ee;flex-shrink:0;object-fit:cover;">
+              ?</div>
+            <div
+              style="display:none;position:absolute;inset:0;width:100%;height:100%;background:linear-gradient(160deg,#1e3a6e,#0d1e38);align-items:center;justify-content:center;">
+              <svg width="22" height="22" fill="none" stroke="rgba(92,148,233,0.55)" stroke-width="1.5"
+                viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+              </svg>
+            </div>
+          </div>
+          <div style="flex:1;padding:16px;display:flex;flex-direction:column;justify-content:center;gap:6px;">
+            <span class="tag tag-p" style="width:max-content;">Book Shelf</span>
+            <div style="font-size:14px;font-weight:700;color:#fff;line-height:1.3;">The Great Good Place</div>
+            <div style="font-size:10px;font-weight:400;color:rgba(255,255,255,0.45);">Ray Oldenburg · Sociology</div>
+            <div id="fw-book-btns" style="display:flex;gap:7px;margin-top:4px;">
+              <button class="btn btn-glass" style="padding:7px 12px;font-size:10px;font-weight:600;"
+                onclick="feedBookShelf(this)">+ Shelf</button>
+              <button class="btn btn-brand" style="padding:7px 12px;font-size:10px;font-weight:600;"
+                onclick="feedBookDetails()">Details</button>
+            </div>
+            <div id="fw-book-bought" style="display:none;margin-top:4px;">
+              <span class="tag tag-s" style="font-size:9.5px;padding:5px 12px;">✓ Added to Shelf</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── STAGE CARD ── -->
+        <div class="f-card" style="padding:18px;border-color:rgba(92,148,233,0.18);">
+          <div style="display:flex;align-items:center;gap:7px;margin-bottom:11px;">
+            <div
+              style="width:6px;height:6px;border-radius:50%;background:#5C94E9;animation:livepulse 1.2s ease-in-out infinite;flex-shrink:0;">
+            </div>
+            <span
+              style="font-size:8.5px;font-weight:700;color:#5C94E9;text-transform:uppercase;letter-spacing:1.5px;">Upcoming
+              Stage</span>
+            <span style="margin-left:auto;" class="tag tag-w" style="font-size:7.5px;">Free</span>
+          </div>
+          <div style="font-size:15px;font-weight:700;color:#fff;line-height:1.35;margin-bottom:5px;">Micro-SaaS scaling
+            without burnout</div>
+          <p style="font-size:10px;font-weight:300;color:rgba(255,255,255,0.45);line-height:1.6;margin-bottom:12px;">A
+            live session on sustainable SaaS growth — product, distribution, and founder mental health.</p>
+          <div
+            style="display:flex;align-items:center;gap:10px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:9px 12px;margin-bottom:13px;">
+            <div
+              style="width:26px;height:26px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1px solid rgba(92,148,233,0.40);">
+              V</div>
+            <span style="font-size:10.5px;font-weight:500;color:#fff;flex:1;">Vercel Team</span>
+            <span style="font-size:10px;font-weight:600;color:#5C94E9;white-space:nowrap;">Tonight, 8 PM</span>
+          </div>
+          <button id="fw-stage-rsvp-btn" class="btn btn-brand"
+            style="width:100%;padding:11px;font-size:10.5px;font-weight:600;" onclick="feedStageRSVP()">Reserve Your
+            Seat</button>
+        </div>
+
+        <!-- ── SPONSORED CARD ── -->
+        <div class="f-card" style="padding:16px 18px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+            <span class="tag tag-w">Sponsored</span>
+            <svg width="14" height="14" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="2"
+              style="cursor:pointer;" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+            <div
+              style="width:36px;height:36px;border-radius:10px;background:#1a2a40;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1px solid rgba(92,148,233,0.25);flex-shrink:0;">
+              U</div>
+            <div>
+              <div style="font-size:13px;font-weight:600;color:#fff;line-height:1.3;">Advanced UX Research Certification
+              </div>
+              <div style="font-size:9px;color:rgba(255,255,255,0.38);margin-top:2px;">UX Academy · 4.8 ★</div>
+            </div>
+          </div>
+          <p style="font-size:10px;font-weight:300;color:rgba(255,255,255,0.50);margin-bottom:13px;line-height:1.65;">
+            Matched to your Design &amp; UX tags. 12-week programme, self-paced. 3,400+ graduates.</p>
+          <button class="btn btn-brand" style="width:100%;padding:10px;font-size:10px;font-weight:600;"
+            onclick="feedSponsoredSchedule()">Schedule a 1-on-1 Circle</button>
+        </div>
+      </div>
+
+      <!-- Bottom nav -->
+      <div class="btm-nav">
+        <button class="nav-item on"><svg stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg><span class="nl">Feed</span>
+          <div class="nav-dot"></div>
+        </button>
+        <button class="nav-item off"><svg stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg><span class="nl">Orbit</span></button>
+        <button class="nav-item off"><svg stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg><span class="nl">Shelf</span></button>
+      </div>
+
+      <!-- ══ BOOK DETAILS & BUY MODAL ══ -->
+      <div id="fw-buy-modal"
+        style="display:none;position:absolute;inset:0;z-index:100;background:rgba(5,7,10,0.75);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
+        <div
+          style="width:100%;background:#111827;border-radius:28px 28px 0 0;border-top:1px solid rgba(255,255,255,0.10);padding:24px 22px 36px;display:flex;flex-direction:column;gap:16px;max-height:85%;overflow-y:auto;">
+          <!-- Handle -->
+          <div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,0.18);margin:0 auto 4px;">
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div
+              style="width:52px;height:70px;border-radius:5px;overflow:hidden;flex-shrink:0;box-shadow:4px 4px 12px rgba(0,0,0,0.50);">
+              <div
+                style="width:32px;height:32px;border-radius:50%;background:#1a2a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#8899ee;flex-shrink:0;object-fit:cover;">
+                ?</div>
+            </div>
+            <div>
+              <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:3px;">The Great Good Place</div>
+              <div style="font-size:10px;color:rgba(255,255,255,0.45);">Ray Oldenburg · Sociology</div>
+              <div style="font-size:11px;font-weight:700;color:#5C94E9;margin-top:5px;">4.8 ★ · 320 pages</div>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.07);"></div>
+
+          <!-- Insights Section -->
+          <div id="fw-book-insights" style="display:flex;flex-direction:column;gap:12px;">
+            <div
+              style="font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;">
+              Book Insights</div>
+            <p style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.7);line-height:1.6;">
+              Explore the concept of the "third place" — the local pubs, coffee shops, and community centers that form
+              the heart of a community's social vitality, distinct from home (first place) and work (second place).
+            </p>
+            <div style="display:flex;gap:6px;flex-wrap:wrap;">
+              <span class="tag tag-p" style="font-size:8px;">Urban Studies</span>
+              <span class="tag tag-p" style="font-size:8px;">Community</span>
+              <span class="tag tag-p" style="font-size:8px;">Architecture</span>
+            </div>
+            <button class="btn btn-brand"
+              style="width:100%;padding:13px;font-size:11.5px;font-weight:700;margin-top:8px;"
+              onclick="feedInitiateBuy()">Buy Physical Copy · ₹499</button>
+          </div>
+
+          <!-- Payment Section -->
+          <div id="fw-pay-options-container" style="display:none;flex-direction:column;gap:12px;">
+            <div
+              style="font-size:10.5px;font-weight:600;color:rgba(255,255,255,0.55);text-transform:uppercase;letter-spacing:1px;margin-bottom:-4px;">
+              Pay with</div>
+            <div id="fw-pay-options" style="display:flex;flex-direction:column;gap:10px;">
+              <button onclick="feedBuySuccess()"
+                style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.10);border-radius:16px;padding:13px 16px;cursor:pointer;transition:all .2s;"
+                onmouseover="this.style.borderColor='rgba(92,148,233,0.40)'"
+                onmouseout="this.style.borderColor='rgba(255,255,255,0.10)'">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <rect x="2" y="5" width="20" height="14" rx="3" stroke="rgba(92,148,233,0.7)" stroke-width="1.5" />
+                  <path d="M2 10h20" stroke="rgba(92,148,233,0.7)" stroke-width="1.5" />
+                </svg>
+                <div style="text-align:left;">
+                  <div style="font-size:11px;font-weight:600;color:#fff;">Credit / Debit Card</div>
+                  <div style="font-size:9px;color:rgba(255,255,255,0.35);">Visa, Mastercard, Rupay</div>
+                </div>
+                <svg style="margin-left:auto;" width="16" height="16" fill="none" stroke="rgba(255,255,255,0.30)"
+                  stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+              <button onclick="feedBuySuccess()"
+                style="display:flex;align-items:center;gap:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.10);border-radius:16px;padding:13px 16px;cursor:pointer;transition:all .2s;"
+                onmouseover="this.style.borderColor='rgba(92,148,233,0.40)'"
+                onmouseout="this.style.borderColor='rgba(255,255,255,0.10)'">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" stroke="rgba(92,148,233,0.7)" stroke-width="1.5" />
+                  <path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="rgba(92,148,233,0.7)" stroke-width="1.5" />
+                </svg>
+                <div style="text-align:left;">
+                  <div style="font-size:11px;font-weight:600;color:#fff;">UPI</div>
+                  <div style="font-size:9px;color:rgba(255,255,255,0.35);">GPay, PhonePe, Paytm</div>
+                </div>
+                <svg style="margin-left:auto;" width="16" height="16" fill="none" stroke="rgba(255,255,255,0.30)"
+                  stroke-width="2" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Success state (hidden initially) -->
+          <div id="fw-pay-success"
+            style="display:none;flex-direction:column;align-items:center;gap:12px;padding:12px 0;">
+            <div
+              style="width:56px;height:56px;border-radius:50%;background:rgba(16,185,129,0.15);border:1.5px solid rgba(16,185,129,0.40);display:flex;align-items:center;justify-content:center;">
+              <svg width="24" height="24" fill="none" stroke="#10B981" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;">Purchase Successful!</div>
+              <div style="font-size:10.5px;font-weight:300;color:rgba(255,255,255,0.50);">Added to your Shelf. Ships in
+                3–5 days.</div>
+            </div>
+            <button onclick="feedBuyDone()" class="btn btn-success"
+              style="width:100%;padding:12px;font-size:11px;font-weight:600;">View in Shelf</button>
+          </div>
+          <button onclick="feedBuyClose()"
+            style="background:none;border:none;color:rgba(255,255,255,0.35);font-family:'Montserrat',sans-serif;font-size:10.5px;cursor:pointer;padding:4px;">Close</button>
+        </div>
+      </div>
+
+      <!-- ══ STAGE RSVP MODAL ══ -->
+      <div id="fw-stage-modal"
+        style="display:none;position:absolute;inset:0;z-index:100;background:rgba(5,7,10,0.75);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
+        <div
+          style="width:100%;background:#111827;border-radius:28px 28px 0 0;border-top:1px solid rgba(255,255,255,0.10);padding:24px 22px 36px;display:flex;flex-direction:column;gap:14px;">
+          <div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,0.18);margin:0 auto 4px;">
+          </div>
+          <div>
+            <div style="display:flex;align-items:center;gap:7px;margin-bottom:8px;">
+              <div
+                style="width:6px;height:6px;border-radius:50%;background:#5C94E9;animation:livepulse 1.2s ease-in-out infinite;">
+              </div>
+              <span
+                style="font-size:8.5px;font-weight:700;color:#5C94E9;text-transform:uppercase;letter-spacing:1.5px;">Free
+                Stage · Tonight 8 PM</span>
+            </div>
+            <div style="font-size:16px;font-weight:700;color:#fff;line-height:1.3;margin-bottom:4px;">Micro-SaaS scaling
+              without burnout</div>
+            <div style="display:flex;align-items:center;gap:8px;margin-top:8px;">
+              <div
+                style="width:28px;height:28px;border-radius:50%;background:#0d1e38;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:9px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1px solid rgba(92,148,233,0.35);">
+                V</div>
+              <span style="font-size:10.5px;color:rgba(255,255,255,0.60);">Hosted by <span
+                  style="color:#fff;font-weight:600;">Vercel Team</span></span>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.07);"></div>
+          <!-- Free stage — just confirm -->
+          <div id="fw-stage-free" style="display:flex;flex-direction:column;gap:12px;">
+            <div
+              style="background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.20);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:10px;">
+              <svg width="18" height="18" fill="none" stroke="#10B981" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span style="font-size:10.5px;font-weight:500;color:#10B981;">This Stage is Free — no payment
+                needed</span>
+            </div>
+            <div
+              style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:12px 14px;">
+              <div
+                style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px;">
+                What to expect</div>
+              <div style="display:flex;flex-direction:column;gap:6px;">
+                <div style="display:flex;align-items:center;gap:8px;font-size:10.5px;color:rgba(255,255,255,0.65);"><svg
+                    width="13" height="13" fill="none" stroke="#5C94E9" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>~60 minutes · Audio only</div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:10.5px;color:rgba(255,255,255,0.65);"><svg
+                    width="13" height="13" fill="none" stroke="#5C94E9" stroke-width="2" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="10" />
+                    <path stroke-linecap="round" d="M8 12h8M12 8v8" />
+                  </svg>Stage Sandbox Q&amp;A included</div>
+                <div style="display:flex;align-items:center;gap:8px;font-size:10.5px;color:rgba(255,255,255,0.65);"><svg
+                    width="13" height="13" fill="none" stroke="#5C94E9" stroke-width="2" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M15 10l4.553-2.069A1 1 0 0121 8.82v6.362a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                  </svg>Replay available after the event</div>
+              </div>
+            </div>
+            <button id="fw-stage-confirm-btn" class="btn btn-brand"
+              style="width:100%;padding:13px;font-size:11.5px;font-weight:700;" onclick="feedStageConfirm()">Confirm My
+              Seat</button>
+          </div>
+          <!-- Confirmed state -->
+          <div id="fw-stage-confirmed"
+            style="display:none;flex-direction:column;align-items:center;gap:12px;padding:8px 0;">
+            <div
+              style="width:56px;height:56px;border-radius:50%;background:rgba(92,148,233,0.12);border:1.5px solid rgba(92,148,233,0.40);display:flex;align-items:center;justify-content:center;">
+              <svg width="24" height="24" fill="none" stroke="#5C94E9" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:4px;">You're in!</div>
+              <div style="font-size:10.5px;font-weight:300;color:rgba(255,255,255,0.50);">We'll remind you 15 minutes
+                before.<br>Stage opens at 8:00 PM tonight.</div>
+            </div>
+            <button onclick="feedStageClose()" class="btn btn-glass"
+              style="width:100%;padding:12px;font-size:11px;">Done</button>
+          </div>
+          <button onclick="feedStageClose()"
+            style="background:none;border:none;color:rgba(255,255,255,0.30);font-family:'Montserrat',sans-serif;font-size:10.5px;cursor:pointer;padding:4px;">Cancel</button>
+        </div>
+      </div>
+
+      <!-- ══ SPONSORED SCHEDULE MODAL ══ -->
+      <div id="fw-sponsor-modal"
+        style="display:none;position:absolute;inset:0;z-index:100;background:rgba(5,7,10,0.75);backdrop-filter:blur(8px);align-items:flex-end;justify-content:center;">
+        <div
+          style="width:100%;background:#111827;border-radius:28px 28px 0 0;border-top:1px solid rgba(255,255,255,0.10);padding:24px 22px 36px;display:flex;flex-direction:column;gap:14px;max-height:90%;overflow-y:auto;">
+          <div style="width:36px;height:4px;border-radius:2px;background:rgba(255,255,255,0.18);margin:0 auto 4px;">
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div
+              style="width:44px;height:44px;border-radius:10px;background:#1a2a40;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:15px;font-weight:700;color:#5C94E9;flex-shrink:0;border:1px solid rgba(92,148,233,0.25);">
+              U</div>
+            <div>
+              <div style="font-size:14px;font-weight:700;color:#fff;">UX Academy</div>
+              <div style="font-size:9.5px;color:rgba(255,255,255,0.40);margin-top:2px;">Advanced UX Research
+                Certification · Free session</div>
+            </div>
+          </div>
+          <div style="height:1px;background:rgba(255,255,255,0.07);"></div>
+          <!-- Calendar -->
+          <div>
+            <div
+              style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">
+              Pick a date — April 2026</div>
+            <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:4px;text-align:center;margin-bottom:6px;">
+              <span style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Su</span><span
+                style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Mo</span><span
+                style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Tu</span><span
+                style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">We</span><span
+                style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Th</span><span
+                style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Fr</span><span
+                style="font-size:8px;color:rgba(255,255,255,0.30);padding:4px 0;">Sa</span>
+              <span></span><span></span><span></span><span
+                style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">1</span><span
+                style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">2</span><span
+                style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">3</span><span
+                style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">4</span>
+              <span style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">5</span><span
+                style="font-size:10px;padding:5px;color:rgba(255,255,255,0.30);">6</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;background:rgba(92,148,233,0.15);border:1px solid rgba(92,148,233,0.30);">7</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">8</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">9</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">10</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">11</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">12</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">13</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">14</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;background:rgba(92,148,233,0.20);border:1px solid rgba(92,148,233,0.40);font-weight:600;"
+                id="cal-selected">15</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">16</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:#fff;">17</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.30);">18</span>
+              <span onclick="calSelect(this)"
+                style="font-size:10px;padding:5px;border-radius:8px;cursor:pointer;color:rgba(255,255,255,0.30);">19</span>
+            </div>
+          </div>
+          <!-- Time slots -->
+          <div>
+            <div
+              style="font-size:9px;font-weight:600;color:rgba(255,255,255,0.40);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;">
+              Available slots — Apr 15</div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;" id="fw-time-slots">
+              <button onclick="slotSelect(this)" class="btn btn-glass"
+                style="padding:7px 14px;font-size:10px;font-weight:500;">10:00 AM</button>
+              <button onclick="slotSelect(this)" class="btn btn-glass"
+                style="padding:7px 14px;font-size:10px;font-weight:500;">11:00 AM</button>
+              <button onclick="slotSelect(this)" class="btn btn-brand"
+                style="padding:7px 14px;font-size:10px;font-weight:600;" id="slot-selected">2:00 PM</button>
+              <button onclick="slotSelect(this)" class="btn btn-glass"
+                style="padding:7px 14px;font-size:10px;font-weight:500;">4:00 PM</button>
+              <button onclick="slotSelect(this)" class="btn btn-glass"
+                style="padding:7px 14px;font-size:10px;font-weight:500;">6:00 PM</button>
+            </div>
+          </div>
+          <div
+            style="background:rgba(92,148,233,0.07);border:1px solid rgba(92,148,233,0.18);border-radius:14px;padding:11px 14px;">
+            <div
+              style="font-size:9px;color:rgba(255,255,255,0.40);margin-bottom:3px;text-transform:uppercase;letter-spacing:.8px;">
+              Your availability window</div>
+            <div style="font-size:11px;font-weight:600;color:#fff;">Apr 15, 2026 · 2:00 PM IST</div>
+            <div style="font-size:9px;color:rgba(255,255,255,0.35);margin-top:2px;">30-minute 1-on-1 Circle · No
+              personal data shared</div>
+          </div>
+          <button onclick="feedSponsorConfirm()" class="btn btn-brand"
+            style="width:100%;padding:13px;font-size:11.5px;font-weight:700;" id="fw-sponsor-confirm-btn">Confirm
+            Schedule</button>
+          <!-- Confirmed state -->
+          <div id="fw-sponsor-done"
+            style="display:none;flex-direction:column;align-items:center;gap:10px;padding:4px 0;">
+            <div
+              style="width:52px;height:52px;border-radius:50%;background:rgba(92,148,233,0.12);border:1.5px solid rgba(92,148,233,0.40);display:flex;align-items:center;justify-content:center;">
+              <svg width="22" height="22" fill="none" stroke="#5C94E9" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-size:14px;font-weight:700;color:#fff;margin-bottom:3px;">Circle Scheduled!</div>
+              <div style="font-size:10px;font-weight:300;color:rgba(255,255,255,0.45);">Apr 15 at 2:00 PM · No PII
+                shared with sponsor.</div>
+            </div>
+            <button onclick="feedSponsorClose()" class="btn btn-glass"
+              style="width:100%;padding:11px;font-size:11px;">Done</button>
+          </div>
+          <button onclick="feedSponsorClose()"
+            style="background:none;border:none;color:rgba(255,255,255,0.30);font-family:'Montserrat',sans-serif;font-size:10.5px;cursor:pointer;padding:4px;">Cancel</button>
+        </div>
+      </div>
+
+    </div>
+
+  </div><!-- /screens -->
+</body>
+
+</html>

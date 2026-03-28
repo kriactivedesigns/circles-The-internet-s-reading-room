@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>circles — UI/UX Mockup v2.0</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Montserrat', 'system-ui', 'sans-serif'] },
+          colors: {
+            primary: '#5C94E9',
+            dark: { bg: '#05070A', surface: '#121212' },
+            light: { bg: '#F2F4F7', surface: '#FAFAFA' },
+          },
+          animation: {
+            'float-slow': 'float 6s ease-in-out infinite',
+            'float-delayed': 'float 6s ease-in-out 3s infinite',
+            'pulse-glow': 'pulse-glow 2s cubic-bezier(0.4,0,0.6,1) infinite',
+            'wave': 'wave 0.8s ease-in-out infinite',
+          },
+          keyframes: {
+            float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } },
+            'pulse-glow': { '0%,100%': { opacity: '1', boxShadow: '0 0 15px rgba(92,148,233,0.5)' }, '50%': { opacity: '0.7', boxShadow: '0 0 30px rgba(92,148,233,0.8)' } },
+            wave: { '0%,100%': { height: '6px' }, '50%': { height: '22px' } },
+          },
+        }
+      }
+    }
+  </script>
+  <script src="./script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="./styles.css" rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ══════════════════════════════════════════
+     PRESENTER BAR
+══════════════════════════════════════════ -->
+  <div class="presenter">
+    <div class="presenter-left">
+      <div class="p-logo">
+        <div class="p-logomark">
+          <div class="r-out"></div>
+          <div class="r-1"></div>
+          <div class="r-2"></div>
+          <div class="r-dot"></div>
+        </div>
+        <span class="p-title">circles</span>
+      </div>
+      <span class="p-badge">UI/UX Mockup v1.0</span>
+    </div>
+    <div class="p-nav" id="p-nav">
+      <button class="p-btn" onclick="goTo('splash.html')">Splash</button>
+      <button class="p-btn" onclick="goTo('read.html')">Read</button>
+      <button class="p-btn" onclick="goTo('connect.html')">Connect</button>
+      <button class="p-btn" onclick="goTo('protect.html')">Protect</button>
+      <button class="p-btn" onclick="goTo('signin.html')">Sign In</button>
+      <button class="p-btn" onclick="goTo('otp.html')">OTP</button>
+      <button class="p-btn" onclick="goTo('base.html')">Base</button>
+      <button class="p-btn" onclick="goTo('persona.html')">Persona</button>
+      <button class="p-btn" onclick="goTo('feed.html')">Feed</button>
+      <button class="p-btn" onclick="goTo('orbit.html')">Orbit</button>
+      <button class="p-btn" onclick="goTo('sandbox.html')">Sandbox</button>
+      <button class="p-btn" onclick="goTo('table.html')">Table</button>
+      <button class="p-btn" onclick="goTo('shelf.html')">Shelf</button>
+      <button class="p-btn" onclick="goTo('identity.html')">Identity</button>
+      <button class="p-btn" onclick="goTo('stage.html')">Stage</button>
+    </div>
+    <div class="p-controls">
+      <span class="p-counter" id="p-counter">01 / 15</span>
+      <button class="mode-toggle" id="mode-toggle" onclick="toggleMode()">
+        <span class="mt-icon" id="mt-icon">☀️</span>
+        <span id="mt-label">Light</span>
+        <span class="mode-label" id="mode-label"><span class="ml-dot"></span><span id="mode-name">Orbit</span></span>
+      </button>
+      <button class="p-ctrl p-ctrl-prev" onclick="prev()">← Prev</button>
+      <button class="p-ctrl p-ctrl-next" onclick="next()">Next →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SINGLE SCREEN VIEW
+══════════════════════════════════════════ -->
+  <div class="single-view" id="single-view">
+    <div class="phone" id="phone-main">
+      <div class="phone-inner" id="phone-inner">
+        <!-- Screens injected here by JS -->
+      </div>
+    </div>
+    <div class="screen-label">
+      <span class="sl-num" id="sl-num">01 / 15</span>
+      <span class="sl-name" id="sl-name">Splash</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════
+     SCREEN TEMPLATES (hidden)
+══════════════════════════════════════════ -->
+  <div id="screens" style="display:none">
+
+    <!-- ═══════ 09 LOBBY LIST ═══════ -->
+    <div data-id="8" data-name="Orbit — Lobby List">
+      <div class="amb">
+        <div class="orb o1"></div>
+        <div class="orb o2"></div>
+      </div>
+      <div class="top-nav">
+        <div class="nav-wordmark">
+          <div class="logo-mark" style="width:24px;height:24px;">
+            <div class="lm-out"></div>
+            <div class="lm-r1" style="inset:3px"></div>
+            <div class="lm-r2" style="inset:8px"></div>
+            <div class="lm-dot" style="width:4px;height:4px"></div>
+          </div>
+          circles
+        </div>
+        <div class="persona-chip"
+          style="border-color:rgba(92,148,233,0.35);box-shadow:0 0 0 3px rgba(92,148,233,0.12),0 0 0 6px rgba(92,148,233,0.05);">
+          <div class="pc-dot"></div>
+          <div
+            style="width:32px;height:32px;border-radius:50%;background:#1a3060;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#5C94E9;flex-shrink:0;">
+            A</div>
+          <span class="pc-alias">Alex_UX</span>
+        </div>
+      </div>
+      <div class="scroll-body">
+        <div>
+          <div style="font-size:20px;font-weight:700;color:#fff;margin-bottom:4px;">Your Orbit</div>
+          <div style="font-size:11px;font-weight:300;color:rgba(255,255,255,0.45);"><span
+              style="color:#5C94E9;font-weight:600;">124</span> matching personas online</div>
+        </div>
+        <!-- Active lobby -->
+        <div class="f-card" style="padding:18px;border-color:rgba(92,148,233,0.15);cursor:pointer;" onclick="goTo(10)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+            <div style="display:flex;margin-left:-4px;">
+              <div
+                style="width:32px;height:32px;border-radius:50%;background:#1a1a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#8899ee;flex-shrink:0;border:2px solid #05070A;">
+                A</div>
+              <div
+                style="width:32px;height:32px;border-radius:50%;background:#1a3a2a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#55cc88;flex-shrink:0;border:2px solid #05070A;margin-left:-8px;">
+                B</div>
+              <div
+                style="width:32px;height:32px;border-radius:50%;background:#3a1a2a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#ee6688;flex-shrink:0;border:2px solid #05070A;margin-left:-8px;">
+                C</div>
+              <div
+                style="width:32px;height:32px;border-radius:50%;border:2px solid #05070A;background:rgba(92,148,233,0.15);display:flex;align-items:center;justify-content:center;margin-left:-8px;font-size:9px;font-weight:700;color:#5C94E9;">
+                +2</div>
+            </div>
+            <span class="tag tag-p">Active</span>
+          </div>
+          <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;">SaaS Scaling &amp; UI Architecture
+          </div>
+          <div
+            style="display:inline-flex;align-items:center;gap:5px;background:rgba(12,14,20,0.90);border:.5px solid rgba(255,255,255,0.12);border-radius:12px;padding:5px 10px;">
+            <span style="font-size:8.5px;color:rgba(255,255,255,0.55);">5 Personas ·</span><span
+              style="font-size:8.5px;font-weight:500;color:#5C94E9;">1 Note dropped</span>
+          </div>
+        </div>
+        <!-- Quiet lobby -->
+        <div class="f-card" style="padding:18px;opacity:0.65;cursor:pointer;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+            <div style="display:flex;">
+              <div
+                style="width:32px;height:32px;border-radius:50%;background:#2a2a1a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#ddcc55;flex-shrink:0;border:2px solid #05070A;">
+                D</div>
+              <div
+                style="width:32px;height:32px;border-radius:50%;background:#1a2a3a;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;font-size:11px;font-weight:700;color:#8899ee;flex-shrink:0;border:2px solid #05070A;margin-left:-8px;">
+                E</div>
+            </div>
+            <span class="tag tag-g">Quiet</span>
+          </div>
+          <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:6px;">Indie Publishing &amp; Long-form
+            Writing</div>
+          <div
+            style="display:inline-flex;align-items:center;gap:5px;background:rgba(12,14,20,0.70);border:.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:5px 10px;">
+            <span style="font-size:8.5px;color:rgba(255,255,255,0.40);">2 Personas browsing</span>
+          </div>
+        </div>
+        <!-- Planted root -->
+        <div class="f-card" style="padding:18px;opacity:0.60;cursor:pointer;" onclick="goTo(10)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;">
+            <div
+              style="width:32px;height:32px;border-radius:50%;background:rgba(16,185,129,0.12);border:1px solid rgba(16,185,129,0.25);display:flex;align-items:center;justify-content:center;">
+              <svg width="14" height="14" fill="none" stroke="#10B981" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                  d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+              </svg>
+            </div>
+            <span class="tag tag-s">Planted Root</span>
+          </div>
+          <div style="font-size:15px;font-weight:600;color:#fff;margin-bottom:4px;">Indie Hackers Kerala</div>
+          <div style="font-size:9px;color:rgba(255,255,255,0.35);">Last active 2 days ago</div>
+        </div>
+      </div>
+      <div class="btm-nav">
+        <button class="nav-item off"><svg stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg><span class="nl">Feed</span></button>
+        <button class="nav-item on"><svg stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg><span class="nl">Orbit</span>
+          <div class="nav-dot"></div>
+        </button>
+        <button class="nav-item off"><svg stroke="currentColor" viewBox="0 0 24 24">
+            <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+          </svg><span class="nl">Shelf</span></button>
+      </div>
+    </div>
+
+  </div><!-- /screens -->
+</body>
+
+</html>
